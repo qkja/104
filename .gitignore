@@ -35,3 +35,24 @@
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.ilk
+*.pdp
+*.sdf
+*.v12.suo
+*.vcxproj.user
+*.log
+*.tlog
+*.exe.recipe
+*.vcxproj.FileListAbsolute.txt
+*.idb
+*.suo
+*.VC.db
+*.ipch
+# 忽略所有的文件
+/*
+!.c
+!.cpp
+
+
+
+

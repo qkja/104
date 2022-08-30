@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# 这是我不让上传的文件类型
+*.sln
+*.vcxproj
+*.vcxproj.filters

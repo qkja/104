@@ -1,0 +1,78 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include<stdio.h>
+#include<string.h>
+#include<errno.h>
+
+//把test.c 的内容拷贝到 test.txt中
+int main()
+{
+
+	FILE* wpf = fopen("test.txt", "w");
+
+	FILE* rpf = fopen("test.c", "r");
+
+	if (rpf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		fclose(wpf);
+		wpf = NULL;
+		return 1;
+	}
+
+	//拷贝
+	int ch = 0;
+	while ((ch = fgetc(rpf)) != EOF)
+	{
+		fputc(ch, wpf);
+	}
+	
+    //关闭文件
+	fclose(rpf);  
+	rpf = NULL;
+	fclose(wpf);
+	wpf = NULL;
+	return 0;
+}
+
+//int main()
+//{
+//
+//	FILE* pf = fopen("test.txt", "w");
+//	FILE* pf = fopen("test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//写文件
+//	for (int ch = 'a';ch <= 'z'; ch++)
+//	{
+//		fputc(ch, pf);
+//	}
+//	printf("\n");
+//	fclose(pf);  //关闭文件
+//	pf = NULL;
+//	return 0;
+//}
+
+//int main()
+//{
+//
+//	FILE* pf = fopen("test.txt", "r"); 
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//写文件
+//	int ch = 98;
+//	while ((ch = fgetc(pf)) != EOF)
+//	{
+//		printf("%c", ch);
+//	}
+//	printf("\n");
+//	fclose(pf);  //关闭文件
+//	pf = NULL;
+//	return 0;
+//}

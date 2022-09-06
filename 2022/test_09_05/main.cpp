@@ -9,6 +9,51 @@
 
 using namespace std;
 
+class Solution {
+public:
+	string sortSentence(string s) {
+		if (s.length() == 0)
+			return s;
+		map<int, string> m;
+		string str;
+		for (int i = 0; i < s.length(); i++)
+		{
+			if (s[i] != ' ')
+			{
+				str += s[i];
+				continue;
+			}
+
+			int ret = str[str.length() - 1] - '0';
+			str.erase(str.end() - 1);
+			m.insert(std::pair<int, string>(ret, str));
+			str.clear();
+		}
+		int ret = str[str.length() - 1] - '0';
+		str.erase(str.end() - 1);
+		m.insert(std::pair<int, string>(ret, str));
+		str.clear();
+		// 默认事升序
+		auto it = m.begin();
+		string s2;
+		while (it != m.end())
+		{
+			s2 += it->second;
+			s2 += " ";
+			++it;
+		}
+		s2.erase(s2.end() - 1);
+		return s2;
+	}
+};
+
+int main()
+{
+	string str = "is2 sentence4 This1 a3";
+	Solution().sortSentence(str);
+	return 0;
+}
+
 //struct ListNode {
 //	int val;
 //	ListNode *next;
@@ -18,19 +63,28 @@ using namespace std;
 //};
 
 
-struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
+//struct TreeNode {
+//	int val;
+//	TreeNode *left;
+//	TreeNode *right;
+//	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+//};
 
-class Solution {
-public:
-	vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
-
-	}
-};
+//class Solution {
+//public:
+//	vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+//		if (arr1.size() == 0)
+//			return arr1;
+//		// 使用  map
+//		map<int,int> m;
+//		for (int i = 0; i < arr2.size(); i++)
+//		{
+//			m[arr2[i]]++;
+//		}
+//
+//		for(int i = )
+//	}
+//};
 
 //class Solution {
 //public:

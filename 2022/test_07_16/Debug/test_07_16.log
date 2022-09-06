@@ -1,4 +1,0 @@
-﻿  test.cpp
-E:\class-104\2022Code\test_07_16\test.cpp(53,19): error C7592: “float”类型的非类型模板参数至少需要“/std:c++20”
-E:\class-104\2022Code\test_07_16\test.cpp(57,1): error C2058: 常量表达式不是整型
-E:\class-104\2022Code\test_07_16\test.cpp(63): message : 查看对正在编译的 类 模板 实例化“stack<int,50.000000>”的引用

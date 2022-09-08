@@ -2,7 +2,54 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <string>
+
 using namespace std;
+
+class Solution {
+public:
+    void reverse(string& str, int left, int right)
+    {
+        right = right - 1;
+        while (left < right)
+        {
+            swap(str[left], str[right]);
+            left++;
+            right--;
+        }
+    }
+
+    string reverseLeftWords(string s, int n) {
+        if (s.empty() || n == 0)
+            return s;
+
+        reverse(s, 0, n);
+        reverse(s, n, s.size());
+        reverse(s, 0, s.size());
+        return s;
+    }
+};
+
+//class Solution {
+//public:
+//    string replaceSpace(string s) {
+//        string str;
+//        if (s.empty())
+//        {
+//            return str;
+//        }
+//        auto it = s.begin();
+//        while (it != s.end())
+//        {
+//            if (*it == ' ')
+//                str += "%20";
+//            else
+//                str += *it;
+//            ++it;
+//        }
+//        return str;
+//    }
+//};
 //mapped_type& operator[](const key_type& k)
 //{
 //	pair<iterator,bool> ret = insert(make_pair(k,mapped_type()));

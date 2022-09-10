@@ -4,6 +4,49 @@
 #include <iostream>
 #include <map>
 using namespace std;
+
+
+class Solution {
+public:
+    int minArray(vector<int>& numbers) {
+        if (numbers.size() == 0)
+            return 0;
+        int left = 0;
+        int right = numbers.size() -1;
+        int mid = 0;
+        while (numbers[left] >= numbers[right])
+        {
+            if (right - left == 1)
+            {
+                mid = right;
+                break;
+            }
+           
+            mid = left + ((right - left) >> 1); 
+            if (numbers[mid] == numbers[left] && numbers[mid] == numbers[right])
+            {
+                int result = numbers[left];
+                for (int i = left + 1; i < right; i++) {
+                    if (result > numbers[i]) {
+                        result = numbers[i];
+                    }
+                }
+                return result;
+            }
+            if (numbers[mid] >= numbers[left])
+            {
+                left = mid;
+            }
+            else
+            {
+                right = mid;
+            }
+        }
+
+        return numbers[mid];
+
+    }
+};
 //class Solution {
 //public:
 //    char firstUniqChar(string s) {

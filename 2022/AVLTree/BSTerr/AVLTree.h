@@ -255,371 +255,570 @@
 //private:
 //	Node* _pRoot;
 //};
+//namespace bit
+//{
+//	template<class T>
+//	struct AVLTreeNode
+//	{
+//		AVLTreeNode(const T& data = T())
+//			: _praent(nullptr)
+//			, _left(nullptr)
+//			, _right(nullptr)
+//			, _data(data)
+//			, _bf(0)
+//		{} 
+//
+//		AVLTreeNode<T>* _praent;
+//		AVLTreeNode<T>* _left;
+//		AVLTreeNode<T>* _right;
+//
+//		T _data;
+//		int _bf;
+//
+//	};
+//	template<class T, class T>
+//	class AVLTree
+//	{
+//	public:
+//		typedef AVLTreeNode<T> Node;
+//		AVLTree()
+//			:_pRoot(nullptr)
+//		{}
+//
+//		bool Insert(const T& data)
+//		{
+//			// 第一步 判断 第一次 插入
+//			if (_pRoot == nullptr)
+//			{
+//				_pRoot = new Node(data);
+//				_pRoot->_bf = 0;
+//				return true;
+//			}
+//
+//			// 第二步 搜索二叉树 找位置
+//			Node* cur = _pRoot;
+//			Node* parent = nullptr;
+//			while (cur != nullptr)
+//			{
+//				if (cur->_data < data)
+//				{
+//					// 去 右树 查找
+//					parent = cur;
+//					cur = cur->_right;
+//				}
+//				else if (cur->_data > data)
+//				{
+//					// 左树 查找
+//					parent = cur;
+//					cur = cur->_left;
+//				}
+//				else
+//				{
+//					// 我们这里不接受 重复值 ,你可以自己实现
+//					return false;
+//				}
+//			}
+//
+//			// 第三步 new 出来一个节点
+//			Node* node = new Node(data);
+//			node->_bf = 0;               // 记住 不要相信构造函数,有可能不是你写的,不会自动默认0
+//
+//			// 第四步 判断是插入左树还是 右树
+//			if (parent->_data > data)
+//			{
+//				parent->_left = node;
+//			}
+//			else
+//			{
+//				parent->_right = node;
+//			}
+//
+//			// 更新平衡因子
+//			while (parent != nullptr)
+//			{
+//				// 如果 插入的是 右子树
+//				if (cur == parent->_right)
+//				{
+//					parent->_bf++;
+//
+//				}
+//				else
+//				{
+//					parent->_bf--;
+//				}
+//
+//				//  开始 检测
+//				if (parent->_bf == 0)
+//				{
+//					break;
+//				}
+//				else if (parent->_bf == 1 || parent->_bf == -1)
+//				{
+//					cur = prev;
+//					parent = parent->_praent;
+//				}
+//				else if (parent->_bf == 2 || parent->_bf == -2)
+//				{
+//					// 这里 才是 大头
+//					if (cur->_bf == 1 && parent->_bf == 2)
+//					{
+//						// 左旋
+//						RotateL(parent);
+//					}
+//					else if (cur->_bf == -1 && parent->_bf == -2)
+//					{
+//						// 右旋
+//						RotateR(parent);
+//					}
+//					// 等着
+//				}
+//				else
+//				{
+//					assert(false);
+//				}
+//			}
+//
+//			return true;
+//		}
+//	private:
+//		void RotateR(Node* parent)
+//		{
+//			Node* subL = parent->_left;
+//			Node* subLR = subL->_right;
+//			parent->_left = subLR;
+//			if (subLR)
+//				subLR->_praent = parent;
+//			Node* grandparent = parent->_praent;
+//			parent->_praent = subL;
+//			subL->_right = parent;
+//
+//			if (grandparent == nullptr)
+//			{
+//				_pRoot = subL;
+//				_pRoot->_praent = nullptr;
+//			}
+//			else
+//			{
+//				subL->_praent = grandparent;
+//				if (grandparent->_left == parent)
+//				{
+//					grandparent->_left = subL;
+//				}
+//				else
+//				{
+//					grandparent->_right = subL;
+//				}
+//			}
+//			subL->_bf = subLR->_bf = 0;
+//		}
+//
+//		void RotateL(Node* parent)
+//		{
+//			Node* subR = parent->_right;
+//			Node* subRL = subR->_left;
+//
+//			parent->_right = subRL;
+//			if(subRL)
+//				subRL->_praent = parent;
+//			// 记录 祖父节点
+//			Node* grandparent = parent->_praent;
+//			
+//			parent->_praent = subR;
+//			subR->_left = parent;
+//
+//			if (grandparent == nullptr)
+//			{
+//				// parent 就是 根节点
+//				_pRoot = subR;
+//				_pRoot->_praent = nullptr;
+//			}
+//			else
+//			{
+//				subR->_praent = grandparent;
+//				// 在判断  原本 的父节点 和 祖父的关系
+//				if (parent == grandparent->_left)
+//				{
+//					grandparent->_left = subL;
+//				}
+//				else
+//				{
+//					grandparent->_right = subL;
+//				}
+//			}
+//			
+//
+//			// 修改 平衡因子
+//			subR->_bf = 0;
+//			parent->_bf = 0;
+//		}
+//	private:
+//		Node* _pRoot;
+//	};
+//}
 
+//template<class T>
+//struct AVLTreeNode
+//{
+//	AVLTreeNode(const T& data = T())
+//	: _pLeft(nullptr)
+//	, _pRight(nullptr)
+//	, _pParent(nullptr)
+//	, _data(data)
+//	, _bf(0)
+//	{}
+//
+//	AVLTreeNode<T>* _pLeft;
+//	AVLTreeNode<T>* _pRight;
+//	AVLTreeNode<T>* _pParent;
+//	T _data;
+//	int _bf;   // 节点的平衡因子
+//};
 
-template<class T>
-struct AVLTreeNode
-{
-	AVLTreeNode(const T& data = T())
-	: _pLeft(nullptr)
-	, _pRight(nullptr)
-	, _pParent(nullptr)
-	, _data(data)
-	, _bf(0)
-	{}
+//#pragma once
+//#include <iostream>
+//#include <assert.h>
+//#include <vector>
+//#include <queue>
+//#include <math.h>
 
-	AVLTreeNode<T>* _pLeft;
-	AVLTreeNode<T>* _pRight;
-	AVLTreeNode<T>* _pParent;
-	T _data;
-	int _bf;   // 节点的平衡因子
-};
-
-#pragma once
-#include <iostream>
-#include <assert.h>
-#include <vector>
-#include <queue>
-#include <math.h>
-
-using namespace std;
+//using namespace std;
 // AVL: 二叉搜索树 + 平衡因子的限制
-template<class T>
-class AVLTree
-{
-	typedef AVLTreeNode<T> Node;
-public:
-	AVLTree()
-		: _pRoot(nullptr)
-	{}
-
-	// 在AVL树中插入值为data的节点
-	bool Insert(const T& data)
-	{
-		if (_pRoot == nullptr)
-		{
-			_pRoot = new Node(data);
-			_pRoot->_bf = 0;
-			return true;
-		}
-
-		Node* parent = nullptr;
-		Node* cur = _pRoot;
-
-		while (cur)
-		{
-	
-			if (data > cur->_data)
-			{
-				parent = cur;
-				cur = cur->_pRight;
-			}
-			else if (data < cur->_data)
-			{
-				parent = cur;
-				cur = cur->_pLeft;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		cur = new Node(data);
-
-		if (data > parent->_data)
-		{
-			parent->_pRight = cur;
-		}
-		else
-		{
-			parent->_pLeft = cur;
-		}
-		cur->_pParent = parent;
-
-		//更新  平衡因子
-		while (parent)
-		{
-			if (cur == parent->_pLeft)
-			{
-				parent->_bf--;
-			}
-			else
-			{
-				parent->_bf++;
-			}
-
-			// 检查
-			if (parent->_bf == 0)
-			{
-				break;
-			}
-			else if (parent->_bf == 1 || parent->_bf == -1)
-			{
-				
-				//cout << cur->_data << endl;
-				cur = cur->_pParent;
-				parent = parent->_pParent;
-			}
-			else if (parent->_bf == 2 || parent->_bf == -2)
-			{
-				if (cur->_bf == 1 && parent->_bf == 2) // 左单旋
-				{
-					RotateL(parent);
-				}
-				else if (cur->_bf == -1 && parent->_bf == -2) // 有单旋
-				{
-					RotateR(parent);
-				}
-				else if (cur->_bf == 1 && parent->_bf == -2) // 左右双旋
-				{
-					RotateLR(parent);
-				}
-				else if (cur->_bf == -1 && parent->_bf == 2) // 右左双旋
-				{
-					RotateRL(parent);
-				}
-				else
-				{
-					assert(false);
-				}
-				break;
-			}
-			else
-			{
-				assert(false);
-			}
-		}
-		return true;
-	}
-
-	// AVL树的验证
-	bool IsAVLTree()
-	{
-		return _IsAVLTree(_pRoot);
-	}
-	
-
-	// 中序遍历
-	void Inorder()
-	{
-		_Inorder(_pRoot);
-	}
-
-	// 层序遍历
-	void levelOrder()
-	{
-		_levelOrder(_pRoot);
-	}
-
-private:
-	void _Inorder(Node* root)
-	{
-		if (root == nullptr)
-		{
-			return;
-		}
-		_Inorder(root->_pLeft);
-		cout << root->_data << " ";
-		_Inorder(root->_pRight);
-
-	}
-	void _levelOrder(Node* root)
-	{
-		if (root == nullptr)
-		{
-			return;
-		}
-		queue<Node*> q;
-		q.push(root);
-		int sz = 1;
-		while (sz--)
-		{
-			Node* top = q.front();
-			cout << top->_data << " ";
-			q.pop();
-			if (top->_pLeft)
-				q.push(top->_pLeft);
-			if (top->_pRight)
-				q.push(top->_pRight);
-			if (sz == 0)
-			{
-				sz = q.size();
-				cout << endl;
-			}
-		}
-
-	}
-	// 根据AVL树的概念验证pRoot是否为有效的AVL树
-	bool _IsAVLTree(Node* pRoot)
-	{
-		if (pRoot == nullptr)
-			return true;
-
-		int leftHeight = _Height(pRoot->_pLeft);
-		int rightHeight = _Height(pRoot->_pRight);
-		int df = rightHeight - leftHeight;
-
-		if (df != pRoot->_bf)
-		{
-			cout << pRoot->_data << endl;
-			cout << "不符合" << endl;
-			return false;
-		}
-		if (df > 1 || df < -1)
-		{
-			
-			cout << "异常" << endl;
-			cout << df << endl;
-			cout << pRoot->_data << endl;
-			return false;
-		}
-
-		return _IsAVLTree(pRoot->_pLeft) && _IsAVLTree(pRoot->_pRight);
-	}
-	int _Height(Node* pRoot)
-	{
-		if (pRoot == nullptr)
-			return 0;
-
-		int leftHeight = _Height(pRoot->_pLeft);
-		int rightHeight = _Height(pRoot->_pRight);
-
-		return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
-	}
-	// 右单旋
-	void RotateR(Node* pParent)
-	{
-		Node* subL = pParent->_pLeft;
-		Node* subLR = subL->_pRight;
-		
-		pParent->_pLeft = subLR;
-		if (subLR)
-			subLR->_pParent = pParent;
-		subL->_pRight = pParent;
-		Node* prev = pParent->_pParent;
-		pParent->_pParent = subL;
-
-		if (pParent == _pRoot)
-		{
-			_pRoot = subL;
-			_pRoot->_pParent = nullptr;
-		}
-		else
-		{
-			if (prev->_pLeft == pParent)
-				prev->_pLeft = subL;
-			else
-				prev->_pRight = subL;
-			subL->_pParent = prev;
-		}
-		subL->_bf = 0;
-		pParent->_bf = 0;
-	}
-		
-	// 左单旋
-	void RotateL(Node* pParent)
-	{
-		Node* subR = pParent->_pRight;
-		Node* subRL = subR->_pLeft;
-
-		pParent->_pRight = subRL;
-		if (subRL)
-			subRL->_pParent = pParent;
-
-		// pParent 不一定 是 root
-		Node* prev = pParent->_pParent;
-		subR->_pLeft = pParent;
-		pParent->_pParent = subR;
-
-		if (pParent == _pRoot)
-		{
-			_pRoot = subR;
-			_pRoot->_pParent = nullptr;
-		}
-
-		else
-		{
-			if (prev->_pLeft == pParent)
-				prev->_pLeft = subR;
-			else
-				prev->_pRight = subR;
-
-			subR->_pParent = prev;
-		}
-		subR->_bf = 0;
-		pParent->_bf = 0;
-	}
-
-
-	// 右左双旋
-	void RotateRL(Node* pParent)
-	{
-		//
-		Node* subR = pParent->_pRight;
-		Node* subRL = subR->_pLeft;
-		int cout = subRL->_bf;
-		RotateR(subR);
-		RotateL(pParent);
-
-		if (cout == 0)
-		{
-			pParent->_bf = 0;
-			subR->_bf = 0;
-			subRL->_bf = 0;
-		}
-		else if (cout == 1)
-		{
-			pParent->_bf = -1;
-			subR->_bf = 0;
-			subRL->_bf = 0;
-		}
-		else if (cout == -1)
-		{
-			pParent->_bf = 0;
-			subR->_bf = 1;
-			subRL->_bf = 0;
-		}
-		else
-		{
-			assert(false);
-		}
-	}
-	// 左右双旋
-	void RotateLR(Node* pParent)
-	{
-		Node* subL = pParent->_pLeft;
-		Node* subLR = subL->_pRight;
-		int cout = subLR->_bf;
-		RotateL(subL);
-		RotateR(pParent);
-
-		if (cout == 0)
-		{
-			pParent->_bf = 0;
-			subL->_bf = 0;
-			subLR->_bf = 0;
-		}
-		else if (cout == 1)
-		{
-			pParent->_bf = 0;
-			subL->_bf = -1;
-			subLR->_bf = 0;
-		}
-		else if (cout == -1)
-		{
-			pParent->_bf = 1;
-			subL->_bf = 0;
-			subLR->_bf = 0;
-		}
-		else
-		{
-			assert(false);
-		}
-	}
-
-private:
-	Node* _pRoot;
-};
+//template<class T>
+//class AVLTree
+//{
+//	typedef AVLTreeNode<T> Node;
+//public:
+//	AVLTree()
+//		: _pRoot(nullptr)
+//	{}
+//
+//	// 在AVL树中插入值为data的节点
+//	bool Insert(const T& data)
+//	{
+//		if (_pRoot == nullptr)
+//		{
+//			_pRoot = new Node(data);
+//			_pRoot->_bf = 0;
+//			return true;
+//		}
+//
+//		Node* parent = nullptr;
+//		Node* cur = _pRoot;
+//
+//		while (cur)
+//		{
+//	
+//			if (data > cur->_data)
+//			{
+//				parent = cur;
+//				cur = cur->_pRight;
+//			}
+//			else if (data < cur->_data)
+//			{
+//				parent = cur;
+//				cur = cur->_pLeft;
+//			}
+//			else
+//			{
+//				return false;
+//			}
+//		}
+//		cur = new Node(data);
+//
+//		if (data > parent->_data)
+//		{
+//			parent->_pRight = cur;
+//		}
+//		else
+//		{
+//			parent->_pLeft = cur;
+//		}
+//		cur->_pParent = parent;
+//
+//		//更新  平衡因子
+//		while (parent)
+//		{
+//			if (cur == parent->_pLeft)
+//			{
+//				parent->_bf--;
+//			}
+//			else
+//			{
+//				parent->_bf++;
+//			}
+//
+//			// 检查
+//			if (parent->_bf == 0)
+//			{
+//				break;
+//			}
+//			else if (parent->_bf == 1 || parent->_bf == -1)
+//			{
+//				
+//				//cout << cur->_data << endl;
+//				cur = cur->_pParent;
+//				parent = parent->_pParent;
+//			}
+//			else if (parent->_bf == 2 || parent->_bf == -2)
+//			{
+//				if (cur->_bf == 1 && parent->_bf == 2) // 左单旋
+//				{
+//					RotateL(parent);
+//				}
+//				else if (cur->_bf == -1 && parent->_bf == -2) // 有单旋
+//				{
+//					RotateR(parent);
+//				}
+//				else if (cur->_bf == 1 && parent->_bf == -2) // 左右双旋
+//				{
+//					RotateLR(parent);
+//				}
+//				else if (cur->_bf == -1 && parent->_bf == 2) // 右左双旋
+//				{
+//					RotateRL(parent);
+//				}
+//				else
+//				{
+//					assert(false);
+//				}
+//				break;
+//			}
+//			else
+//			{
+//				assert(false);
+//			}
+//		}
+//		return true;
+//	}
+//
+//	// AVL树的验证
+//	bool IsAVLTree()
+//	{
+//		return _IsAVLTree(_pRoot);
+//	}
+//	
+//
+//	// 中序遍历
+//	void Inorder()
+//	{
+//		_Inorder(_pRoot);
+//	}
+//
+//	// 层序遍历
+//	void levelOrder()
+//	{
+//		_levelOrder(_pRoot);
+//	}
+//
+//private:
+//	void _Inorder(Node* root)
+//	{
+//		if (root == nullptr)
+//		{
+//			return;
+//		}
+//		_Inorder(root->_pLeft);
+//		cout << root->_data << " ";
+//		_Inorder(root->_pRight);
+//
+//	}
+//	void _levelOrder(Node* root)
+//	{
+//		if (root == nullptr)
+//		{
+//			return;
+//		}
+//		queue<Node*> q;
+//		q.push(root);
+//		int sz = 1;
+//		while (sz--)
+//		{
+//			Node* top = q.front();
+//			cout << top->_data << " ";
+//			q.pop();
+//			if (top->_pLeft)
+//				q.push(top->_pLeft);
+//			if (top->_pRight)
+//				q.push(top->_pRight);
+//			if (sz == 0)
+//			{
+//				sz = q.size();
+//				cout << endl;
+//			}
+//		}
+//
+//	}
+//	// 根据AVL树的概念验证pRoot是否为有效的AVL树
+//	bool _IsAVLTree(Node* pRoot)
+//	{
+//		if (pRoot == nullptr)
+//			return true;
+//
+//		int leftHeight = _Height(pRoot->_pLeft);
+//		int rightHeight = _Height(pRoot->_pRight);
+//		int df = rightHeight - leftHeight;
+//
+//		if (df != pRoot->_bf)
+//		{
+//			cout << pRoot->_data << endl;
+//			cout << "不符合" << endl;
+//			return false;
+//		}
+//		if (df > 1 || df < -1)
+//		{
+//			
+//			cout << "异常" << endl;
+//			cout << df << endl;
+//			cout << pRoot->_data << endl;
+//			return false;
+//		}
+//
+//		return _IsAVLTree(pRoot->_pLeft) && _IsAVLTree(pRoot->_pRight);
+//	}
+//	int _Height(Node* pRoot)
+//	{
+//		if (pRoot == nullptr)
+//			return 0;
+//
+//		int leftHeight = _Height(pRoot->_pLeft);
+//		int rightHeight = _Height(pRoot->_pRight);
+//
+//		return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+//	}
+//	// 右单旋
+//	void RotateR(Node* pParent)
+//	{
+//		Node* subL = pParent->_pLeft;
+//		Node* subLR = subL->_pRight;
+//		
+//		pParent->_pLeft = subLR;
+//		if (subLR)
+//			subLR->_pParent = pParent;
+//		subL->_pRight = pParent;
+//		Node* prev = pParent->_pParent;
+//		pParent->_pParent = subL;
+//
+//		if (pParent == _pRoot)
+//		{
+//			_pRoot = subL;
+//			_pRoot->_pParent = nullptr;
+//		}
+//		else
+//		{
+//			if (prev->_pLeft == pParent)
+//				prev->_pLeft = subL;
+//			else
+//				prev->_pRight = subL;
+//			subL->_pParent = prev;
+//		}
+//		subL->_bf = 0;
+//		pParent->_bf = 0;
+//	}
+//		
+//	// 左单旋
+//	void RotateL(Node* pParent)
+//	{
+//		Node* subR = pParent->_pRight;
+//		Node* subRL = subR->_pLeft;
+//
+//		pParent->_pRight = subRL;
+//		if (subRL)
+//			subRL->_pParent = pParent;
+//
+//		// pParent 不一定 是 root
+//		Node* prev = pParent->_pParent;
+//		subR->_pLeft = pParent;
+//		pParent->_pParent = subR;
+//
+//		if (pParent == _pRoot)
+//		{
+//			_pRoot = subR;
+//			_pRoot->_pParent = nullptr;
+//		}
+//
+//		else
+//		{
+//			if (prev->_pLeft == pParent)
+//				prev->_pLeft = subR;
+//			else
+//				prev->_pRight = subR;
+//
+//			subR->_pParent = prev;
+//		}
+//		subR->_bf = 0;
+//		pParent->_bf = 0;
+//	}
+//
+//
+//	// 右左双旋
+//	void RotateRL(Node* pParent)
+//	{
+//		//
+//		Node* subR = pParent->_pRight;
+//		Node* subRL = subR->_pLeft;
+//		int cout = subRL->_bf;
+//		RotateR(subR);
+//		RotateL(pParent);
+//
+//		if (cout == 0)
+//		{
+//			pParent->_bf = 0;
+//			subR->_bf = 0;
+//			subRL->_bf = 0;
+//		}
+//		else if (cout == 1)
+//		{
+//			pParent->_bf = -1;
+//			subR->_bf = 0;
+//			subRL->_bf = 0;
+//		}
+//		else if (cout == -1)
+//		{
+//			pParent->_bf = 0;
+//			subR->_bf = 1;
+//			subRL->_bf = 0;
+//		}
+//		else
+//		{
+//			assert(false);
+//		}
+//	}
+//	// 左右双旋
+//	void RotateLR(Node* pParent)
+//	{
+//		Node* subL = pParent->_pLeft;
+//		Node* subLR = subL->_pRight;
+//		int cout = subLR->_bf;
+//		RotateL(subL);
+//		RotateR(pParent);
+//
+//		if (cout == 0)
+//		{
+//			pParent->_bf = 0;
+//			subL->_bf = 0;
+//			subLR->_bf = 0;
+//		}
+//		else if (cout == 1)
+//		{
+//			pParent->_bf = 0;
+//			subL->_bf = -1;
+//			subLR->_bf = 0;
+//		}
+//		else if (cout == -1)
+//		{
+//			pParent->_bf = 1;
+//			subL->_bf = 0;
+//			subLR->_bf = 0;
+//		}
+//		else
+//		{
+//			assert(false);
+//		}
+//	}
+//
+//private:
+//	Node* _pRoot;
+//};
 
 //#pragma once
 //#include <assert.h>

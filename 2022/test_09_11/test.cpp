@@ -2,8 +2,14 @@
 #include <iostream>
 #include "AVLTree.h"
 using namespace std;
-int main()
-{
-	bit::test1();
-	return 0;
-}
+//int main()
+//{
+//	//bit::test1();
+//	//bit::test2();
+//	//bit::test3();
+//	cout << "ÓĞĞò" << endl;
+//	bit::test4();
+//	cout << "ÎŞĞò" << endl;
+//	bit::test5();
+//	return 0;
+//}

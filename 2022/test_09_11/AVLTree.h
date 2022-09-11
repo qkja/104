@@ -158,7 +158,47 @@ namespace bit
 		{
 			_inorder(_pRoot);
 		}
+
+		// 判断 平衡 二叉树
+		bool isBalanceTree()
+		{
+			return _IsBalanceTree(_pRoot);
+		}
 	private:
+		int _height(Node* root)
+		{
+			if (root == nullptr)
+				return 0;
+
+			int lh = _height(root->_left);
+			int rh = _height(root->_right);
+
+			return lh > rh ? lh + 1 : rh + 1;
+		}
+		bool _IsBalanceTree(Node* root)
+		{
+			// 空树也是平衡二叉树
+			if (root == nullptr)
+				return true;
+
+			// 记录 左右节点的高度
+			int left = _height(root->_left);
+			int right = _height(root->_right);
+			int diff = left - right;
+			// 判断 平衡因子
+			if (abs(diff) >= 2)
+			{
+				cout << "平衡因子更新错误" << endl;
+				return false;
+			}
+			if (right - left != root->_bf)
+			{
+				cout << "节点平衡因子不符合实际" << endl;
+				return false;
+			}
+			return _IsBalanceTree(root->_left) && _IsBalanceTree(root->_right);
+			
+		}
 		void _inorder(Node* root)
 		{
 			if (root == nullptr)
@@ -203,6 +243,28 @@ namespace bit
 			RotateL(parent);
 
 			// 修改平衡因子
+			if (bf == 0)
+			{
+				subR->_bf = 0;
+				parent->_bf = 0;
+				subRL->_bf = 0;
+			}
+			else if(bf == 1)
+			{
+				subR->_bf = 0;
+				parent->_bf = -1;
+				subRL->_bf = 0;
+			}
+			else if (bf == -1)
+			{
+				subR->_bf = 1;
+				parent->_bf = 0;
+				subRL->_bf = 0;
+			}
+			else
+			{
+				assert(false);
+			}
 
 		}
 		void RotateLR(Node* parent)
@@ -322,5 +384,55 @@ namespace bit
 		a.levelOrder();
 		cout << "中序遍历" << endl;
 		a.inorder();
+	}
+
+	void test2()
+	{
+		int arr[] = { 1,4,3,7,5,8,1,10 };
+		int sz = sizeof(arr) / sizeof(arr[0]);
+		AVLTree<int, int> a;
+		for (int i = 0; i < sz; i++)
+		{
+			a.Insert(arr[i]);
+		}
+		cout << "层序遍历" << endl;
+		a.levelOrder();
+		cout << "中序遍历" << endl;
+		a.inorder();
+	}
+
+	void test3()
+	{
+		int arr[] = { 1,4,3,7,5,8,1,10 };
+		int sz = sizeof(arr) / sizeof(arr[0]);
+		AVLTree<int, int> a;
+		for (int i = 0; i < sz; i++)
+		{
+			a.Insert(arr[i]);
+		}
+		cout << "是否平衡" << a.isBalanceTree() << endl;
+	}
+
+	void test4()
+	{
+		int N = 1024;
+		AVLTree<int, int> a;
+		for (int i = 0; i < N; i++)
+		{
+			a.Insert(i);
+		}
+		cout << "是否平衡" << a.isBalanceTree() << endl;
+	}
+
+	void test5()
+	{
+		int N = 1024*1024;
+		AVLTree<int, int> a;
+		srand(time(0));
+		for (int i = 0; i < N; i++)
+		{
+			a.Insert(rand());
+		}
+		cout << "是否平衡" << a.isBalanceTree() << endl;
 	}
 }

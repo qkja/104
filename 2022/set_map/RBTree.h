@@ -1,11 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #pragma once
-#include <iostream>
-#include <queue>
-using std::pair;
-using std::cout;
-using std::endl;
-using std::queue;
+
 namespace bit
 {
 	enum Colour
@@ -13,52 +8,244 @@ namespace bit
 		RED,
 		BLACK
 	};
-	template<class K,class V>
+	template<class T>
 	struct RBTreeNode
 	{
-		RBTreeNode(const pair<K,V>& kv)
+		RBTreeNode(const T& data)
 			:_left(nullptr)
 			,_right(nullptr)
 			,_parent(nullptr)
-			,_kv(kv)
+			,_data(data)
 			,_col(RED)
 		{}
 
-		RBTreeNode<K, V>* _left;
-		RBTreeNode<K, V>* _right;
-		RBTreeNode<K, V>* _parent;
-		pair<K, V> _kv;
+		RBTreeNode<T>* _left;
+		RBTreeNode<T>* _right;
+		RBTreeNode<T>* _parent;
+		T _data;
 		Colour _col;
 	};
 
-	template<class K, class V>
+
+	template<class T,class Ref,class Ptr>
+	struct __RBTreeIterator
+	{
+		typedef RBTreeNode<T> Node;
+		typedef  __RBTreeIterator<T, Ref, Ptr> Self;
+		Node* _node;
+		__RBTreeIterator(Node* node)
+			:_node(node)
+		{}
+		__RBTreeIterator(const Self& self)
+		{
+			_node = self._node;
+		}
+		Ref operator*()
+		{
+			return _node->_data;
+		}
+		Ptr operator->()
+		{
+			return &_node->_data;
+		}
+
+		Self operator++()
+		{
+			// 右 为空 找孩子事父亲得左
+			if (_node->_right == nullptr)
+			{
+				// 
+				Node* child = _node;
+				Node* parent = child->_parent;
+				while (parent && parent->_left != child)
+				{
+					child = parent;
+					parent = child->_parent;
+				}
+				_node = parent;
+			}
+			else
+			{
+				//右子树 最左
+				Node* subLeft = _node->_right;
+				while (subLeft->_left)
+				{
+					subLeft = subLeft->_left;
+				}
+				_node = subLeft;
+			}
+			// 右 不为空
+			return *this;
+		}
+		Self operator++(int)
+		{
+			Self ret(*this);
+			++(*this);
+			return ret;
+		}
+
+		Self operator--()
+		{
+			// 问题  尾节点
+			//if (_node == nullptr)
+			//{
+			//	// 找最右
+			//	//Node* subRight = ;
+			//}
+			
+			// 左为空 找 找 最右
+			if (_node->_left == nullptr)
+			{
+				Node* child = _node;
+				Node* parent = child->_parent;
+				while (parent && parent->_right != child)
+				{
+					child = parent;
+					parent = child->_parent;
+				}
+				_node = parent;
+			}
+			else
+			{
+				Node* subRight = _node->_left;
+				while (subRight->_right)
+				{
+					subRight = subRight->_right;
+				}
+				_node = subRight;
+			}
+			return *this;
+		}
+		Self operator--(int)
+		{
+			Self ret(*this);
+			--(*this);
+			return ret;
+		}
+
+		bool operator==(const Self& s)
+		{
+			return _node == s._node;
+		}
+
+		bool operator!=(const Self& s)
+		{
+			return _node != s._node;
+		}
+	};
+	// 对于 set 就是 <K, K>
+	// 对于 map 就是 <K, pair<K, V>>
+	template<class K, class T, class KeyOfT>
 	class RBTree
 	{
+		typedef RBTreeNode<T> Node;
 	public:
+		// 迭代器的实现
+		typedef __RBTreeIterator<T, T&, T*> iterator;
+		typedef __RBTreeIterator<T, const T&, const T*> const_iterator;
 
-		typedef RBTreeNode<K, V> Node;
-		bool Insert(const pair<K, V>& data)
+
+		const_iterator Begin() const
+		{
+			// 最左
+			Node* subLeft = _pRoot;
+			while (subLeft && subLeft->_left != nullptr)
+			{
+				subLeft = subLeft->_left;
+			}
+			return const_iterator(subLeft);
+		}
+		const_iterator End() const
+		{
+			return const_iterator(nullptr);
+		}
+
+		iterator Begin()
+		{
+			// 最左
+			Node* subLeft = _pRoot;
+			while (subLeft && subLeft->_left != nullptr)
+			{
+				subLeft = subLeft->_left;
+			}
+			return iterator(subLeft);
+		}
+		iterator End()
+		{
+			return iterator(nullptr);
+		}
+
+	public:
+		const_iterator Find(const K& key) const
+		{
+			Node* cur = _pRoot;
+			KeyOfT keyOfT;
+			while (cur)
+			{
+				if (key > keyOfT(cur->_data))
+				{
+					cur = cur->_right;
+				}
+				else if (key < keyOfT(cur->_data))
+				{
+					cur = cur->_left;
+				}
+				else
+				{
+					return const_iterator(cur);
+				}
+			}
+			return const_iterator(nullptr);
+		}
+		iterator Find(const K& key)
+		{
+			Node* cur = _pRoot;
+			KeyOfT keyOfT;
+			while (cur)
+			{
+				if (key > keyOfT(cur->_data))
+				{
+					cur = cur->_right;
+				}
+				else if (key < keyOfT(cur->_data))
+				{
+					cur = cur->_left;
+				}
+				else
+				{
+					return iterator(cur);
+				}
+			}
+			return iterator(nullptr);
+		}
+	
+		pair<iterator,bool> Insert(const T& data)
 		{
 			// 第一步 判断 第一次 插入
 			if (_pRoot == nullptr)
 			{
 				_pRoot = new Node(data);
 				_pRoot->_col = BLACK;
-				return true;
+				return make_pair(iterator(_pRoot), true);
 			}
+
+			// 得到 key
+			KeyOfT keyOfT;
 
 			// 第二步 搜索二叉树 找位置
 			Node* cur = _pRoot;
 			Node* parent = nullptr;
 			while (cur != nullptr)
 			{
-				if (cur->_kv.first < data.first)
+				/*int ret1 = keyOfT(cur->_data);
+				int ret2 = keyOfT(data);*/
+				if (keyOfT(cur->_data) < keyOfT(data))
 				{
 					// 去 右树 查找
 					parent = cur;
 					cur = cur->_right;
 				}
-				else if (cur->_kv.first > data.first)
+				else if (keyOfT(cur->_data) > keyOfT(data))
 				{
 					// 左树 查找
 					parent = cur;
@@ -67,7 +254,7 @@ namespace bit
 				else
 				{
 					// 我们这里不接受 重复值 ,你可以自己实现
-					return false;
+					return make_pair(iterator(cur), false);
 				}
 			}
 
@@ -76,7 +263,7 @@ namespace bit
 			node->_col = RED;           // 记住 不要相信构造函数,有可能不是你写的,不会自动默认0
 
 			// 插入元素
-			if (data.first > parent->_kv.first)
+			if (keyOfT(data) > keyOfT(parent->_data))
 			{
 				parent->_right = node;
 			}
@@ -84,11 +271,12 @@ namespace bit
 			{
 				parent->_left = node;
 			}
+
 			node->_parent = parent;
 			cur = node;
 			if (parent->_col == BLACK)
 			{
-				return true;
+				return make_pair(iterator(node), true);
 			}
 
 			// 父节点 是 红色
@@ -178,135 +366,10 @@ namespace bit
 			}
 
 			_pRoot->_col = BLACK;
-			return true;
-		}
+			return make_pair(iterator(node), true);
 
-		void inorder()
-		{
-			_inorder(_pRoot);
 		}
-		void levelOrder()
-		{
-			_levelOrder();
-		}
-		int maxHeight()
-		{
-			return _maxHeight(_pRoot);
-		}
-		int minHeight()
-		{
-			return _minHeight(_pRoot);
-		}
-
-		bool IsValidRBTree()
-		{
-			Node* pRoot = _pRoot;
-			// 空树也是红黑树
-			if (nullptr == pRoot)
-				return true;
-			// 检测根节点是否满足情况
-			if (BLACK != pRoot->_col)
-			{
-				cout << "违反红黑树性质二：根节点必须为黑色" << endl;
-				return false;
-			}
-
-			// 获取任意一条路径中黑色节点的个数
-			size_t blackCount = 0;
-			Node* pCur = pRoot;
-			while (pCur)
-			{
-				if (BLACK == pCur->_col)
-					blackCount++;
-				pCur = pCur->_left;
-			}
-			// 检测是否满足红黑树的性质，k用来记录路径中黑色节点的个数
-			size_t k = 0;
-			return _IsValidRBTree(pRoot, k, blackCount);
-		}
-
-
 	private:
-
-
-		bool _IsValidRBTree(Node* pRoot, size_t k, const size_t blackCount)
-		{
-			//走到null之后，判断k和black是否相等
-			if (nullptr == pRoot)
-			{
-				if (k != blackCount)
-				{
-					cout << "违反性质四：每条路径中黑色节点的个数必须相同" << endl;
-					return false;
-				}
-				return true;
-			}
-			// 统计黑色节点的个数
-			if (BLACK == pRoot->_col)
-				k++;
-			// 检测当前节点与其双亲是否都为红色 遇到 红色节点 检查 父亲
-			Node* pParent = pRoot->_parent;
-			if (pParent && RED == pParent->_col && RED == pRoot->_col)
-			{
-				cout << "违反性质三：没有连在一起的红色节点" << endl;
-				return false;
-			}
-			return _IsValidRBTree(pRoot->_left, k, blackCount) &&
-				_IsValidRBTree(pRoot->_right, k, blackCount);
-		}
-
-
-		int _maxHeight(Node* root)
-		{
-			if (root == nullptr)
-				return 0;
-			int left = _maxHeight(root->_left);
-			int right = _maxHeight(root->_right);
-			return left > right ?  left + 1 : right + 1;
-		}
-		int _minHeight(Node* root)
-		{
-			if (root == nullptr)
-				return 0;
-			int left = _minHeight(root->_left);
-			int right = _minHeight(root->_right);
-			return left < right ?  left + 1 : right + 1;
-		}
-		void _levelOrder()
-		{
-			if (_pRoot == nullptr)
-				return;
-
-			// 层序遍历
-			//queue<int*> q;
-			queue<Node*> q;
-			q.push(_pRoot);
-			int size = 1;
-			while (size != 0)
-			{
-				Node* top = q.front();
-				if (top->_left)
-					q.push(top->_left);
-				if (top->_right)
-					q.push(top->_right);
-				q.pop();
-				--size;
-				cout << top->_kv.first << " ";
-				if (size == 0)
-				{
-					cout << endl;
-					size = q.size();
-				}
-			}
-		}
-		void _inorder(Node* root)
-		{
-			if (root == nullptr)
-				return;
-			_inorder(root->_left);
-			cout << root->_kv.first << " ";
-			_inorder(root->_right);
-		}
 		// 旋转
 		void RotateL(Node* parent)
 		{

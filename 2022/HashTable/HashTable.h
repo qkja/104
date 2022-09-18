@@ -3,238 +3,339 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
-namespace bit
+//开散列  哈希桶
+namespace Bucket
 {
-	// 模板  得到 key
-	template<class T>
-	struct Hash
+	template<class K, class V>
+	struct HashNode
 	{
-		size_t operator()(const T& data)
-		{
-			return data;
-		}
-	};
-	//template<>
-	//struct Hash<string>
-	//{
-	//	size_t operator()(const string& data)
-	//	{
-	//		// 一种方法
-	//		return data[0];
-	//	}
-	//};
-	// 上面的方法 是不对的  相同的第一个字符 就会冲突
-
-	//template<>
-	//struct Hash<string>
-	//{
-	//	size_t operator()(const string& data)
-	//	{
-	//		// 这里还存在一个方法 把所有  字符 给加起来  ab 和  ba 冲突
-	//		size_t hash = 0;
-	//		for (int ch : data)
-	//		{
-	//			hash += ch;
-	//		}
-	//		return hash;
-	//	}
-	//};
-	template<>
-	struct Hash<string>
-	{
-		size_t operator()(const string& data)
-		{
-			// y有人 做了 一个测试   冲突不可避免 上一个  hash 131  ...
-			size_t hash = 0;
-			for (int ch : data)
-			{
-				hash = hash * 131 + ch;
-			}
-			return hash;
-		}
-	};
-
-	enum State
-	{
-		EMPTY,
-		EXITS,
-		DELETE
-	};
-	template <class K, class V>
-	struct HashData
-	{
-		HashData()
-			:_state(EMPTY)
+		HashNode(const pair<K, V>& kv)
+			:_kv(kv)
+			,_next(nullptr)
 		{}
+		HashNode<K, V>* _next;
 		pair<K, V> _kv;
-		State _state;
 	};
 
-	template <class K, class V, class HashFunc = Hash<K>>
+	template<class K,class V>
 	class HashTable
 	{
-		typedef HashData<K, V> HashNode;
+		typedef HashNode<K, V> Node;
 	public:
-		// 析构函数  要不要 写
-		bool Insert(const pair<K, V>& kv)
+		bool insert(const pair<K, V>& kv)
 		{
-			// 去重
-			if (Find(kv.first) != nullptr)
+			if (find(kv.first))
 			{
 				return false;
 			}
-			// 扩容  负载因子
-			if (_tables.size() == 0 || 10 * _n / _tables.size() >= 7)
+			//扩用 负载因子 以
+			if (_n == _tables.size())
 			{
-				size_t newSize = _tables.size() == 0 ? 10 : 2 * _tables.size();
-				HashTable<K, V, HashFunc> newHT;
+				size_t newSize = _tables.size() == 0? 10 : 2 * _tables.size();
+
+				HashTable<K, V> newHT;
 				newHT._tables.resize(newSize);
-				for (auto& e : _tables)
+				for (Node*& e : _tables)
 				{
-					if (e._state == EXITS)
+					Node* cur = e;
+					while (cur)
 					{
-						newHT.Insert(e._kv);
+						newHT.insert(cur->_kv);
+						cur = cur->_next;
 					}
 				}
+
 				newHT._tables.swap(_tables);
 			}
+			//算位置
+			size_t hashi = kv.first;
+			hashi %= _tables.size();
 
-			// 线性探测
-			HashFunc hf;
-			size_t starti = hf(kv.first);
-			starti = starti % _tables.size();
-			size_t hashi = starti;
-			int i = 0;
-			while (_tables[hashi]._state == EXITS)
-			{
-				hashi = starti + i;
-				i++;
-				hashi %= _tables.size();
-			}
-			_tables[hashi]._kv = kv;
-			_tables[hashi]._state = EXITS;
+			Node* node = new Node(kv);
+			
+			//头插
+			Node* prev = _tables[hashi];
+			_tables[hashi] = node;
+			node->_next = prev;
 			_n++;
 			return true;
 		}
-		HashNode* Find(const K& key)
+
+		Node* find(const K& key)
 		{
 			if (_n == 0)
-			{
 				return nullptr;
-			}
-			HashFunc hf;
-			// 这一步 还是 比较 重要的
-			size_t starti = hf(key);
-			starti = starti % _tables.size();
-			size_t hashi = starti;
-			int i = 1;
-			while (_tables[hashi]._state != EMPTY)
+			size_t hashi = key;
+			hashi %= _tables.size();
+			Node* cur = _tables[hashi];
+			while (cur)
 			{
-				if (_tables[hashi]._state == EXITS
-					&& _tables[hashi]._kv.first == key)
+				if (cur->_kv.first == key)
 				{
-					--_n;
-					return &_tables[hashi];
+					return cur;
 				}
-				hashi = starti + i;
-				i++;
-				hashi %= _tables.size();
+				cur = cur->_next;
 			}
 			return nullptr;
 		}
 
-		bool Erase(const K& key)
-		{
-			HashNode* ret = Find(key);
-			if (ret != nullptr)
-				ret->_state = DELETE;
-			return true;
-		}
-
 	private:
-		vector<HashNode> _tables;
-		int _n = 0;
+		vector<Node*> _tables;
+		size_t _n = 0;
 	};
-	void test_hash5()
-	{
-		string str[] = { "aaaa","abbb","ccccc","accc" };
 
-		HashTable<string, int> hs;  // 模板的特化
-		for (const string& e : str)
+	void test1()
+	{
+		HashTable<int, int> hs;
+		hs.insert(make_pair(0, 0));
+		hs.insert(make_pair(1, 1));
+		hs.insert(make_pair(2, 2));
+		hs.insert(make_pair(3, 3));
+		hs.insert(make_pair(4, 4));
+		hs.insert(make_pair(10, 10));
+
+		if (hs.find(1))
 		{
-			hs.Insert(make_pair(e, 0));
+			cout << "找到了" << endl;
 		}
-		cout << endl;
-		HashTable<string, int> hs2(hs);  // 模板的特化
-		cout << endl;
+		else
+		{
+			cout << "没有找到" << endl;
+		}
 	}
-	/*void test_hash5()
-	{
-		string str[] = { "aaaa","abbb","ccccc","accc" };
-		cout << Hash<string>()(str[0]) << endl;
-		cout << Hash<string>()(str[1]) << endl;
-		cout << Hash<string>()(str[2]) << endl;
-		cout << endl;
-	}*/
-
-	/*void test_hash4()
-	{
-		string str[] = { "aaaa","abbb","ccccc","accc" };
-
-		HashTable<string, int, Hash<string>> hs;
-		for (const string& e : str)
-		{
-			hs.Insert(make_pair(e, 0));
-		}
-		cout << endl;
-	}*/
-
-	/*void test_hash3()
-	{
-		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
-		HashTable<int, int, Hash<int>> hs;
-		for (int val : arr)
-		{
-			hs.Insert(make_pair(val, val));
-		}
-		hs.Insert(make_pair(20, 20));
-		hs.Erase(20);
-		if (hs.Find(50))
-		{
-			cout << "找到了" << endl;
-		}
-	}*/
-
-	/*void test_hash1()
-	{
-		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
-		HashTable<int, int> hs;
-		for (int val : arr)
-		{
-			hs.Insert(make_pair(val, val));
-		}
-		hs.Insert(make_pair(20, 20));
-		hs.Erase(20);
-		if (hs.Find(50))
-		{
-			cout << "找到了" << endl;
-		}
-	}*/
-
-	/*void test_hash2()
-	{
-		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
-		HashTable<int, int> hs;
-		for (int val : arr)
-		{
-			hs.Insert(make_pair(val, val));
-		}
-		hs.Insert(make_pair(20, 20));
-		hs.Erase(20);
-		if (hs.Find(50))
-		{
-			cout << "找到了" << endl;
-		}
-	}*/
 }
+
+//namespace bit
+//{
+//	// 模板  得到 key
+//	template<class T>
+//	struct Hash
+//	{
+//		size_t operator()(const T& data)
+//		{
+//			return data;
+//		}
+//	};
+//	//template<>
+//	//struct Hash<string>
+//	//{
+//	//	size_t operator()(const string& data)
+//	//	{
+//	//		// 一种方法
+//	//		return data[0];
+//	//	}
+//	//};
+//	// 上面的方法 是不对的  相同的第一个字符 就会冲突
+//
+//	//template<>
+//	//struct Hash<string>
+//	//{
+//	//	size_t operator()(const string& data)
+//	//	{
+//	//		// 这里还存在一个方法 把所有  字符 给加起来  ab 和  ba 冲突
+//	//		size_t hash = 0;
+//	//		for (int ch : data)
+//	//		{
+//	//			hash += ch;
+//	//		}
+//	//		return hash;
+//	//	}
+//	//};
+//	template<>
+//	struct Hash<string>
+//	{
+//		size_t operator()(const string& data)
+//		{
+//			// y有人 做了 一个测试   冲突不可避免 上一个  hash 131  ...
+//			size_t hash = 0;
+//			for (int ch : data)
+//			{
+//				hash = hash * 131 + ch;
+//			}
+//			return hash;
+//		}
+//	};
+//
+//	enum State
+//	{
+//		EMPTY,
+//		EXITS,
+//		DELETE
+//	};
+//	template <class K, class V>
+//	struct HashData
+//	{
+//		HashData()
+//			:_state(EMPTY)
+//		{}
+//		pair<K, V> _kv;
+//		State _state;
+//	};
+//
+//	template <class K, class V, class HashFunc = Hash<K>>
+//	class HashTable
+//	{
+//		typedef HashData<K, V> HashNode;
+//	public:
+//		// 析构函数  要不要 写
+//		bool Insert(const pair<K, V>& kv)
+//		{
+//			// 去重
+//			if (Find(kv.first) != nullptr)
+//			{
+//				return false;
+//			}
+//			// 扩容  负载因子
+//			if (_tables.size() == 0 || 10 * _n / _tables.size() >= 7)
+//			{
+//				size_t newSize = _tables.size() == 0 ? 10 : 2 * _tables.size();
+//				HashTable<K, V, HashFunc> newHT;
+//				newHT._tables.resize(newSize);
+//				for (auto& e : _tables)
+//				{
+//					if (e._state == EXITS)
+//					{
+//						newHT.Insert(e._kv);
+//					}
+//				}
+//				newHT._tables.swap(_tables);
+//			}
+//
+//			// 线性探测
+//			HashFunc hf;
+//			size_t starti = hf(kv.first);
+//			starti = starti % _tables.size();
+//			size_t hashi = starti;
+//			int i = 0;
+//			while (_tables[hashi]._state == EXITS)
+//			{
+//				hashi = starti + i;
+//				i++;
+//				hashi %= _tables.size();
+//			}
+//			_tables[hashi]._kv = kv;
+//			_tables[hashi]._state = EXITS;
+//			_n++;
+//			return true;
+//		}
+//		HashNode* Find(const K& key)
+//		{
+//			if (_n == 0)
+//			{
+//				return nullptr;
+//			}
+//			HashFunc hf;
+//			// 这一步 还是 比较 重要的
+//			size_t starti = hf(key);
+//			starti = starti % _tables.size();
+//			size_t hashi = starti;
+//			int i = 1;
+//			while (_tables[hashi]._state != EMPTY)
+//			{
+//				if (_tables[hashi]._state == EXITS
+//					&& _tables[hashi]._kv.first == key)
+//				{
+//					--_n;
+//					return &_tables[hashi];
+//				}
+//				hashi = starti + i;
+//				i++;
+//				hashi %= _tables.size();
+//			}
+//			return nullptr;
+//		}
+//
+//		bool Erase(const K& key)
+//		{
+//			HashNode* ret = Find(key);
+//			if (ret != nullptr)
+//				ret->_state = DELETE;
+//			return true;
+//		}
+//
+//	private:
+//		vector<HashNode> _tables;
+//		int _n = 0;
+//	};
+//	void test_hash5()
+//	{
+//		string str[] = { "aaaa","abbb","ccccc","accc" };
+//
+//		HashTable<string, int> hs;  // 模板的特化
+//		for (const string& e : str)
+//		{
+//			hs.Insert(make_pair(e, 0));
+//		}
+//		cout << endl;
+//		HashTable<string, int> hs2(hs);  // 模板的特化
+//		cout << endl;
+//	}
+//	/*void test_hash5()
+//	{
+//		string str[] = { "aaaa","abbb","ccccc","accc" };
+//		cout << Hash<string>()(str[0]) << endl;
+//		cout << Hash<string>()(str[1]) << endl;
+//		cout << Hash<string>()(str[2]) << endl;
+//		cout << endl;
+//	}*/
+//
+//	/*void test_hash4()
+//	{
+//		string str[] = { "aaaa","abbb","ccccc","accc" };
+//
+//		HashTable<string, int, Hash<string>> hs;
+//		for (const string& e : str)
+//		{
+//			hs.Insert(make_pair(e, 0));
+//		}
+//		cout << endl;
+//	}*/
+//
+//	/*void test_hash3()
+//	{
+//		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
+//		HashTable<int, int, Hash<int>> hs;
+//		for (int val : arr)
+//		{
+//			hs.Insert(make_pair(val, val));
+//		}
+//		hs.Insert(make_pair(20, 20));
+//		hs.Erase(20);
+//		if (hs.Find(50))
+//		{
+//			cout << "找到了" << endl;
+//		}
+//	}*/
+//
+//	/*void test_hash1()
+//	{
+//		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
+//		HashTable<int, int> hs;
+//		for (int val : arr)
+//		{
+//			hs.Insert(make_pair(val, val));
+//		}
+//		hs.Insert(make_pair(20, 20));
+//		hs.Erase(20);
+//		if (hs.Find(50))
+//		{
+//			cout << "找到了" << endl;
+//		}
+//	}*/
+//
+//	/*void test_hash2()
+//	{
+//		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
+//		HashTable<int, int> hs;
+//		for (int val : arr)
+//		{
+//			hs.Insert(make_pair(val, val));
+//		}
+//		hs.Insert(make_pair(20, 20));
+//		hs.Erase(20);
+//		if (hs.Find(50))
+//		{
+//			cout << "找到了" << endl;
+//		}
+//	}*/
+//}

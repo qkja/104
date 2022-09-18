@@ -6,6 +6,55 @@ using namespace std;
 
 namespace bit
 {
+	// 模板  得到 key
+	template<class T>
+	struct Hash
+	{
+		size_t operator()(const T& data)
+		{
+			return data;
+		}
+	};
+	//template<>
+	//struct Hash<string>
+	//{
+	//	size_t operator()(const string& data)
+	//	{
+	//		// 一种方法
+	//		return data[0];
+	//	}
+	//};
+	// 上面的方法 是不对的  相同的第一个字符 就会冲突
+
+	//template<>
+	//struct Hash<string>
+	//{
+	//	size_t operator()(const string& data)
+	//	{
+	//		// 这里还存在一个方法 把所有  字符 给加起来  ab 和  ba 冲突
+	//		size_t hash = 0;
+	//		for (int ch : data)
+	//		{
+	//			hash += ch;
+	//		}
+	//		return hash;
+	//	}
+	//};
+	template<>
+	struct Hash<string>
+	{
+		size_t operator()(const string& data)
+		{
+			// y有人 做了 一个测试   冲突不可避免 上一个  hash 131  ...
+			size_t hash = 0;
+			for (int ch : data)
+			{
+				hash = hash * 131 + ch;
+			}
+			return hash;
+		}
+	};
+
 	enum State
 	{
 		EMPTY,
@@ -22,7 +71,7 @@ namespace bit
 		State _state;
 	};
 
-	template <class K, class V>
+	template <class K, class V, class HashFunc = Hash<K>>
 	class HashTable
 	{
 		typedef HashData<K, V> HashNode;
@@ -39,7 +88,7 @@ namespace bit
 			if (_tables.size() == 0 || 10 * _n / _tables.size() >= 7)
 			{
 				size_t newSize = _tables.size() == 0 ? 10 : 2 * _tables.size();
-				HashTable<K, V> newHT;
+				HashTable<K, V, HashFunc> newHT;
 				newHT._tables.resize(newSize);
 				for (auto& e : _tables)
 				{
@@ -52,7 +101,8 @@ namespace bit
 			}
 
 			// 线性探测
-			size_t starti = kv.first;
+			HashFunc hf;
+			size_t starti = hf(kv.first);
 			starti = starti % _tables.size();
 			size_t hashi = starti;
 			int i = 0;
@@ -73,7 +123,9 @@ namespace bit
 			{
 				return nullptr;
 			}
-			size_t starti = key;
+			HashFunc hf;
+			// 这一步 还是 比较 重要的
+			size_t starti = hf(key);
 			starti = starti % _tables.size();
 			size_t hashi = starti;
 			int i = 1;
@@ -104,6 +156,55 @@ namespace bit
 		vector<HashNode> _tables;
 		int _n = 0;
 	};
+	void test_hash5()
+	{
+		string str[] = { "aaaa","abbb","ccccc","accc" };
+
+		HashTable<string, int> hs;  // 模板的特化
+		for (const string& e : str)
+		{
+			hs.Insert(make_pair(e, 0));
+		}
+		cout << endl;
+		HashTable<string, int> hs2(hs);  // 模板的特化
+		cout << endl;
+	}
+	/*void test_hash5()
+	{
+		string str[] = { "aaaa","abbb","ccccc","accc" };
+		cout << Hash<string>()(str[0]) << endl;
+		cout << Hash<string>()(str[1]) << endl;
+		cout << Hash<string>()(str[2]) << endl;
+		cout << endl;
+	}*/
+
+	/*void test_hash4()
+	{
+		string str[] = { "aaaa","abbb","ccccc","accc" };
+
+		HashTable<string, int, Hash<string>> hs;
+		for (const string& e : str)
+		{
+			hs.Insert(make_pair(e, 0));
+		}
+		cout << endl;
+	}*/
+
+	/*void test_hash3()
+	{
+		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
+		HashTable<int, int, Hash<int>> hs;
+		for (int val : arr)
+		{
+			hs.Insert(make_pair(val, val));
+		}
+		hs.Insert(make_pair(20, 20));
+		hs.Erase(20);
+		if (hs.Find(50))
+		{
+			cout << "找到了" << endl;
+		}
+	}*/
 
 	/*void test_hash1()
 	{
@@ -121,7 +222,7 @@ namespace bit
 		}
 	}*/
 
-	void test_hash2()
+	/*void test_hash2()
 	{
 		int arr[] = { 20, 5, 8, 99999, 10, 30, 50 };
 		HashTable<int, int> hs;
@@ -135,5 +236,5 @@ namespace bit
 		{
 			cout << "找到了" << endl;
 		}
-	}
+	}*/
 }

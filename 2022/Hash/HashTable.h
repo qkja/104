@@ -266,4 +266,3 @@ namespace bit
 		size_t _n = 0;
 	};
 }
-

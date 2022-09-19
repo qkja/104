@@ -6,7 +6,8 @@ using namespace std;
 
 int main()
 {
-	Bucket::test1();
+	Bucket::test2();
+	//Bucket::test1();
 	return 0;
 }
 //struct MyStruct

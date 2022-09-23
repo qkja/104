@@ -13,6 +13,17 @@ namespace OpenHash
 			}
 		};
 	public:
+		// µü´úÆ÷
+		typedef typename HashBucket<K, K, SetKeyOfT>::iterator iterator;
+		iterator begin()
+		{
+			return _set.begin();
+		}
+		iterator end()
+		{
+			return _set.end();
+		}
+	public:
 		bool insert(const K& data)
 		{
 			return _set.Insert(data);

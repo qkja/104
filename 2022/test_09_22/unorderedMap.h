@@ -12,7 +12,17 @@ namespace OpenHash
 				return data.first;
 			}
 		};
-
+	public:
+		// µü´úÆ÷
+		typedef typename HashBucket<K, pair<K, V>, MapKeyOfT>::iterator iterator;
+		iterator begin()
+		{
+			return _map.begin();
+		}
+		iterator end()
+		{
+			return _map.end();
+		}
 	public:
 		bool insert(const pair<K, V>& data)
 		{
@@ -37,6 +47,17 @@ namespace OpenHash
 		m.insert(make_pair(2, 2));
 		m.insert(make_pair(3, 3));
 		m.insert(make_pair(3, 3));
+		auto it = m.begin();
+		while (it != m.end())
+		{
+			cout << it->first << " " << it->second << endl;
+			++it;
+		}
+		/*for (auto e : m)
+		{
+			cout << e.first << " " << e.second << endl;
+		}*/
+
 		m.erase(3);
 		m.erase(1);
 	}

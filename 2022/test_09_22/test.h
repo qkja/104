@@ -4,8 +4,19 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
 namespace OpenHash
 {
+	template<class T>
+	struct HashBucketNode
+	{
+		HashBucketNode(const T& data)
+			:_pNext(nullptr)
+			, _data(data)
+		{}
+		HashBucketNode<T>* _pNext;
+		T _data;
+	};
 	// 这是哈希函数
 	template<class K>
 	class HashFunc
@@ -16,42 +27,135 @@ namespace OpenHash
 			return val;
 		}
 	};
-	//template<>
-	//class HashFunc<string>
-	//{
-	//public:
-	//	size_t operator()(const string& s)
-	//	{
-	//		const char* str = s.c_str();
-	//		unsigned int seed = 131; // 31 131 1313 13131 131313
-	//		unsigned int hash = 0;
-	//		while (*str)
-	//		{
-	//			hash = hash * seed + (*str++);
-	//		}
-
-	//		return hash;
-	//	}
-	//};
-	template<class T>
-	struct HashBucketNode
+	template<>
+	class HashFunc<string>
 	{
-		HashBucketNode(const T& data)
-			:_pNext(nullptr)
-			,_data(data)
-		{}
-		HashBucketNode<T>* _pNext;
-		T _data;
-	};
-	//// 先暂时 放这
-	//class KeyOfT
-	//{
-	//public:
-	//	size_t operator()(const string& s)
-	//	{
+	public:
+		size_t operator()(const string& s)
+		{
+			const char* str = s.c_str();
+			unsigned int seed = 131; // 31 131 1313 13131 131313
+			unsigned int hash = 0;
+			while (*str)
+			{
+				hash = hash * seed + (*str++);
+			}
 
-	//	}
-	//};
+			return hash;
+		}
+	};
+
+	// 声明一下
+	template<class K, class T, class KeyOfT, class HF>
+	class HashBucket;
+	// 实现 哈希表的迭代器
+	template<class K, class T, class KeyOfT, class HF>
+	class Iterator_HashBucket
+	{
+		typedef HashBucketNode<T> Node;
+		typedef Iterator_HashBucket<K, T, KeyOfT, HF> Self;
+	public:
+		Iterator_HashBucket(Node* node, HashBucket<K, T, KeyOfT, HF>* pht)
+			:_node(node)
+			,_pht(pht)
+		{}
+		Iterator_HashBucket()
+		{}
+		//Self& operator++()
+		//{
+		//	if (_node->_pNext)
+		//	{
+		//		_node = _node->_pNext;
+		//	}
+		//	else
+		//	{
+		//		KeyOfT kot;
+		//		HF hf;
+		//		size_t hashi = hf(kot(_node->_data));
+		//		hashi %= _pht->_table.size();
+		//		++hashi;
+		//		//找下一个不为空的桶
+		//		for (; hashi < _pht->_table.size(); ++hashi)
+		//		{
+		//			if (_pht->_table[hashi])
+		//			{
+		//				_node = _pht->_table[hashi];
+		//				break;
+		//			}
+		//		}
+		//		// 没有找到不为空的桶，用nullptr去做end标识
+		//		if (hashi == _pht->_table.size())
+		//		{
+		//			_node = nullptr;
+		//		}
+		//	}
+		//	return *this;
+		//}
+		Self& operator++()
+		{
+			if (_node->_pNext != nullptr)
+			{
+				_node = _node->_pNext;
+			}
+			else
+			{
+				// 这里需要找 下一个 非空的哈希桶
+				// 第一步 找到当前的桶
+				KeyOfT kot;
+				HF hf;
+				size_t starti = hf(kot(_node->_data));
+				starti = starti % _pht->_table.size();
+				starti++;
+				/*size_t starti = hf(kot(_node->_data));
+				size_t hashi = starti % _pht->_table.size();
+				int i = hashi + 1;*/
+				for (; starti < _pht->_table.size(); starti++)
+				{
+					if (_pht->_table[starti] != nullptr)
+					{
+						_node = _pht->_table[starti];
+						break;
+					}
+				}
+				if (starti == _pht->_table.size())
+				{
+					_node = nullptr;
+				}
+			}
+			return *this;
+		}
+		Self operator++(int)
+		{
+			Self ret(*this);
+			++(*this);
+			return ret;
+		}
+
+		T& operator*()
+		{
+			return _node->_data;
+		}
+
+		T* operator->()
+		{
+			return &_node->_data;
+		}
+
+		bool operator!=(const Self& s) const
+		{
+			return _node != s._node;
+		}
+
+		bool operator==(const Self& s) const
+		{
+			return _node == s._node;
+		}
+	private:
+		Node* _node;
+		HashBucket<K, T, KeyOfT, HF>* _pht;
+	};
+
+	
 
 	// 本文所实现的哈希桶中key是唯一的
 	template<class K, class T, class KeyOfT, class HF = HashFunc<K>>
@@ -59,6 +163,29 @@ namespace OpenHash
 	{
 		typedef HashBucketNode<T> Node;
 		typedef HashBucket<K, T, KeyOfT, HF> Self;
+		template<class K, class T, class KeyOfT, class HF>
+		friend class Iterator_HashBucket;
+
+
+	public:
+		// 迭代器
+		typedef Iterator_HashBucket<K, T, KeyOfT, HF> iterator;
+		iterator begin()
+		{
+			for (size_t i = 0; i < _table.size(); i++)
+			{
+				Node* cur = _table[i];
+				if (cur != nullptr)
+				{
+					return iterator(cur, this);
+				}
+			}
+			return end();
+		}
+		iterator end()
+		{
+			return iterator(nullptr, this);
+		}
 
 	public:
 		~HashBucket()
@@ -77,8 +204,7 @@ namespace OpenHash
 			if (_size == _table.size())
 			{
 				// 扩容  需要重新 哈希 先来个效率低的
-				//size_t newSize = _table.size() == 0 ? 10 : 2 * _table.size();
-				size_t newSize = _table.size() == 0 ? 1 : 2 * _table.size();
+				size_t newSize = _table.size() == 0 ? 10 : 2 * _table.size();
 
 				Self newHT;
 				newHT._table.resize(newSize);
@@ -87,17 +213,14 @@ namespace OpenHash
 					Node* cur = _table[i];
 					while (cur)
 					{
-						// 下面的方法不知道对不对
 						newHT.Insert(cur->_data);
 						cur = cur->_pNext;
 					}
 				}
 				Swap(newHT);
 			}
-			//K k = kot(data);
 
 			size_t starti = hf(kot(data));
-			//size_t starti = data.first;
 			size_t hashi = starti % _table.size();
 			Node* node = new Node(data);
 			node->_pNext = _table[hashi];

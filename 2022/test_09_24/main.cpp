@@ -3,56 +3,149 @@
 #include <vector>
 #include <stack>
 using namespace std;
-void binary(vector<int>& v, int n)
+bool isPrimeNumber(int n)
 {
-	while (n)
+	if (n <= 1)
+		return false;
+	for (int i = 2; i < n; i++)
 	{
-		v.push_back(n % 2);
-		n /= 2;
+		if (n % i == 0)
+			return false;
+	}
+	return true;
+}
+void primeNumber(vector<int>& v, int n)
+{
+	for (int i = 2; i <= n; i++)
+	{
+		if (isPrimeNumber(i))
+		{
+			v.push_back(i);
+		}
 	}
 }
 int main()
 {
-	int n;
+	int n = 0;
 	cin >> n;
-	vector<int> v1;
-
-	//　求二进制
-	binary(v1, n);
-	vector<int> v2;
-
-	int count = 0;
-	for (int i = 0; i < v1.size(); i++)
+	vector<int> v;
+	primeNumber(v, n);
+	int min = n;
+	int flag = 0;
+	for (int i = 0; i < v.size(); i++)
 	{
-		if (v1[i] == 1)
+		int a = n - v[i];
+		if (isPrimeNumber(a))
 		{
-			v2.push_back(1);
-		}
-		else
-		{
-			if (!v2.empty())
+			if (abs(a - v[i]) < min)
 			{
-				int size = v2.size();
-				if (size > count)
-				{
-					count = size;
-				}
-				v2.clear();
+				min = abs(a - v[i]);
+				flag = v[i];
 			}
 		}
 	}
-	if (!v2.empty())
+	if (flag > n - flag)
 	{
-		int size = v2.size();
-		if (size > count)
-		{
-			count = size;
-		}
-		v2.clear();
+		cout << n - flag << endl;
+		cout << flag << endl;
 	}
-	cout << count << endl;
+	else
+	{
+		cout << flag << endl;
+		cout << n - flag << endl;
+	}
 	return 0;
 }
+
+//class BinInsert {
+//public:
+//    int binInsert(int n, int m, int j, int i) {
+//        // write code here
+//        m = m << j;
+//        return n | m;
+//    }
+//};
+
+//class MyClass
+//{
+//public:
+//	~MyClass()
+//	{
+//		delete this;
+//		this = nullptr;
+//	}
+//private:
+//
+//};
+//
+//
+//int main()
+//{
+//	MyClass m;
+//	return 0;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+//void binary(vector<int>& v, int n)
+//{
+//	while (n)
+//	{
+//		v.push_back(n % 2);
+//		n /= 2;
+//	}
+//}
+//int main()
+//{
+//	int n;
+//	cin >> n;
+//	vector<int> v1;
+//
+//	//　求二进制
+//	binary(v1, n);
+//	vector<int> v2;
+//
+//	int count = 0;
+//	for (int i = 0; i < v1.size(); i++)
+//	{
+//		if (v1[i] == 1)
+//		{
+//			v2.push_back(1);
+//		}
+//		else
+//		{
+//			if (!v2.empty())
+//			{
+//				int size = v2.size();
+//				if (size > count)
+//				{
+//					count = size;
+//				}
+//				v2.clear();
+//			}
+//		}
+//	}
+//	if (!v2.empty())
+//	{
+//		int size = v2.size();
+//		if (size > count)
+//		{
+//			count = size;
+//		}
+//		v2.clear();
+//	}
+//	cout << count << endl;
+//	return 0;
+//}
 
 //class LCA {
 //public:

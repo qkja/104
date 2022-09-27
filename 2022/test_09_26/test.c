@@ -3,13 +3,22 @@
 
 #include<stdio.h>
 
-int main()
-{
-	int a = 10;
-	int* pa = &a;
-	int** ppa = &pa;
-	return 0;
-}
+//int main()
+//{
+//	int a = 10;
+//	int b = 20;
+//	int c = 30;
+//	int* parr[] = { &a,&b,&c };
+//	return 0;
+//}
+
+//int main()
+//{
+//	int a = 10;
+//	int* pa = &a;
+//	int** ppa = &pa;
+//	return 0;
+//}
 //#include<stdio.h>
 //
 //int main()

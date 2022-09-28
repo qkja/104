@@ -1,22 +1,79 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
+#include <vector>
 using namespace std;
-//递归和非递归分别实现strlen
-int myStrlen(const char* p)
+class A
 {
-	int count = 0;
-	while (*p++)
+public:
+	A()
 	{
-		count++;
+		cout << "A()" << endl;
 	}
-	return count;
-}
+private:
+
+};
+
 int main()
 {
-	const char* p = "";
-	printf("%d\n", myStrlen(p));
+	vector<A*> v;
+	v.resize(2);
 	return 0;
 }
+
+// 循环计数
+
+//class A
+//{
+//public:
+//	~A()
+//	{
+//		cout << "A()" << endl;
+//	}
+//};
+//class B
+//{
+//public:
+//	~B()
+//	{
+//		cout << "B()" << endl;
+//	}
+//	A a;
+//};
+//int main()
+//{
+//	const int a = 3;
+//	int* p = const_cast<int*>(&a);
+//	*p = 4;
+//	printf("%d", a);
+//	printf("%d", *p);
+//	return 0;
+//}
+
+//int main()
+//{
+//	B b;
+//	return 0;
+//}
+
+
+
+
+//递归和非递归分别实现strlen
+//int myStrlen(const char* p)
+//{
+//	int count = 0;
+//	while (*p++)
+//	{
+//		count++;
+//	}
+//	return count;
+//}
+//int main()
+//{
+//	const char* p = "";
+//	printf("%d\n", myStrlen(p));
+//	return 0;
+//}
 
 //int factorialR(int n)
 //{

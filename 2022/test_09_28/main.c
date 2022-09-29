@@ -1,5 +1,36 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-//#include <stdio.h>
+#include <stdio.h>
+int myStrlen(char* p)
+{
+	int count = 0;
+	while (*p++)
+	{
+		count++;
+	}
+	return count;
+}
+void reverse_string(char* string)
+{
+	int len = myStrlen(string);
+	char ret = *string;
+	*string = *(string + len - 1);
+	*(string + len - 1) = '\0';
+	if (myStrlen(string + 1) > 1)
+	{
+		reverse_string(string + 1);
+	}
+	*(string + len - 1) = ret;
+
+
+}
+int main()
+{
+	char arr[] = "abcdef";
+	reverse_string(arr);
+	printf("%s\n", arr);
+	return 0;
+}
+
 //
 ////创建一个整形数组，完成对数组的操作
 ////
@@ -40,53 +71,53 @@
 //	}
 //}
 
-#include <stdio.h>
-#include <assert.h>
-#include <time.h>
-#include <stdlib.h>
-void print(int* p, int len)
-{
-	assert(p);
-	for (int i = 0; i < len; i++)
-	{
-		printf("%d ", *(p + i));
-	}
-	printf("\n");
-
-}
-void bubbleSort(int arr[], int len)
-{
-	assert(arr);
-	for (int i = 0; i < len-1; i++)
-	{
-		for (int j = i + 1; j < len; j++)
-		{
-			if (arr[i] > arr[j])
-			{
-				int ret = arr[i];
-				arr[i] = arr[j];
-				arr[j] = ret;
-			}
-		}
-	}
-}
-int main()
-{
-	srand((unsigned)time(NULL));
-	int arr[10] = { 0 };
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	for (int i = 0; i < sz; i++)
-	{
-		int ret = rand() % 100;
-		arr[i] = ret;
-	}
-	print(arr, sz);
-
-	bubbleSort(arr, sz);
-	print(arr, sz);
-
-	return 0;
-}
+//#include <stdio.h>
+//#include <assert.h>
+//#include <time.h>
+//#include <stdlib.h>
+//void print(int* p, int len)
+//{
+//	assert(p);
+//	for (int i = 0; i < len; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	printf("\n");
+//
+//}
+//void bubbleSort(int arr[], int len)
+//{
+//	assert(arr);
+//	for (int i = 0; i < len-1; i++)
+//	{
+//		for (int j = i + 1; j < len; j++)
+//		{
+//			if (arr[i] > arr[j])
+//			{
+//				int ret = arr[i];
+//				arr[i] = arr[j];
+//				arr[j] = ret;
+//			}
+//		}
+//	}
+//}
+//int main()
+//{
+//	srand((unsigned)time(NULL));
+//	int arr[10] = { 0 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	for (int i = 0; i < sz; i++)
+//	{
+//		int ret = rand() % 100;
+//		arr[i] = ret;
+//	}
+//	print(arr, sz);
+//
+//	bubbleSort(arr, sz);
+//	print(arr, sz);
+//
+//	return 0;
+//}
 
 
 //int main()

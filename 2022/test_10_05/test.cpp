@@ -1,14 +1,92 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 #include <map>
 #include <assert.h>
 #include <string>
 using namespace std;
+template <class T>*/
+//int PrintArg(const T& t)
+//{
+//	cout << t << " ";
+//	return 0;
+//}
+//template <class ...Args>
+//void ShowList(Args... args)
+//{
+//	int arr[] = { PrintArg(args)... };
+//	cout << endl;
+//}
+//
+//int main()
+//{
+//	ShowList(1, 'x', 1.1, string("hello world"));
+//	cout << endl;
+//
+//	ShowList(1, 2, 3, 4, 5);
+//	return 0;
+//}
+
+//void ShowList()
+//{
+//}
+//template <class ...Args>
+//void ShowList(Args... args)
+//{
+//	int arr[] = { args... };
+//}
+//
+//int main()
+//{
+//	ShowList(1, 2);
+//	return 0;
+//}
 
 
 
+//template <class T>
+//void ShowList(const T& val)
+//{
+//	cout << val <<"->"<<typeid(val).name()<<" end"<< endl;
+//}
+//void ShowList()
+//{
+//}
+//template <class T, class ...Args>
+//void ShowList(const T& val, Args... args)
+//{
+//	cout << sizeof...(args) << endl;
+//	cout << val <<" -> "<< typeid(val).name() << endl;
+//	ShowList(args...);
+//}
+//
+//int main()
+//{
+//	ShowList(1, 2);
+//	return 0;
+//}
 
+//int main()
+//{
+//	ShowList(1, 2, 3, 4, 5);
+//	ShowList(1, 2, 3, 4, 5);
+//	return 0;
+//}
+
+
+// Args是一个模板参数包，args是一个函数形参参数包
+// 声明一个参数包Args...args，这个参数包中可以包含0到任意个模板参数。
+//template <class ...Args>
+//void ShowList(Args... args)
+//{
+//	cout << sizeof...(args) << endl;
+//}
+//int main()
+//{
+//
+//	ShowList(1, 2, 3, 4, 5);
+//	return 0;
+//}
 
 //void Fun(int& x) 
 //{ 

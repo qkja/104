@@ -6,6 +6,64 @@
 #include <algorithm>
 using namespace std;
 
+////////////////////////////////////
+// day 9
+// 走格子
+//int f(int a, int b)
+//{
+//    if (a == 0 || b == 0)
+//        return 1;
+//    return f(a - 1, b) + f(a, b - 1);
+//}
+//
+//int main() {
+//    int a, b;
+//    cin >> a >> b;
+//    cout << f(a, b) << endl;
+//}
+
+// 位运算 计算  a+b
+//class UnusualAdd {
+//public:
+//    int addAB(int A, int B) {
+//        // write code here
+//        if (A == 0)
+//            return B;
+//        if (B == 0)
+//            return A;
+//        int x = A ^ B;
+//        int y = (A & B)<<1;
+//        return addAB(x, y);
+//    }
+//};
+
+
+
+//class UnusualAdd {
+//public:
+//	int addAB(int A, int B) {
+//		// write code here
+//		int anser = 0;
+//		int ret = B;
+//		while (ret != 0)
+//		{
+//			anser = A ^ B;
+//			ret = (A & B) << 1;
+//			A = anser;
+//			B = ret;
+//		}
+//		return A;
+//	}
+//};
+
+
+
+
+
+
+
+
+
 // day 8
 // 引用的 底层是由指针实现的,本质就是一个指针 
 // 求最小公倍数 //这里找个简单的方法

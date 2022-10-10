@@ -4,8 +4,65 @@
 #include <stack>
 #include <vector>
 #include <algorithm>
+// day 10
 using namespace std;
+class Board {
+public:
+    bool checkWon(vector<vector<int> > board) {
+        // write code here
+        if (board.empty())
+            return true;
+        int row = board.size();    //行
+        int col = board[0].size(); //列数
+        // 测试 列
+        for (int i = 0; i < row; i++)
+        {
+            int sum = 0;
+            for (int j = 0; j < col; j++)
+            {
+                sum += board[i][j];
+            }
+            if (sum == col)
+                return true;
+        }
 
+        // 测试列
+        for (int j = 0; j < col; j++)
+        {
+            int sum = 0;
+            for (int i = 0; i < row; i++)
+            {
+                sum += board[i][j];
+            }
+            if (sum == row)
+                return true;
+        }
+        // 测试 正斜
+        int sum = 0;
+        for (int i = 0; i < row; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                if(i == j)
+                    sum += board[i][j];
+            }
+        }
+        if (sum == col)
+            return true;
+        sum = 0;
+        for (int i = 0; i < row; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                if (i == j)
+                    sum += board[i][row-i-1];
+            }
+        }
+        if (sum == col)
+            return true;
+        return false;
+    }
+};
 ////////////////////////////////////
 // day 9
 // 走格子

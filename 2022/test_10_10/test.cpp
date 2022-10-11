@@ -5,7 +5,32 @@ using namespace std;
 #include <iostream>
 #include <string>
 using namespace std;
+void func(double& t1, double& t2, double& t3, double& t4)
+{
+	t1 = (t2 + t3 + 40 + 30) / 4.0;
+	t2 = (t1 + t4 + 20 + 30) / 4.0;
+	t3 = (t1 + t4 + 15 + 30) / 4.0;
+	t4 = (t2 + t3 + 10 + 5)  / 4.0;
+}
 
+int main()
+{
+	double t1 = 20.0;
+	double t2 = 20.0;
+	double t3 = 15.0;
+	double t4 = 15.0;
+	int n = 0;
+	int i = 0;
+	cin >> n;
+	while (i < n)
+	{
+		printf("%-5d %-10.6lf %-10.6lf %-10.6lf %-10.6lf\n", i, t1, t2, t3, t4);
+		
+		func(t1, t2, t3, t4);
+		i++;
+	}
+	return 0;
+}
 //day 11
 
 //Á¬ÐøbitÊý

@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 
 
 //int val = 0;
@@ -120,4 +120,83 @@
 //	f1();
 //	f2();
 //	return 0;
+//}
+
+
+//#include <iostream>
+//#include <vector>
+//#include <stdio.h>
+//#include <unistd.h>
+//#include <stdlib.h>
+//#include <sys/types.h>
+//#include <sys/wait.h>
+
+//typedef void (*handler_t)();
+
+//方法集
+//std::vector<handler_t> handlers;
+
+//void fun1()
+//{
+//    printf("hello, 我是方法1\n");
+//}
+//void fun2()
+//{
+//    printf("hello, 我是方法2\n");
+//}
+//
+//void Load()
+//{
+//    //加载方法
+//    handlers.push_back(fun1);
+//    handlers.push_back(fun2);
+//}
+//
+//int main()
+//{
+//    pid_t id = fork();
+//    if (id == 0)
+//    {
+//        //子进程
+//        while (1)
+//        {
+//            printf("我是子进程, 我的PID: %d, 我的PPID:%d\n", getpid(), getppid());
+//            sleep(3);
+//        
+//        }
+//
+//        exit(104);
+//    }
+//    else if (id > 0)
+//    {
+//        //父进程
+//        // 基于非阻塞的轮询等待方案
+//        int status = 0;
+//        while (1)
+//        {
+//            pid_t ret = waitpid(-1, &status, WNOHANG);
+//            if (ret > 0)
+//            {
+//                printf("等待成功, %d, exit sig: %d, exit code: %d\n", ret, status & 0x7F, (status >> 8) & 0xFF);
+//                break;
+//            }
+//            else if (ret == 0)
+//            {
+//                //等待成功了，但是子进程没有退出
+//                printf("子进程好了没，奥， 还没，那么我父进程就做其他事情啦...\n");
+//                if (handlers.empty()) Load();
+//                for (auto f : handlers)
+//                {
+//                    f(); //回调处理对应的任务
+//                }
+//                sleep(1);
+//            }
+//            else {
+//                //出错了，暂时不处理
+//            }
+//        }
+//    }
+//    else {
+//        //do nothing
+//    }
 //}

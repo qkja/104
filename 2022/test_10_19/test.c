@@ -24,6 +24,11 @@
 //	SeqListInit(&s);
 //}
 
+
+
+
+
+
 void TestPuskBack()
 {
 

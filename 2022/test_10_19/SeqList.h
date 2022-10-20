@@ -36,20 +36,20 @@ void SeqListPrint(SeqList* ps);
 
 void SeqListPushBack(SeqList* ps, SLDateType x);
 //
-//void SeqListPushFront(SeqList* ps, SLDateType x);
+void SeqListPushFront(SeqList* ps, SLDateType x);
 //
-//void SeqListPopFront(SeqList* ps);
+void SeqListPopFront(SeqList* ps);
 //
 void SeqListPopBack(SeqList* ps);
-//
-//// 顺序表查找
-//int SeqListFind(SeqList* ps, SLDateType x);
-//// 顺序表在pos位置插入x
-//void SeqListInsert(SeqList* ps, size_t pos, SLDateType x);
-//// 顺序表删除pos位置的值
-//void SeqListErase(SeqList* ps, size_t pos);
-//
-//// 这里是一些辅助函数,一般不爆露接口
-//// 检测容量
-//// 不够直接扩容 够什么都不做
-//void SeqListCheckCapacity(SeqList* ps);
+
+// 顺序表查找
+int SeqListFind(SeqList* ps, SLDateType x);
+// 顺序表在pos位置插入x
+void SeqListInsert(SeqList* ps, size_t pos, SLDateType x);
+// 顺序表删除pos位置的值
+void SeqListErase(SeqList* ps, size_t pos);
+
+// 这里是一些辅助函数,一般不爆露接口
+// 检测容量
+// 不够直接扩容 够什么都不做
+void SeqListCheckCapacity(SeqList* ps);

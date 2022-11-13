@@ -1,16 +1,29 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
-
-int g_key = 20;        //全局变量
-double g_val = 10.00;
-
+#include <string.h>
 int main()
 {
-
-	printf("%d\n", g_key);
-	printf("%d\n", g_val);
+	char arr[] = "a b c";
+	char* p[4] = { NULL };
+	p[0] = strtok(arr, " ");
+	int i = 1;
+	while (p[i++] = strtok(NULL, " "))
+	{
+	}
 	return 0;
 }
+
+
+//int g_key = 20;        //全局变量
+//double g_val = 10.00;
+//
+//int main()
+//{
+//
+//	printf("%d\n", g_key);
+//	printf("%d\n", g_val);
+//	return 0;
+//}
 
 //int main()
 //{

@@ -14,15 +14,15 @@
 
 
 
+#include <stdio.h>
+#include <process.h>
 
-//#include <stdio.h>
-//#include <process.h>
-//
-//int main(void)
-//{
-//    printf("\nProcess id: %d\n", _getpid());
-//    return 0;
-//}
+int main(void)
+{
+	FILE;
+   // printf("\nProcess id: %d\n", _getpid());
+    return 0;
+}
 
 
 //#include <stdio.h>

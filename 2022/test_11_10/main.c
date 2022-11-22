@@ -1,17 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
 #include <string.h>
-int main()
-{
-	char arr[] = "a b c";
-	char* p[4] = { NULL };
-	p[0] = strtok(arr, " ");
-	int i = 1;
-	while (p[i++] = strtok(NULL, " "))
-	{
-	}
-	return 0;
-}
+
+
+//int main()
+//{
+//	char arr[] = "a b c";
+//	char* p[4] = { NULL };
+//	p[0] = strtok(arr, " ");
+//	int i = 1;
+//	while (p[i++] = strtok(NULL, " "))
+//	{
+//	}
+//	return 0;
+//}
 
 
 //int g_key = 20;        //全局变量

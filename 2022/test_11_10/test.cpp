@@ -1,4 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS 1
+#include <iostream>
+using namespace std;
+
+//int main()
+//{
+//	const int a = 10;
+//	cout << a << endl;
+//	int* p = &a;
+//	*p = 100;
+//	cout << a << endl;
+//	cout << *p << endl;
+//	return 0;
+//}
 
 
 
@@ -13,16 +26,15 @@
 
 
 
-
-#include <stdio.h>
-#include <process.h>
-
-int main(void)
-{
-	FILE;
-   // printf("\nProcess id: %d\n", _getpid());
-    return 0;
-}
+//#include <stdio.h>
+//#include <process.h>
+//
+//int main(void)
+//{
+//	FILE;
+//   // printf("\nProcess id: %d\n", _getpid());
+//    return 0;
+//}
 
 
 //#include <stdio.h>

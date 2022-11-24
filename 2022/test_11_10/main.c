@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-
+FILE
 //int main()
 //{
 //	char arr[] = "a b c";

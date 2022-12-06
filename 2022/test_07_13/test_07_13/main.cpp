@@ -19,3 +19,5 @@ int main()
 	cout << sizeof(*p) << endl;
 	return 0;
 }
+
+

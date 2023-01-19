@@ -1,5 +1,5 @@
 cc=g++
-src=test.cc
+src=main.cpp test.cpp
 dest=mytest
 
 $(dest):$(src)

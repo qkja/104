@@ -28,7 +28,7 @@ namespace bit
       return _ht.end();
     }
 
-    bool insert(const std::pair<K, V> &kv)
+    std::pair<iterator, bool> insert(const std::pair<K, V> &kv)
     {
       return _ht.insert(kv);
     }

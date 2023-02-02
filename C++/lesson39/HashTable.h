@@ -209,16 +209,16 @@ namespace Bucket
       return iterator(nullptr, this);
     }
 
-    bool insert(const T &data)
+    std::pair<iterator, bool> insert(const T &data)
     {
       // 拿到  key 的值
       KeyOfT kt;
       // 拿到key % 的值
       HashFunc hf;
-
-      if (find(kt(data)) != end())
+      iterator pos = find(kt(data));
+      if (pos != end())
       {
-        return false;
+        return std::make_pair(pos, false);
       }
 
       // 扩容 负载因子是1 的时候扩容
@@ -257,7 +257,8 @@ namespace Bucket
       cur->_next = _tables[hashi];
       _tables[hashi] = cur;
       _n++;
-      return true;
+
+      return std::make_pair(iterator(cur, this), true);
     }
 
   private:

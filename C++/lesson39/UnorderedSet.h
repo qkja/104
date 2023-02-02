@@ -29,7 +29,7 @@ namespace bit
       return _ht.end();
     }
 
-    bool insert(const K &key)
+    std::pair<iterator, bool> insert(const K &key)
     {
       return _ht.insert(key);
     }
@@ -38,7 +38,7 @@ namespace bit
     {
       return _ht.erase(key);
     }
-    
+
     iterator find(const K &key)
     {
       return _ht.find(key);

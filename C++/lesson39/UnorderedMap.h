@@ -43,9 +43,14 @@ namespace bit
       return _ht.find(key);
     }
 
+    V &operator[](const K &key)
+    {
+      std::pair<iterator, bool> ret = insert(std::make_pair(key, V()));
+      return ret.first->second;
+    }
+
   private:
-    Bucket::HashTable<K, std::pair<K, V>, MapKeyOfT, HashFunc>
-        _ht;
+    Bucket::HashTable<K, std::pair<K, V>, MapKeyOfT, HashFunc> _ht;
   };
 }
 #endif

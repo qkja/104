@@ -1,0 +1,9 @@
+// 首行是语法指定行, proto3是目前最新的,2也是存在的,不过我们这里不说了
+// 如果我们首行没有指定,默认是2的语法
+syntax = "proto3"
+package contacts; // 命名空间
+
+message PeopleInfo {
+  string name = 1; // 名字 1 是标识这个字段编号
+  int32 age = 2;   // 年龄
+}

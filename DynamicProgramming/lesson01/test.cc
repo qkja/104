@@ -6,53 +6,81 @@
  */
 #include <vector>
 using namespace std;
-// https://leetcode.cn/problems/three-steps-problem-lcci/
+// https://leetcode.cn/problems/min-cost-climbing-stairs/
 class Solution {
-  public:
-    int process(int index, int n)
-    {
-      if(index == n)
-        return 1;
-      if(index > n)
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+      if(cost.empty())
         return 0;
-      int p1 = process(index + 1, n);
-      int p2 = process(index + 2, n);
-      int p3 = process(index + 3, n);
-      return p1 + p2 + p3;
-    }
-    int process2(int n)
-    {
-      std::vector<int> dp(n + 3, 0);
-      dp[n] = 1;
-      for(int i = n-1; i >= 0; i--)
-        dp[i] = dp[i+1] + dp[i+2] + dp[i+3];
-      return dp[0];
-    }
-
-    int process3(int n)
-    {
-      if(n == 1)
-        return 1;
-      if(n == 2)
-        return 2;
-      if(n == 3)
-        return 4;
-      const int MOD = 1e9 + 7;
-      std::vector<int> dp(n+1, 0);
-      dp[1] = 1;
-      dp[2] = 2;
-      dp[3] = 4;
-      for(int i = 4; i < (int)dp.size(); i++)
-        dp[i] = ((dp[i-1] + dp[i-2])%MOD + dp[i-3]) % MOD;
-      return dp[n];
-    }
-    int waysToStep(int n) {
-      if(n == 0)
-        return 0;
-      //return process(0, n);
-      return process2 (n);
+      vector<int> dp(cost.size()+1, 0);
+      for(size_t i = 2; i < dp.size(); i++)
+      {
+        dp[i] = std::min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
+      }
+      return dp[cost.size()];
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// https://leetcode.cn/problems/three-steps-problem-lcci/
+//class Solution {
+//  public:
+//    int process(int index, int n)
+//    {
+//      if(index == n)
+//        return 1;
+//      if(index > n)
+//        return 0;
+//      int p1 = process(index + 1, n);
+//      int p2 = process(index + 2, n);
+//      int p3 = process(index + 3, n);
+//      return p1 + p2 + p3;
+//    }
+//    int process2(int n)
+//    {
+//      std::vector<int> dp(n + 3, 0);
+//      dp[n] = 1;
+//      for(int i = n-1; i >= 0; i--)
+//        dp[i] = dp[i+1] + dp[i+2] + dp[i+3];
+//      return dp[0];
+//    }
+//
+//    int process3(int n)
+//    {
+//      if(n == 1)
+//        return 1;
+//      if(n == 2)
+//        return 2;
+//      if(n == 3)
+//        return 4;
+//      const int MOD = 1e9 + 7;
+//      std::vector<int> dp(n+1, 0);
+//      dp[1] = 1;
+//      dp[2] = 2;
+//      dp[3] = 4;
+//      for(int i = 4; i < (int)dp.size(); i++)
+//        dp[i] = ((dp[i-1] + dp[i-2])%MOD + dp[i-3]) % MOD;
+//      return dp[n];
+//    }
+//    int waysToStep(int n) {
+//      if(n == 0)
+//        return 0;
+//      //return process(0, n);
+//      return process2 (n);
+//    }
+//};
 
 
 

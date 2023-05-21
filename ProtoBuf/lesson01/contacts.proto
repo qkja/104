@@ -1,9 +1,26 @@
 // 首行是语法指定行, proto3是目前最新的,2也是存在的,不过我们这里不说了
 // 如果我们首行没有指定,默认是2的语法
-syntax = "proto3"
+syntax = "proto3";
 package contacts; // 命名空间
 
 message PeopleInfo {
   string name = 1; // 名字 1 是标识这个字段编号
   int32 age = 2;   // 年龄
 }
+// 编译命令 
+// protoc --cpp_out=. contacts.proto
+// protoc -I (目录) --cpp_out=. contacts.proto   // -I 表示我们指定一个搜索目录,去检索我们proto文件
+
+
+
+// 这里会生成字段相关的方法
+// clear get  get(字段名)
+
+
+// 那么我们序列化和反序列化 在哪里
+// 看我们的祖父类,里面存在序列化和反序列化
+// 也就是我们子类没有,但是我们这里会存在父类中,如果不了解可以去看继承的构成隐藏
+
+
+// 序列化 是一个二进制序列,我们看不懂
+

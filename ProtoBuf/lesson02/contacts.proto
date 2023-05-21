@@ -1,0 +1,29 @@
+// 首行是语法指定行, proto3是目前最新的,2也是存在的,不过我们这里不说了
+
+syntax = "proto3";
+package contacts2;
+
+import "phone.proto";
+
+//message Phone
+//{
+//  string number = 1;
+//  //string 
+//}
+
+message PeopleInfo {
+  string name = 1;
+  int32 age = 2; 
+
+  // 如何定义一数组
+  // repeated string pthone_numbers = 3;
+  repeated phone.Phone phone = 3;
+
+  // proto3 支持嵌套
+  //message Phone
+  // {
+  // string number = 1;
+  //string 
+  // 理解一个 
+  // }
+}

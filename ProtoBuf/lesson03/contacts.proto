@@ -23,7 +23,24 @@ message PeopleInfo {
   }
 
   repeated Phone phone = 3;
-  google.protobuf.Any data=4;
+  google.protobuf.Any data = 4;
+
+  // oneof 类型, 
+  // string qq = 5;
+  // string wechat = 6;
+
+  oneof other_contact {
+    // 字段编号禁止重复(上面的)
+    // 禁止reperted
+    // 最后更新的那个值作为 成员
+    string qq = 5;
+    string wechat = 6;
+  }
+
+  // 学习map 类型
+
+  map<string, string> remark = 7; // 备注信息
+  
 }
 
 // 通讯录 message

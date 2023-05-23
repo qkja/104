@@ -62,6 +62,43 @@ void AddPeopleInfo(contacts2::PeopleInfo *people_info_ptr)
   addr.set_unit_address(unit_addr);
 
   people_info_ptr->mutable_data()->PackFrom(addr);
+  cout << "请选择联系方式(1. qq 2. wechat): " << endl;
+
+  int other_contact = 0;
+  cin >> other_contact;
+  cin.ignore(256, '\n');
+  if (1 == other_contact)
+  {
+    cout << "请输入联系人QQ: ";
+    string qq;
+    getline(cin, qq);
+    people_info_ptr->set_qq(qq);
+  }
+  else if (2 == other_contact)
+  {
+    cout << "请输入联系人wechat: ";
+    string wechat;
+    getline(cin, wechat);
+    people_info_ptr->set_qq(wechat);
+  }
+  else
+  {
+    cout << "输入错误" << endl;
+  }
+
+  // 设置备注信心
+  for (size_t i = 0;; i++)
+  {
+    cout << "请输入第 " << i + 1 << " 备注标题(回车完成新增): ";
+    string remark_key;
+    getline(cin, remark_key);
+    if (remark_key.empty())
+      break;
+    cout << "请输入第 " << i + 1 << " 备注内容(回车完成新增): ";
+    string remark_value;
+    getline(cin, remark_value);
+    people_info_ptr->mutable_remark()->insert({remark_key, remark_value});
+  }
 
   cout << "-----------添加联系人成功-----------" << endl;
 }

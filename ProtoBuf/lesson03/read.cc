@@ -36,6 +36,28 @@ void PrintContacts(contacts2::Contacts &con)
         cout << "家庭地址: " << addr.unit_address() << endl;
       }
     }
+
+    switch (people.other_contact_case())
+    {
+    case contacts2::PeopleInfo::OtherContactCase::kQq:
+      cout << "QQ: " << people.qq() << endl;
+      break;
+    case contacts2::PeopleInfo::OtherContactCase::kWechat:
+      cout << "wechat: " << people.wechat() << endl;
+      break;
+    default:
+      break;
+    }
+
+    // 打印备注信息
+    if (people.remark_size())
+    {
+      cout << "备注信息" << endl;
+    }
+    for (auto it = people.remark().begin(); it != people.remark().end(); it++)
+    {
+      cout << "    " << it->first << ":" << it->second << endl;
+    }
   }
 }
 

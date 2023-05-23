@@ -1,0 +1,33 @@
+// 首行是语法指定行, proto3是目前最新的,2也是存在的,不过我们这里不说了
+
+syntax = "proto3";
+package contacts2;
+import "google/protobuf/any.proto";
+
+message Address {
+  string home_address = 1;
+  string unit_address = 2;
+}
+
+message PeopleInfo {
+  string name = 1;
+  int32 age = 2; 
+  message Phone
+  {
+    string number = 1;
+    enum PhoneType {
+      MP=0; // 移动电话
+      TEL=1;
+    }
+    PhoneType type = 2;
+  }
+
+  repeated Phone phone = 3;
+  google.protobuf.Any data=4;
+}
+
+// 通讯录 message
+message Contacts
+{
+  repeated PeopleInfo contacts = 1;
+}

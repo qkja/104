@@ -5,37 +5,142 @@
  * Time: 23:27
  */
 #include <vector>
+#include <string>
 using namespace std;
-// https://leetcode.cn/problems/min-cost-climbing-stairs/
-class Solution {
+
+class Solution
+{
 public:
-    int minCostClimbingStairs(vector<int>& cost) {
-      if(cost.empty())
-        return 0;
-      vector<int> dp(cost.size()+1, 0);
-      for(size_t i = 2; i < dp.size(); i++)
-      {
-        dp[i] = std::min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
-      }
-      return dp[cost.size()];
+  // 经验  以某一个位置为结尾
+  // dp[i] 以i下标位置为结尾的时候,所有的解码方法的总数
+  // 1. i位置单独解码 i-1配合i位置解码
+
+  int numDecodings(string s)
+  {
+    if (s.empty())
+      return 0;
+    int len = s.size();
+    std::vector<int> dp(len + 1, 0);
+    dp[0] = 1;
+    dp[1] = s[1 - 1] == '0' ? 0 : 1;
+    if (len == 1)
+      return dp[1];
+    for (int i = 2; i <= len; i++)
+    {
+      if (s[i - 1] != '0')
+        dp[i] += dp[i - 1];
+      int y = 10 * (s[i - 1 - 1] - '0') + s[i - 1] - '0';
+      if (y >= 10 && y <= 26)
+        dp[i] += dp[i - 2];
     }
+    return dp[len];
+  }
 };
 
+// class Solution
+// {
+// public:
+//   // 经验  以某一个位置为结尾
+//   // dp[i] 以i下标位置为结尾的时候,所有的解码方法的总数
+//   // 1. i位置单独解码 i-1配合i位置解码
 
+//   int numDecodings(string s)
+//   {
+//     if (s.empty())
+//       return 0;
+//     int len = s.size();
+//     std::vector<int> dp(len, 0);
+//     dp[0] = s[0] == '0' ? 0 : 1;
+//     if (len == 1)
+//       return dp[0];
 
+//     if (s[0] != '0' && s[1] != '0')
+//       dp[1] = 1;
+//     int val = 10 * (s[0] - '0') + s[1] - '0';
+//     if (val >= 10 && val <= 26)
+//       dp[1] += 1;
+//     for (int i = 2; i < len; i++)
+//     {
+//       if (s[i] != '0')
+//         dp[i] += dp[i - 1];
+//       int y = 10 * (s[i - 1] - '0') + s[i] - '0';
+//       if (y >= 10 && y <= 26)
+//         dp[i] += dp[i - 2];
+//     }
+//     return dp[len - 1];
+//   }
+// };
 
+// https://leetcode.cn/problems/decode-ways/
+// class Solution
+// {
+// public:
+//   // str[0, index-1] 我们不关心,只需要知道 我们的[index, size)
+//   // 这是 什么模型
+//   int process(int index, string s)
+//   {
+//     // 111  --> AAA
+//     if (index == s.size())
+//       return 1;
+//     if (s[index] == '0') // 那么之前做的决定错了
+//       return 0;
+//     // 可能性1
+//     int p1 = process(index + 1, s);
+//     // 可能性2, 不是所有的都有
+//     int p2 = 0;
+//     if (index + 1 < s.size() && (s[index] - '0') * 10 + (s[index + 1] - '0') <= 26)
+//     {
+//       p2 = process(index + 2, s);
+//     }
+//     return p1 + p2;
+//   }
+//   // index[0, s.size()]
+//   int dp(const string &s)
+//   {
+//     if (s.empty())
+//       return 0;
+//     std::vector<int> v(s.size() + 1, 0);
+//     v[s.size()] = 1;
+//     for (int i = s.size() - 1; i >= 0; i--)
+//     {
+//       if (s[i] != '0')
+//       {
+//         int p1 = v[i + 1];
+//         if (i + 1 < s.size() && (s[i] - '0') * 10 + (s[i + 1] - '0') <= 26)
+//         {
+//           p1 += v[i + 2];
+//         }
+//         v[i] = p1;
+//       }
+//     }
+//     return v[0];
+//   }
+//   int numDecodings(string s)
+//   {
+//     // return process(0, s);
+//     return dp(s);
+//   }
+// };
 
-
-
-
-
-
-
-
-
+// https://leetcode.cn/problems/min-cost-climbing-stairs/
+// class Solution
+// {
+// public:
+//   int minCostClimbingStairs(vector<int> &cost)
+//   {
+//     if (cost.empty())
+//       return 0;
+//     vector<int> dp(cost.size() + 1, 0);
+//     for (size_t i = 2; i < dp.size(); i++)
+//     {
+//       dp[i] = std::min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+//     }
+//     return dp[cost.size()];
+//   }
+// };
 
 // https://leetcode.cn/problems/three-steps-problem-lcci/
-//class Solution {
+// class Solution {
 //  public:
 //    int process(int index, int n)
 //    {
@@ -82,19 +187,15 @@ public:
 //    }
 //};
 
-
-
-
-
 // https://leetcode.cn/problems/n-th-tribonacci-number/submissions/
 // 状态表示什么 就是dp 表里面的一个值
 // 如何来的
 // 1. 题目要求(简单题目)
 // 2. 经验+题目要求(大量做题100-200)
 // 3.分析问题的过程中发现子问题(更加抽象)
-//class Solution
+// class Solution
 //{
-//public:
+// public:
 //  /// @brief 这是一个尝试
 //  /// @param n 第n个
 //  /// @return  我们第n个的值

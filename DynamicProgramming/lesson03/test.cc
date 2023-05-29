@@ -10,6 +10,106 @@
 #include <algorithm>
 using namespace std;
 
+
+
+class Solution {
+  public:
+    // falg 表示我们在之前买了票
+    int process(size_t index, bool flag,vector<int>& prices )
+    {
+      if(index >= prices.size())
+        return 0;
+      if(index == prices.size()-1)
+      {
+        if(flag)
+        {
+          // 已近买了,我们可以直接卖出
+          return prices[index];
+        }
+        else
+        {
+          // 没有买,为了避免损失
+          return 0;
+        }
+      }
+      int p1 = 0;
+      int p2 = 0;
+      if(flag)
+      {
+        // 之前买票了, 
+        // 1. 买了这个票
+        p1 = process(index+2, false, prices) + prices[index];
+        p2 = process(index+1, true, prices);
+
+        //   dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
+      }
+      else
+      {
+        // 没有买票
+        //   dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
+        p1 = process(index+1, true, prices) - prices[index];
+        p2 = process(index+1, false, prices);
+      }
+      return max(p1,p2);
+    }
+
+    int process2(vector<int>& prices)                
+    {                                                
+      int n = prices.size();                         
+      vector<vector<int>> dp(n+2, vector<int>(2, 0));                   
+      dp[n-1][0] = 0;
+      dp[n-1][1] = prices[n-1];    
+
+      for(int i = n-2; i>=0; i--)                    
+      {                                              
+        // 这是之前没有买的                          
+        dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
+
+        dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
+      }    
+
+      return dp[0][0];    
+
+    }   
+
+    int process3(vector<int>& prices)
+    {
+      int n = prices.size();
+
+      // 这里有一个简单的转肽机的 思想
+      vector<vector<int>> dp(n, vector<int>(3,0));
+      dp[0][0] = -prices[0];
+      dp[0][1] = 0;
+      dp[0][1] = 0;
+      for(int i = 1; i< n; i++)
+      {
+        dp[i][0] = max(dp[i-1][0],dp[i-1][1]-prices[i]);
+        dp[i][1] = max(dp[i-1][1],dp[i-1][2]);
+        dp[i][2] = dp[i-1][0]+prices[i];
+      }
+      return max(dp[n-1][0], max(dp[n-1][1], dp[n-1][2]));
+    }
+
+    int maxProfit(vector<int>& prices) {
+      if(prices.empty())
+        return 0;
+      return process2(prices);
+      //return process(0, false, prices);
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 // https://leetcode.cn/problems/the-masseuse-lcci/
 // class Solution
 // {
@@ -256,104 +356,104 @@ using namespace std;
 // https://leetcode.cn/problems/JEj789/
 class Solution
 {
-public:
-  // 处于[x][y]我们需要花费分最小钱数
-  int process(int x, int y, int row, int col, vector<vector<int>> &costs)
-  {
-    if (x == row || y == col)
-      return INT32_MAX;
-    if (x == row - 1)
-      return costs[x][y];
-    int p1 = 0;
-    int p2 = 0;
-    if (y == 0)
+  public:
+    // 处于[x][y]我们需要花费分最小钱数
+    int process(int x, int y, int row, int col, vector<vector<int>> &costs)
     {
-      p1 = process(x + 1, 1, row, col, costs);
-      p2 = process(x + 1, 2, row, col, costs);
-    }
-    else if (y == col - 1)
-    {
-      p1 = process(x + 1, 0, row, col, costs);
-      p2 = process(x + 1, 1, row, col, costs);
-    }
-    else
-    {
-      p1 = process(x + 1, y - 1, row, col, costs);
-      p2 = process(x + 1, y + 1, row, col, costs);
-    }
-    return std::min(p1, p2) + costs[x][y];
-  }
-  int process2(vector<vector<int>> &costs)
-  {
-    int row = costs.size();
-    int col = costs.back().size();
-    vector<vector<int>> dp(row + 1, vector<int>(col, 0));
-    for (int i = row - 1; i >= 0; i--)
-    {
-      for (int j = 0; j < col; j++)
+      if (x == row || y == col)
+        return INT32_MAX;
+      if (x == row - 1)
+        return costs[x][y];
+      int p1 = 0;
+      int p2 = 0;
+      if (y == 0)
       {
-        int p1 = 0;
-        int p2 = 0;
-        if (j == 0)
-        {
-          p1 = dp[i + 1][1];
-          p2 = dp[i + 1][2];
-        }
-        else if (j == 2)
-        {
-          p1 = dp[i + 1][0];
-          p2 = dp[i + 1][1];
-        }
-        else
-        {
-          p1 = dp[i + 1][0];
-          p2 = dp[i + 1][2];
-        }
-        dp[i][j] = std::min(p1, p2) + costs[i][j];
+        p1 = process(x + 1, 1, row, col, costs);
+        p2 = process(x + 1, 2, row, col, costs);
       }
+      else if (y == col - 1)
+      {
+        p1 = process(x + 1, 0, row, col, costs);
+        p2 = process(x + 1, 1, row, col, costs);
+      }
+      else
+      {
+        p1 = process(x + 1, y - 1, row, col, costs);
+        p2 = process(x + 1, y + 1, row, col, costs);
+      }
+      return std::min(p1, p2) + costs[x][y];
     }
-
-    int minCostVal = dp[0][0];
-    for (int i = 1; i < col; i++)
+    int process2(vector<vector<int>> &costs)
     {
-      minCostVal = min(minCostVal, dp[0][i]);
-    }
-    return minCostVal;
-  }
-  int process3(vector<vector<int>> &costs)
-  {
-    int n = costs.size();
+      int row = costs.size();
+      int col = costs.back().size();
+      vector<vector<int>> dp(row + 1, vector<int>(col, 0));
+      for (int i = row - 1; i >= 0; i--)
+      {
+        for (int j = 0; j < col; j++)
+        {
+          int p1 = 0;
+          int p2 = 0;
+          if (j == 0)
+          {
+            p1 = dp[i + 1][1];
+            p2 = dp[i + 1][2];
+          }
+          else if (j == 2)
+          {
+            p1 = dp[i + 1][0];
+            p2 = dp[i + 1][1];
+          }
+          else
+          {
+            p1 = dp[i + 1][0];
+            p2 = dp[i + 1][2];
+          }
+          dp[i][j] = std::min(p1, p2) + costs[i][j];
+        }
+      }
 
-    // 到达某一个房子我们最小需要花费钱数
-    //  三个状态  图红色,图绿色,图白色
-    vector<vector<int>> dp(n + 1, vector<int>(3, 0));
-    for (int i = 1; i <= n; i++)
+      int minCostVal = dp[0][0];
+      for (int i = 1; i < col; i++)
+      {
+        minCostVal = min(minCostVal, dp[0][i]);
+      }
+      return minCostVal;
+    }
+    int process3(vector<vector<int>> &costs)
     {
-      dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]) + costs[i - 1][0];
-      dp[i][1] = min(dp[i - 1][0], dp[i - 1][2]) + costs[i - 1][1];
-      dp[i][2] = min(dp[i - 1][0], dp[i - 1][1]) + costs[i - 1][2];
+      int n = costs.size();
+
+      // 到达某一个房子我们最小需要花费钱数
+      //  三个状态  图红色,图绿色,图白色
+      vector<vector<int>> dp(n + 1, vector<int>(3, 0));
+      for (int i = 1; i <= n; i++)
+      {
+        dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]) + costs[i - 1][0];
+        dp[i][1] = min(dp[i - 1][0], dp[i - 1][2]) + costs[i - 1][1];
+        dp[i][2] = min(dp[i - 1][0], dp[i - 1][1]) + costs[i - 1][2];
+      }
+
+      int minCostVal = dp[n][0];
+      for (int i = 1; i < 3; i++)
+      {
+        minCostVal = min(minCostVal, dp[n][i]);
+      }
+      return minCostVal;
     }
 
-    int minCostVal = dp[n][0];
-    for (int i = 1; i < 3; i++)
+    int minCost(vector<vector<int>> &costs)
     {
-      minCostVal = min(minCostVal, dp[n][i]);
+      if (costs.empty())
+        return 0;
+      // int row = costs.size();
+      // int col = costs.back().size();
+      // int minCostVal = INT32_MAX;
+      // for (int i = 0; i < col; i++)
+      // {
+      //   minCostVal = min(minCostVal, process(0, i, row, col, costs));
+      // }
+      // return minCostVal;
+      return process2(costs);
     }
-    return minCostVal;
-  }
-
-  int minCost(vector<vector<int>> &costs)
-  {
-    if (costs.empty())
-      return 0;
-    // int row = costs.size();
-    // int col = costs.back().size();
-    // int minCostVal = INT32_MAX;
-    // for (int i = 0; i < col; i++)
-    // {
-    //   minCostVal = min(minCostVal, process(0, i, row, col, costs));
-    // }
-    // return minCostVal;
-    return process2(costs);
-  }
 };

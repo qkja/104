@@ -12,93 +12,149 @@ using namespace std;
 
 
 
+//class Solution {
+//  public:
+//    // falg 表示我们在之前买了票
+//    int process(size_t index, bool flag,vector<int>& prices )
+//    {
+//      if(index >= prices.size())
+//        return 0;
+//      if(index == prices.size()-1)
+//      {
+//        if(flag)
+//        {
+//          // 已近买了,我们可以直接卖出
+//          return prices[index];
+//        }
+//        else
+//        {
+//          // 没有买,为了避免损失
+//          return 0;
+//        }
+//      }
+//      int p1 = 0;
+//      int p2 = 0;
+//      if(flag)
+//      {
+//        // 之前买票了, 
+//        // 1. 买了这个票
+//        p1 = process(index+2, false, prices) + prices[index];
+//        p2 = process(index+1, true, prices);
+//
+//        //   dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
+//      }
+//      else
+//      {
+//        // 没有买票
+//        //   dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
+//        p1 = process(index+1, true, prices) - prices[index];
+//        p2 = process(index+1, false, prices);
+//      }
+//      return max(p1,p2);
+//    }
+//
+//    int process2(vector<int>& prices)                
+//    {                                                
+//      int n = prices.size();                         
+//      vector<vector<int>> dp(n+2, vector<int>(2, 0));                   
+//      dp[n-1][0] = 0;
+//      dp[n-1][1] = prices[n-1];    
+//
+//      for(int i = n-2; i>=0; i--)                    
+//      {                                              
+//        // 这是之前没有买的                          
+//        dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
+//
+//        dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
+//      }    
+//
+//      return dp[0][0];    
+//
+//    }   
+//
+//    int process3(vector<int>& prices)
+//    {
+//      int n = prices.size();
+//
+//      // 这里有一个简单的转肽机的 思想
+//      vector<vector<int>> dp(n, vector<int>(3,0));
+//      dp[0][0] = -prices[0];
+//      dp[0][1] = 0;
+//      dp[0][1] = 0;
+//      for(int i = 1; i< n; i++)
+//      {
+//        dp[i][0] = max(dp[i-1][0],dp[i-1][1]-prices[i]);
+//        dp[i][1] = max(dp[i-1][1],dp[i-1][2]);
+//        dp[i][2] = dp[i-1][0]+prices[i];
+//      }
+//      return max(dp[n-1][0], max(dp[n-1][1], dp[n-1][2]));
+//    }
+//
+//    int maxProfit(vector<int>& prices) {
+//      if(prices.empty())
+//        return 0;
+//      return process2(prices);
+//      //return process(0, false, prices);
+//    }
+//};
+
+
+//https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 class Solution {
   public:
-    // falg 表示我们在之前买了票
-    int process(size_t index, bool flag,vector<int>& prices )
+
+    // [0,index) 中主语
+    int process(size_t index, bool falg, vector<int>& v, int fee)
     {
-      if(index >= prices.size())
+      if(index >= v.size())
         return 0;
-      if(index == prices.size()-1)
+      if(index == v.size()-1)
       {
-        if(flag)
+        if(falg)
         {
-          // 已近买了,我们可以直接卖出
-          return prices[index];
+          return v[index]-fee;
         }
-        else
+        else 
         {
-          // 没有买,为了避免损失
           return 0;
         }
       }
       int p1 = 0;
       int p2 = 0;
-      if(flag)
+      if(falg)
       {
-        // 之前买票了, 
-        // 1. 买了这个票
-        p1 = process(index+2, false, prices) + prices[index];
-        p2 = process(index+1, true, prices);
+        // 这里是我们已经有票了
 
-        //   dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
+        // 这里直接买了
+        p1 = v[index] -fee + process(index+1,false, v, fee);
+        p2 = process(index+1, true, v, fee);
       }
-      else
+      else 
       {
-        // 没有买票
-        //   dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
-        p1 = process(index+1, true, prices) - prices[index];
-        p2 = process(index+1, false, prices);
+        p1 = -v[index] + process(index+1, true, v, fee);
+        p2 = process(index+1, false,v, fee);
       }
       return max(p1,p2);
     }
-
-    int process2(vector<int>& prices)                
-    {                                                
-      int n = prices.size();                         
-      vector<vector<int>> dp(n+2, vector<int>(2, 0));                   
-      dp[n-1][0] = 0;
-      dp[n-1][1] = prices[n-1];    
-
-      for(int i = n-2; i>=0; i--)                    
-      {                                              
-        // 这是之前没有买的                          
-        dp[i][0] = std::max(dp[i+1][1]-prices[i], dp[i+1][0]);  
-
-        dp[i][1] = std::max(dp[i+2][0]+prices[i], dp[i+1][1]);    
-      }    
-
-      return dp[0][0];    
-
-    }   
-
-    int process3(vector<int>& prices)
+    int process2(vector<int>& v, int fee)
     {
-      int n = prices.size();
-
-      // 这里有一个简单的转肽机的 思想
-      vector<vector<int>> dp(n, vector<int>(3,0));
-      dp[0][0] = -prices[0];
-      dp[0][1] = 0;
-      dp[0][1] = 0;
-      for(int i = 1; i< n; i++)
+      int n = v.size();
+      vector<vector<int>> dp(n+1, vector<int>(2,0));
+      dp[n-1][0] = 0;
+      dp[n-1][1] = v[n-1]-fee;
+      for(int i = n-2; i>=0; i--)
       {
-        dp[i][0] = max(dp[i-1][0],dp[i-1][1]-prices[i]);
-        dp[i][1] = max(dp[i-1][1],dp[i-1][2]);
-        dp[i][2] = dp[i-1][0]+prices[i];
+        dp[i][0] = max(-v[i]+dp[i+1][1], dp[i+1][0]);
+        dp[i][1] = max(v[i]-fee+dp[i+1][0], dp[i+1][1]);
       }
-      return max(dp[n-1][0], max(dp[n-1][1], dp[n-1][2]));
+      return dp[0][0];
     }
-
-    int maxProfit(vector<int>& prices) {
+    int maxProfit(vector<int>& prices, int fee) {
       if(prices.empty())
         return 0;
-      return process2(prices);
-      //return process(0, false, prices);
+      return process(0, false, prices, fee);
     }
 };
-
-
 
 
 

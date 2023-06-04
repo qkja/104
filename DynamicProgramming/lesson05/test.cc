@@ -1,14 +1,117 @@
 /**
  * User: Qkj
- * Description: 子序列问题 
+ * Description: 子序列问题
  * Date: 2023-06-02
  * Time: 15:23
  */
 #include <vector>
+#include <algorithm>
+#include <iostream>
+#include <unordered_map>
 using namespace std;
 
+// https://leetcode.cn/problems/maximum-length-of-pair-chain/
+// class Solution
+// {
+// public:
+//   int process(vector<vector<int>> v)
+//   {
+//     sort(v.begin(), v.end(), [](const vector<int> &v1, const vector<int> &v2)
+//          { return v1[0] < v2[0]; });
+//     int n = v.size();
+//     vector<int> dp(n, 1);
+//     int maxLen = 1;
+//     for (int i = 1; i < n; i++)
+//     {
+//       for (int j = 0; j < i; j++)
+//       {
+
+//         if (v[j][1] < v[i][0])
+//         {
+//           dp[i] = max(dp[i], dp[j] + 1);
+//         }
+//       }
+//       maxLen = max(maxLen, dp[i]);
+//     }
+//     return maxLen;
+//   }
+//   int findLongestChain(vector<vector<int>> &pairs)
+//   {
+//     if (pairs.empty())
+//       return 0;
+//     return process(pairs);
+//   }
+// };
+
+// https://leetcode.cn/problems/longest-arithmetic-subsequence-of-given-difference/
+// class Solution
+// {
+// public:
+//   int process(vector<int> &v, int difference)
+//   {
+//     int n = v.size();
+//     unordered_map<int, int> m;
+//     m[v[0]] = 1;
+//     int maxLen = 1;
+//     for (int i = 1; i < n; i++)
+//     {
+//       int result = 1;
+//       auto iter = m.find(v[i] - difference);
+//       if (iter != m.end())
+//       {
+//         result = m[(v[i] - difference)] + 1;
+//       }
+
+//       m[v[i]] = result;
+
+//       maxLen = max(maxLen, result);
+//     }
+//     return maxLen;
+//   }
+//   int longestSubsequence(vector<int> &arr, int difference)
+//   {
+//     if (arr.empty())
+//       return 0;
+//     return process(arr, difference);
+//   }
+// };
+// https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/
+class Solution
+{
+public:
+  int process(vector<int> &v)
+  {
+    int n = v.size();
+    unordered_map<int, int> m;
+    for (size_t i = 0; i < n; i++)
+    {
+      m[v[i]] = i;
+    }
+    vector<vector<int>> dp(n, vector<int>(n, 2));
+    int result = 2;
+    for (int j = 2; j < n; j++)
+    {
+      for (int i = 1; i < j; i++)
+      {
+        int a = v[j] - v[i];
+        if (m.count(a) && a < v[i])
+        {
+          dp[i][j] = dp[m[a]][i] + 1;
+          result = max(result, dp[i][j]);
+        }
+      }
+    }
+    return result < 3 ? 0 : result;
+  }
+  int lenLongestFibSubseq(vector<int> &arr)
+  {
+    if (arr.empty())
+      return 0;
+    return process(arr);
+  }
+};
 // https://leetcode.cn/problems/longest-increasing-subsequence/
-//class Solution {
+// class Solution {
 //  public:
 //    int process(vector<int>& v)
 //    {
@@ -38,11 +141,9 @@ using namespace std;
 //    }
 //};
 
-
-
 // https://leetcode.cn/problems/wiggle-subsequence/submissions/
-//class Solution {
-//public:
+// class Solution {
+// public:
 //  int process(vector<int>& v)
 //  {
 //    int n = v.size();
@@ -83,96 +184,96 @@ using namespace std;
 //    }
 //};
 
-//https://leetcode.cn/problems/number-of-longest-increasing-subsequence/submissions/
+// https://leetcode.cn/problems/number-of-longest-increasing-subsequence/submissions/
 
-class Solution {
-  public:
-    int process(vector<int>& v)      
-    {             
-      int n = v.size();      
-      vector<int> f(n, 1);      
-      vector<int> g(n, 1);      
-      int maxLen = 0;    
+// class Solution
+// {
+// public:
+//   int process(vector<int> &v)
+//   {
+//     int n = v.size();
+//     vector<int> f(n, 1);
+//     vector<int> g(n, 1);
+//     int maxLen = 0;
 
-      for(int i= 1; i < n;i++)                                       
-      {               
-        int ret = 0;      
-        int count = 0;
-        for(int j = i-1; j>=0;j--)      
-        {         
-          if(v[j] < v[i])      
-          {           
-            ret = max(ret, f[j]);      
-          }      
-        }      
-        // 这里我们拿到了  3
-        for(int j = i-1; j >=0; j--)
-        {
-          if(v[j] < v[i] && f[j] == ret)
-          {
-            count += g[j];
-          }
-        }
-        g[i] = max(g[i], count);
+//     for (int i = 1; i < n; i++)
+//     {
+//       int ret = 0;
+//       int count = 0;
+//       for (int j = i - 1; j >= 0; j--)
+//       {
+//         if (v[j] < v[i])
+//         {
+//           ret = max(ret, f[j]);
+//         }
+//       }
+//       // 这里我们拿到了  3
+//       for (int j = i - 1; j >= 0; j--)
+//       {
+//         if (v[j] < v[i] && f[j] == ret)
+//         {
+//           count += g[j];
+//         }
+//       }
+//       g[i] = max(g[i], count);
 
-        f[i] += ret;  
-        maxLen = max(maxLen, f[i]);                                                                                                  
-      }     
-      int result = 0;
-      for(int i = 0; i<n;i++)
-      {
-        if(maxLen == f[i])
-          result += g[i];
-      }
-      return result;         
-    }
+//       f[i] += ret;
+//       maxLen = max(maxLen, f[i]);
+//     }
+//     int result = 0;
+//     for (int i = 0; i < n; i++)
+//     {
+//       if (maxLen == f[i])
+//         result += g[i];
+//     }
+//     return result;
+//   }
 
-    int process2(vector<int>& v)
-    {
+//   int process2(vector<int> &v)
+//   {
 
-      int n = v.size();
-      vector<int> f(n, 1);
-      vector<int> g(n, 1);
+//     int n = v.size();
+//     vector<int> f(n, 1);
+//     vector<int> g(n, 1);
 
-      int retlen = 1;
-      int retcount = 1;
-      for(int i =1; i<n; i++)
-      {
-        for(int j=0; j < i; j++)
-        {
-          if(v[j] < v[i])
-          {
-            if((f[j] +1) == f[i])
-            {
-              g[i] += g[j];
-            }
-            else if((f[j] +1)  > f[i])
-            {
-              f[i] = f[j]+1;
-              g[i] = g[j];
-            }
-          }
-
-        }
-        // 每次判断
-        if(f[i] > retlen)
-        {
-          retlen = f[i];
-          retcount = g[i];
-        }                                                                                                                          
-        else if(f[i] == retlen)
-        {
-          retcount += g[i];
-        }
-      }
-      return retcount;
-
-    }   
-    int findNumberOfLIS(vector<int>& nums) {
-      if(nums.empty())
-        return 0; 
-      if(nums.size() == 1)
-        return 1;
-      return process(nums);
-    }
-};
+//     int retlen = 1;
+//     int retcount = 1;
+//     for (int i = 1; i < n; i++)
+//     {
+//       for (int j = 0; j < i; j++)
+//       {
+//         if (v[j] < v[i])
+//         {
+//           if ((f[j] + 1) == f[i])
+//           {
+//             g[i] += g[j];
+//           }
+//           else if ((f[j] + 1) > f[i])
+//           {
+//             f[i] = f[j] + 1;
+//             g[i] = g[j];
+//           }
+//         }
+//       }
+//       // 每次判断
+//       if (f[i] > retlen)
+//       {
+//         retlen = f[i];
+//         retcount = g[i];
+//       }
+//       else if (f[i] == retlen)
+//       {
+//         retcount += g[i];
+//       }
+//     }
+//     return retcount;
+//   }
+//   int findNumberOfLIS(vector<int> &nums)
+//   {
+//     if (nums.empty())
+//       return 0;
+//     if (nums.size() == 1)
+//       return 1;
+//     return process(nums);
+//   }
+// };

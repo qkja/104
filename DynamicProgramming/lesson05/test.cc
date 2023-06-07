@@ -9,6 +9,101 @@
 #include <iostream>
 #include <unordered_map>
 using namespace std;
+// https://leetcode.cn/problems/arithmetic-slices-ii-subsequence/
+class Solution
+{
+public:
+  int process(vector<int> &v)
+  {
+
+    int n = v.size();
+    unordered_map<long long, vector<int>> m;
+    for (int i = 0; i < n; i++)
+    {
+      m[v[i]].push_back(i);
+    }
+
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    int maxLen = 0;
+    for (int j = 1; j < n; j++)
+    {
+
+      for (int i = j - 1; i >= 0; i--)
+      {
+   
+        long long ret = (long long)2*(long long)v[i] - v[j] ;
+        auto iter = m.find(ret);
+        if (iter == m.end())
+          continue;
+        for (int k = 0; k < iter->second.size(); k++)
+        {
+          int index = (iter->second)[k];
+          if (index >= i)
+            continue;
+          dp[i][j] += (dp[index][i] + 1);
+        }
+        maxLen += dp[i][j];
+      }
+    }
+    return maxLen;
+  }
+  int numberOfArithmeticSlices(vector<int> &nums)
+  {
+    if (nums.size() < 3)
+      return 0;
+    return process(nums);
+  }
+};
+// https://leetcode.cn/problems/longest-arithmetic-subsequence/<Paste>
+// class Solution
+// {
+// public:
+//   int find(vector<int> &v, int right, int target)
+//   {
+//     for (int i = right; i >= 0; i--)
+//       if (v[i] == target)
+//         return i;
+//     return -1;
+//   }
+//   int process(vector<int> &v)
+//   {
+//     int n = v.size();
+//     vector<vector<int>> dp(n, vector<int>(n, 2));
+//     unordered_map<int, int> m;
+//     int maxLen = 2;
+//     m[v[0]] = 0;
+//     for (int j = 1; j < n; j++)
+//     {
+
+//       for (int i = j - 1; i >= 0; i--)
+//       {
+//         int len = v[j] - v[i];
+//         int ret = v[i] - len;
+//         if (m.find(ret) != m.end())
+//         {
+//           int index = find(v, i - 1, v[i] - len);
+//           if (index != -1)
+//             dp[i][j] = dp[index][i] + 1;
+//           // 存在会出错的,我们需要筛选
+//           //    dp[i][j] = 1+dp[m[ret]][i];
+//         }
+//         // int index = find(v, i-1, v[i]-len);
+//         // if(index != -1)
+//         //   dp[i][j] = dp[index][i]+1;
+//         maxLen = max(maxLen, dp[i][j]);
+//       }
+//       m[v[j]] = j;
+//     }
+
+//     return maxLen;
+//   }
+//   int longestArithSeqLength(vector<int> &nums)
+//   {
+//     if (nums.empty())
+//       return 0;
+//     return process(nums);
+//   }
+// };
 
 // https://leetcode.cn/problems/maximum-length-of-pair-chain/
 // class Solution
@@ -76,40 +171,40 @@ using namespace std;
 //   }
 // };
 // https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/
-class Solution
-{
-public:
-  int process(vector<int> &v)
-  {
-    int n = v.size();
-    unordered_map<int, int> m;
-    for (size_t i = 0; i < n; i++)
-    {
-      m[v[i]] = i;
-    }
-    vector<vector<int>> dp(n, vector<int>(n, 2));
-    int result = 2;
-    for (int j = 2; j < n; j++)
-    {
-      for (int i = 1; i < j; i++)
-      {
-        int a = v[j] - v[i];
-        if (m.count(a) && a < v[i])
-        {
-          dp[i][j] = dp[m[a]][i] + 1;
-          result = max(result, dp[i][j]);
-        }
-      }
-    }
-    return result < 3 ? 0 : result;
-  }
-  int lenLongestFibSubseq(vector<int> &arr)
-  {
-    if (arr.empty())
-      return 0;
-    return process(arr);
-  }
-};
+// class Solution
+//{
+//	public:
+//		int process(vector<int> &v)
+//		{
+//			int n = v.size();
+//			unordered_map<int, int> m;
+//			for (size_t i = 0; i < n; i++)
+//			{
+//				m[v[i]] = i;
+//			}
+//			vector<vector<int>> dp(n, vector<int>(n, 2));
+//			int result = 2;
+//			for (int j = 2; j < n; j++)
+//			{
+//				for (int i = 1; i < j; i++)
+//				{
+//					int a = v[j] - v[i];
+//					if (m.count(a) && a < v[i])
+//					{
+//						dp[i][j] = dp[m[a]][i] + 1;
+//						result = max(result, dp[i][j]);
+//					}
+//				}
+//			}
+//			return result < 3 ? 0 : result;
+//		}
+//		int lenLongestFibSubseq(vector<int> &arr)
+//		{
+//			if (arr.empty())
+//				return 0;
+//			return process(arr);
+//		}
+//};
 // https://leetcode.cn/problems/longest-increasing-subsequence/
 // class Solution {
 //  public:

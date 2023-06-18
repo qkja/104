@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 // https://leetcode.cn/problems/move-zeroes/
@@ -161,3 +162,214 @@ using namespace std;
 //     return maxVal;
 //   }
 // };
+// https://leetcode.cn/problems/valid-triangle-number/
+// class Solution
+// {
+// public:
+//   int triangleNumber(vector<int> &nums)
+//   {
+//     if (nums.size() < 3)
+//       return 0;
+//     vector<int> v(nums.begin(), nums.end());
+//     sort(v.begin(), v.end());
+//     int count = 0;
+//     for (int i = v.size() - 1; i >= 2; i--)
+//     {
+//       int begin = 0;
+//       int end = i - 1;
+
+//       while (begin < end)
+//       {
+//         if (v[begin] + v[end] > v[i])
+//         {
+//           count += (end - begin);
+//           end--;
+//         }
+//         else
+//         {
+//           // 这里没有不对,对与上面的end发生变化,我们可以很容的想到end是想左侧移动的,也就是值变得更加小了,此时我们begin的值是不需要移动过的
+//           begin++;
+//         }
+//       }
+//     }
+//     return count;
+//   }
+// };
+// class Solution
+// {
+// public:
+//   int triangleNumber(vector<int> &nums)
+//   {
+//     if (nums.size() < 3)
+//       return 0;
+//     vector<int> v(nums.begin(), nums.end());
+//     sort(v.begin(), v.end());
+//     int count = 0;
+//     for (int i = v.size() - 1; i >= 2; i--)
+//     {
+//       int end = i - 1;
+//       for (; end >= 1; end--)
+//       {
+//         int begin = 0;
+//         while (begin < end)
+//         {
+//           if (v[begin] + v[end] > v[i])
+//           {
+//             count += (end - begin);
+//             break;
+//           }
+//           else
+//           {
+//             begin++;
+//           }
+//         }
+//       }
+//     }
+//     return count;
+//   }
+// };
+// https://leetcode.cn/problems/he-wei-sde-liang-ge-shu-zi-lcof/
+// class Solution
+// {
+// public:
+//   vector<int> twoSum(vector<int> &nums, int target)
+//   {
+//     vector<int> v;
+//     if (nums.empty())
+//       return v;
+//     int left = 0;
+//     int right = nums.size() - 1;
+//     while (left < right)
+//     {
+//       int sum = nums[left] + nums[right];
+//       if (sum == target)
+//       {
+//         v.push_back(nums[left]);
+//         v.push_back(nums[right]);
+//         return v;
+//       }
+//       else if (sum < target)
+//       {
+//         left++;
+//       }
+//       else
+//       {
+//         right--;
+//       }
+//     }
+//     return v;
+//   }
+// };
+// https://leetcode.cn/problems/3sum/
+// class Solution
+// {
+// public:
+//   vector<vector<int>> threeSum(vector<int> &nums)
+//   {
+//     vector<vector<int>> v;
+//     if (nums.empty())
+//       return v;
+//     sort(nums.begin(), nums.end());
+//     int begin = 0;
+//     while (begin < (nums.size() - 2))
+//     {
+//       if(nums[begin] > 0)
+//         break;
+//       // 这里等一下
+//       int left = begin + 1;
+//       int right = nums.size() - 1;
+//       // 这里开始在[l,r] 中找到   和等于  nums[begin]的
+//       while (left < right)
+//       {
+//         int sum = nums[left] + nums[right];
+//         if (sum == -nums[begin])
+//         {
+//           v.push_back({nums[begin], nums[left++], nums[right--]});
+//           while (left < right && nums[left] == nums[left - 1])
+//           {
+//             left++;
+//           }
+//           while (left < right && nums[right] == nums[right + 1])
+//           {
+//             right--;
+//           }
+//         }
+//         else if(sum > -nums[begin])
+//         {
+//             right--;
+//         }
+//         else
+//         {
+//             left++;
+//         }
+//       }
+//       begin++;
+//       while (begin < (nums.size() - 2) && nums[begin - 1] == nums[begin])
+//       {
+//         begin++;
+//       }
+//     }
+//     return v;
+//   }
+// };
+// https://leetcode.cn/problems/4sum/
+class Solution
+{
+public:
+  vector<vector<int>> fourSum(vector<int> &nums, int target)
+  {
+    vector<vector<int>> v;
+    if (nums.empty())
+      return v;
+    sort(nums.begin(), nums.end());
+    int index = 0;
+
+    while (index < (int)(nums.size() - 3))
+    {
+
+      int begin = index + 1;
+
+      while (begin < (nums.size() - 2))
+      {
+
+        // 这里等一下
+        int left = begin + 1;
+        int right = nums.size() - 1;
+        // 这里开始在[l,r] 中找到   和等于  nums[begin]的
+        while (left < right)
+        {
+
+          long long sum = ((long long)nums[left] + nums[right] + nums[begin] + nums[index]);
+          if (sum == target)
+          {
+            v.push_back({nums[index], nums[begin], nums[left++], nums[right--]});
+            while (left < right && nums[left] == nums[left - 1])
+            {
+              left++;
+            }
+            while (left < right && nums[right] == nums[right + 1])
+            {
+              right--;
+            }
+          }
+          else if (sum > target)
+          {
+            right--;
+          }
+          else
+          {
+            left++;
+          }
+        }
+        begin++;
+        while (begin < (nums.size() - 2) && nums[begin - 1] == nums[begin])
+          begin++;
+      }
+
+      index++;
+      while (index < (nums.size() - 3) && nums[index - 1] == nums[index])
+        index++;
+    }
+    return v;
+  }
+};

@@ -92,7 +92,7 @@ using namespace std;
 //     int right = nums.size() - 1;
 //     // 找第一个
 //     while (left <= right)
-//     {
+//     {d
 //       int mid = (left + right) / 2;
 //       if (nums[mid] == target)
 //       {
@@ -145,3 +145,107 @@ using namespace std;
 //     return nums[right];
 //   }
 // };
+
+// https://leetcode.cn/problems/peak-index-in-a-mountain-array/
+// class Solution
+// {
+// public:
+//   int peakIndexInMountainArray(vector<int> &arr)
+//   {
+//     if (arr.empty())
+//       return 0;
+//     int left = 1;
+//     int right = arr.size() - 2;
+//     while (left < right)
+//     {
+//       int mid = left + (right - left + 1) / 2;
+//       if (arr[mid] > arr[mid - 1])
+//       {
+//         left = mid;
+//       }
+//       else
+//       {
+//         right = mid - 1;
+//       }
+//     }
+//     return left;
+//   }
+// };
+// https://leetcode.cn/problems/find-peak-element/
+// class Solution
+// {
+// public:
+//   int findPeakElement(vector<int> &arr)
+//   {
+//     class Solution
+//     {
+//     public:
+//       int findPeakElement(vector<int> &arr)
+//       {
+//         if (arr.empty())
+//           return 0;
+//         int left = 0;
+//         int right = arr.size() - 1;
+//         while (left < right)
+//         {
+//           int mid = left + (right - left + 1) / 2;
+//           if (arr[mid] > arr[mid - 1])
+//           {
+//             left = mid;
+//           }
+//           else
+//           {
+//             right = mid - 1;
+//           }
+//         }
+//         return left;
+//       }
+//     };
+//   }
+// };
+// https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/
+// class Solution
+// {
+// public:
+//   int findMin(vector<int> &nums)
+//   {
+//     if (nums.empty())
+//       return 0;
+//     int left = 0;
+//     int right = nums.size() - 1;
+//     while (left < right)
+//     {
+//       int mid = left + (right - left) / 2;
+//       if (nums[mid] > nums[right])
+//       {
+//         left = mid+1;
+//       }
+//       else
+//       {
+//         right = mid;
+//       }
+//     }
+//     return nums[left];
+//   }
+// };
+// https://leetcode.cn/problems/que-shi-de-shu-zi-lcof/
+class Solution
+{
+public:
+  int missingNumber(vector<int> &nums)
+  {
+    if (nums.empty())
+      return 0;
+    int left = 0;
+    int right = nums.size() - 1;
+    while (left < right)
+    {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] == mid)
+        left = mid + 1;
+      else
+        right = mid;
+    }
+    return nums[left] == left ? left + 1 : left;
+  }
+};

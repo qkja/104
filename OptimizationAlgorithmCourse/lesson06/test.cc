@@ -156,10 +156,94 @@ using namespace std;
 //   }
 // };
 
+// class Solution
+// {
+// public:
+//   string convert(string s, int numRows)
+//   {
+//     if (numRows == 1 || numRows >= s.size())
+//       return s;
+//     string ret;
+//     int d = 2 * numRows - 2;
+//     int n = s.size();
+//     // 第一行
+//     for (int i = 0; i < s.size(); i += d)
+//       ret += s[i];
+//     // 中间行
+//     for (int k = 1; k < numRows - 1; k++)
+//     {
+//       for (int i = k, j = d - k; i < n || j < n; i += d, j += d)
+//       {
+//         if (i < n)
+//           ret += s[i];
+//         if (j < n)
+//           ret += s[j];
+//       }
+//     }
+//     for (int i = numRows - 1; i < s.size(); i += d)
+//       ret += s[i];
+//     return ret;
+//   }
+// };
+// https://leetcode.cn/problems/count-and-say/
+// class Solution
+// {
+// public:
+//   string countAndSay(int n)
+//   {
+//     string result = "1";
+//     for (int i = 1; i < n; i++)
+//     {
+//       string tmp;
+//       for (int left = 0, right = 0; right < result.size();)
+//       {
+//         while (right < result.size() && result[right] == result[left])
+//         {
+//           right++;
+//         }
+//         tmp += to_string(right-left) + result[left];
+//         left = right;
+//       }
+//       result = tmp;
+//     }
+//     return result;
+//   }
+// };
+// https://leetcode.cn/problems/minimum-number-of-frogs-croaking/submissions/
+#include <unordered_map>
 class Solution
 {
 public:
-  string convert(string s, int numRows)
+  int minNumberOfFrogs(string croakOfFrogs)
   {
+    string ret = "croak";
+    int n = ret.size();
+    vector<int> hash1(n);
+    unordered_map<char, int> index;
+    for (int i = 0; i < n; i++)
+      index[ret[i]] = i;
+
+    for (int i = 0; i < croakOfFrogs.size(); i++)
+    {
+      if (croakOfFrogs[i] == 'c')
+      {
+        if (hash1[n - 1] != 0)
+          hash1[n - 1]--;
+        // 必须++
+        hash1[0]++;
+      }
+      else
+      {
+        int j = index[croakOfFrogs[i]];
+        if (hash1[j - 1] == 0)
+          return -1;
+        hash1[j - 1]--;
+        hash1[j]++;
+      }
+    }
+    for (int i = 0; i < n - 1; i++)
+      if (hash1[i] != 0)
+        return -1;
+    return hash1[n - 1];
   }
 };

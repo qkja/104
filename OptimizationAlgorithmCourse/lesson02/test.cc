@@ -418,52 +418,52 @@ using namespace std;
 //     }
 // };
 
-class Solution
-{
-public:
-    string minWindow(string s, string t)
-    {
-        string result;
-        if (s.empty() || t.empty())
-            return result;
-        int m1[128] = {0};
-        int m2[128] = {0};
-        int kinds = 0;
-        for (auto &e : t)
-        {
-            if (m1[e]++ == 0)
-            {
-                kinds++;
-            }
-        }
+// class Solution
+// {
+// public:
+//     string minWindow(string s, string t)
+//     {
+//         string result;
+//         if (s.empty() || t.empty())
+//             return result;
+//         int m1[128] = {0};
+//         int m2[128] = {0};
+//         int kinds = 0;
+//         for (auto &e : t)
+//         {
+//             if (m1[e]++ == 0)
+//             {
+//                 kinds++;
+//             }
+//         }
 
-        int begin = 0;
-        int end = 0;
-        int count = 0; // 统计种类
-        int minLen = INT32_MAX;
-        int index = -1;
-        for (; end < s.size(); end++)
-        {
-            // 直接进窗口
-            m2[s[end]]++;
-            if (m2[s[end]] == m1[s[end]])
-                count++;
+//         int begin = 0;
+//         int end = 0;
+//         int count = 0; // 统计种类
+//         int minLen = INT32_MAX;
+//         int index = -1;
+//         for (; end < s.size(); end++)
+//         {
+//             // 直接进窗口
+//             m2[s[end]]++;
+//             if (m2[s[end]] == m1[s[end]])
+//                 count++;
 
-            while (count == kinds)
-            {
-                if (end - begin + 1 < minLen)
-                {
-                    minLen = end - begin + 1;
-                    index = begin;
-                }
-                char out = s[begin++];
-                // 需要判断一下
-                if (m2[out]-- == m1[out])
-                    count--;
-            }
-        }
-        if(index == -1)
-        return result;
-        return s.substr(index, minLen);
-    }
-};
+//             while (count == kinds)
+//             {
+//                 if (end - begin + 1 < minLen)
+//                 {
+//                     minLen = end - begin + 1;
+//                     index = begin;
+//                 }
+//                 char out = s[begin++];
+//                 // 需要判断一下
+//                 if (m2[out]-- == m1[out])
+//                     count--;
+//             }
+//         }
+//         if(index == -1)
+//         return result;
+//         return s.substr(index, minLen);
+//     }
+// };

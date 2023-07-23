@@ -118,23 +118,30 @@ using namespace std;
 //   }
 // };
 // https://leetcode.cn/problems/product-of-array-except-self/
-class Solution
-{
+// class Solution
+// {
+// public:
+//   // 使用前缀和的变体
+//   // 前缀积
+//   // 后缀积
+//   vector<int> productExceptSelf(vector<int> &nums)
+//   {
+//     vector<int> f(nums.size(), 1);
+//     vector<int> g(nums.size(), 1);
+//     for (int i = 1; i < nums.size(); i++)
+//       f[i] = f[i - 1] * nums[i - 1];
+//     for (int i = nums.size() - 2; i >= 0; i--)
+//       g[i] = g[i + 1] * nums[i + 1];
+//     vector<int> ret(nums.size());
+//     for (int i = 0; i < nums.size(); i++)
+//       ret[i] = f[i] * g[i];
+//     return ret;
+//   }
+// };
+//https://leetcode.cn/problems/subarray-sum-equals-k/
+class Solution {
 public:
-  // 使用前缀和的变体
-  // 前缀积
-  // 后缀积
-  vector<int> productExceptSelf(vector<int> &nums)
-  {
-    vector<int> f(nums.size(), 1);
-    vector<int> g(nums.size(), 1);
-    for (int i = 1; i < nums.size(); i++)
-      f[i] = f[i - 1] * nums[i - 1];
-    for (int i = nums.size() - 2; i >= 0; i--)
-      g[i] = g[i + 1] * nums[i + 1];
-    vector<int> ret(nums.size());
-    for (int i = 0; i < nums.size(); i++)
-      ret[i] = f[i] * g[i];
-    return ret;
-  }
+    int subarraySum(vector<int>& nums, int k) {
+
+    }
 };

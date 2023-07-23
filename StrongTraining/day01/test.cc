@@ -1,6 +1,6 @@
 /**
  * User: Qkj
- * Description: 
+ * Description:
  * Date: 2023-05-26
  * Time: 10:24
  */
@@ -23,33 +23,23 @@ int main()
   std::getline(std::cin, str2);
 
   std::unordered_set<char> set;
-  for(auto& e : str2)
+  for (auto &e : str2)
   {
     set.insert(e);
   }
   std::string result;
-  for(auto& e: str1)
+  for (auto &e : str1)
   {
     auto iter = set.find(e);
-    if(iter == set.end())
+    if (iter == set.end())
       result += e;
   }
   std::cout << result << std::endl;
   return 0;
 }
 
-
-
-
-
-
-
-
-
-
-
 // https://www.nowcoder.com/questionTerminal/6736cc3ffd1444a4a0057dee89be789b?orderByHotValue=1&page=1&onlyReference=false
-//long long maxSum(const std::vector<long long>& v, int n)
+// long long maxSum(const std::vector<long long>& v, int n)
 //{
 //  long long sum = 0;
 //  for(std::size_t i = n; i < v.size(); i+=2)
@@ -57,10 +47,10 @@ int main()
 //  return sum;
 //}
 //
-//int main() {
+// int main() {
 //    int n = 0;
 //
-//    while (cin >> n) 
+//    while (cin >> n)
 //    {
 //      std::vector<long long> v(3*n);
 //      for(int i = 0; i < 3*n; i++)
@@ -70,4 +60,5 @@ int main()
 //    }
 //    return 0;
 //}
+
 

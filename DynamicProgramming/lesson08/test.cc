@@ -202,26 +202,26 @@ using namespace std;
 // };
 
 // https://leetcode.cn/problems/last-stone-weight-ii/
-class Solution
-{
-public:
-  int lastStoneWeightII(vector<int> &stones)
-  {
-    // 1. 准备工作
-    int sum = 0;
-    for (auto x : stones)
-      sum += x;
-    int n = stones.size(), m = sum / 2;
-    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
-    for (int i = 1; i <= n; i++)
-      for (int j = 0; j <= m; j++)
-      {
-        dp[i][j] = dp[i - 1][j];
-        if (j >= stones[i - 1])
-          dp[i][j] = max(dp[i][j], dp[i - 1][j - stones[i - 1]] +
-                                       stones[i - 1]);
-      }
-    // 3. 返回结果
-    return sum - 2 * dp[n][m];
-  }
-};
+// class Solution
+// {
+// public:
+//   int lastStoneWeightII(vector<int> &stones)
+//   {
+//     // 1. 准备工作
+//     int sum = 0;
+//     for (auto x : stones)
+//       sum += x;
+//     int n = stones.size(), m = sum / 2;
+//     vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+//     for (int i = 1; i <= n; i++)
+//       for (int j = 0; j <= m; j++)
+//       {
+//         dp[i][j] = dp[i - 1][j];
+//         if (j >= stones[i - 1])
+//           dp[i][j] = max(dp[i][j], dp[i - 1][j - stones[i - 1]] +
+//                                        stones[i - 1]);
+//       }
+//     // 3. 返回结果
+//     return sum - 2 * dp[n][m];
+//   }
+// };

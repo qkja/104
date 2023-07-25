@@ -1,5 +1,5 @@
 mybin:test.c
-	gcc -o $@ $^
+	gcc -o $@ $^ -lm
 
 .PHONY:clean
 clean:

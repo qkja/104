@@ -2,13 +2,15 @@
 #define __TCPSERVER_HPP__
 #include "log.hpp"
 #include "util.hpp"
+
 class ServerTCP
 {
+public:
   using callback_t = std::function<void(int, std::string, uint16_t)>;
 
 public:
   ServerTCP(callback_t func, uint16_t port, const std::string &ip = "")
-      : func_(func), port_(port), ip_(ip), listenSock_(-1)
+      : func_(func), port_(port), ip_(ip), tp_(nullptr), listenSock_(-1)
   {
   }
   ~ServerTCP()
@@ -25,7 +27,6 @@ public:
       logMessage(FATAL, "socket: %s", strerror(errno));
       exit(SOCKET_ERR);
     }
-
     logMessage(DEBUG, "socket: %s, %d", strerror(errno), listenSock_);
 
     // 2. bind绑定
@@ -51,17 +52,22 @@ public:
     }
     logMessage(DEBUG, "listen: %s, %d", strerror(errno), listenSock_);
     // 运行别人来连接你了
+
+    // 4. 加载线程池
+    tp_ = ThreadPool<Task>::getInstance();
   }
 
-  // 加载
   void loop()
   {
-
+    tp_->start();
+    logMessage(DEBUG, "thread pool start success, thread num: %d", tp_->threadNum());
     while (true)
     {
       struct sockaddr_in peer;
       socklen_t len = sizeof(peer);
       // 4. 获取连接, accept 的返回值是一个新的socket fd ？？
+      // 4.1 listenSock_: 监听 && 获取新的链接-> sock
+      // 4.2 serviceSock: 给用户提供新的socket服务
       int serviceSock = accept(listenSock_, (struct sockaddr *)&peer, &len);
       if (serviceSock < 0)
       {
@@ -75,9 +81,11 @@ public:
 
       logMessage(DEBUG, "accept: %s | %s[%d], socket fd: %d",
                  strerror(errno), peerIp.c_str(), peerPort, serviceSock);
-      func_(serviceSock, peerIp, peerPort);
-      // 大小写转换
-      // transService(serviceSock, peerIp, peerPort);
+
+      // 创建任务
+      Task t(serviceSock, peerIp, peerPort, func_);
+      // 提交任务
+      tp_->push(t);
     }
   }
 
@@ -88,6 +96,8 @@ private:
   uint16_t port_;
   // ip
   std::string ip_;
+  // 引入线程池
+  ThreadPool<Task> *tp_;
   callback_t func_;
 };
 

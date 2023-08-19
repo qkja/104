@@ -4,8 +4,10 @@
  * Date: 2023-08-18
  * Time: 22:53
  */
-#include "./task/transService.hpp"
 #include "TCPServer.hpp"
+#include "./daemonize.hpp"
+#include "./task/transService.hpp"
+#include "./task/execCommand.hpp"
 static void Usage(std::string proc)
 {
   std::cerr << "Usage:\n\t" << proc << " port ip" << std::endl;
@@ -21,12 +23,13 @@ int main(int argc, char *argv[])
     Usage(argv[0]);
     exit(USAGE_ERR);
   }
+  daemonize();// 守护进程化
   std::uint16_t port = atoi(argv[1]);
   std::string ip;
   if (argc == 3)
     ip = argv[2];
 
-  ServerTCP svr(transService, port, ip);
+  ServerTCP svr(execCommand, port, ip);
   svr.init();
   svr.loop();
   return 0;

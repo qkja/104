@@ -1,12 +1,12 @@
 #ifndef __UTIL_HPP__
 #define __UTIL_HPP__
-// 设置 非阻塞fd
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
 
 namespace Util
 {
+  // 设置 非阻塞fd
   bool SetNonBlock(int sock)
   {
 

@@ -1,6 +1,6 @@
 {
   "files.associations": {
-    "stdlib.h": "c",
+    "iosfwd": "cpp",
     "array": "cpp",
     "atomic": "cpp",
     "strstream": "cpp",
@@ -43,7 +43,6 @@
     "fstream": "cpp",
     "initializer_list": "cpp",
     "iomanip": "cpp",
-    "iosfwd": "cpp",
     "iostream": "cpp",
     "istream": "cpp",
     "limits": "cpp",
@@ -55,7 +54,6 @@
     "cfenv": "cpp",
     "cinttypes": "cpp",
     "typeindex": "cpp",
-    "typeinfo": "cpp",
-    "*.ipp": "cpp"
+    "typeinfo": "cpp"
   }
 }

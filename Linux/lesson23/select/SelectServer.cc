@@ -90,7 +90,7 @@ static void HandlerEvent(int listensock, fd_set readfds)
         if (s > 0)
         {
           buffer[s] = 0;
-          cout << "发送: " << buffer;
+          cout << "s: " << s << "发送: " << buffer << endl;
         }
         else if (0 == s)
         {

@@ -1,7 +1,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <iostream>
-
+// 缺省函数是声明的时候后给,定义就不用给了
 // int main()
 // {
 //   int ret = access("../lesson01/file.txt", F_OK);
@@ -40,3 +40,14 @@
 
 //   return 0;
 // }
+
+void func(int a = 10)
+{
+	printf("a == %d\n", a);
+}
+int main()
+{
+	func();
+	func(20);
+	return 0;
+}

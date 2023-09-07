@@ -4,11 +4,11 @@
  * Date: 2023-05-27
  * Time: 22:34
  */
-#include <vector>
-#include <set>
-#include <map>
-#include <algorithm>
-using namespace std;
+//#include <vector>
+//#include <set>
+//#include <map>
+//#include <algorithm>
+//using namespace std;
 // https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/
 //class Solution {
 //  public:
@@ -119,117 +119,117 @@ using namespace std;
 //};
 
 // https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/
-class Solution {
-  public:
-    int process(size_t index, int flag, int times, vector<int>& v)
-    {
-      if(index >= v.size())
-        return 0;
-      if(times < 0)
-        return 0;
-      if(index == v.size()-1)
-      {
-        if(flag)
-        {
-          // 有股票,直接买
-          return v[index];
-        }
-        else 
-        {
-          return 0;
-        }
-      }
-
-      // 站在当前位置
-      int p1 = 0;
-      int p2 = 0;
-      if(flag)
-      {
-        // 有股票
-        p1 = v[index] + process(index+1, false, times, v);
-        p2 = process(index+1, true, times, v);
-      }
-      else 
-      {
-        // 没有股票
-        p1 = -v[index] + process(index+1, true, times-1, v);
-        p2 = process(index+1, false, times, v);
-      }
-      return max(p1,p2);
-    }
-
-    int process2(int k, vector<int>& v)
-    {
-      int n = v.size();
-      struct Node
-      {
-        Node(int k)
-          :_v(k+1,0)
-        {
-        }
-        vector<int> _v;
-      };
-
-      vector<vector<Node>> dp(n+1, vector<Node>(2, Node(k)));
-      //这里是直接卖出
-      // 2 -> 3 
-      // k -> k+1
-      for(int i = 0; i <= k-1; i++)
-      {
-        dp[n-1][1]._v[i] = v.back();
-      }
-
-      for(int i = n-2; i>=0; i--)
-      {
-        // 有股票
-        for(size_t j = 0; j<dp[i][1]._v.size(); j++)
-        {
-          dp[i][1]._v[j] = std::max(v[i]+dp[i+1][0]._v[j], dp[i+1][1]._v[j]);
-        }
-
-        for(size_t j = 1; j<dp[i][1]._v.size(); j++)
-        {
-
-          dp[i][0]._v[j] = max(-v[i]+dp[i+1][1]._v[j-1],dp[i+1][0]._v[j]);
-        }
-      }
-      return dp[0][0]._v[k];
-    }
-
-
-
-    int process3(int k, vector<int>& v)
-    {
-      const int INT = 0x3f3f3f3f;
-      int n = v.size();
-      vector<vector<int>> f(n, vector<int>(k+1, -INT));
-      auto g = f;
-      f[0][0] = -v[0];                                                                                                              
-      g[0][0] = 0;
-      for(int i = 1;i<n; i++)
-      {
-        for(int j = 0; j < k+1; j++)
-        {
-          f[i][j] = max(f[i-1][j], g[i-1][j]-v[i]);
-          g[i][j] = g[i-1][j];
-          if(j>=1)
-            g[i][j] = max(g[i][j], f[i-1][j-1]+v[i]);
-        }
-      }
-      int ret = 0;
-      for(int j =0; j < k+1; j++)
-      {
-        ret =max(ret, g[n-1][j]);
-      }
-      return ret;
-
-    }
-    int maxProfit(vector<int>& prices) {
-      if(prices.empty())
-        return 0;
-      return process(0, false, 2, prices);
-    }
-};
+//class Solution {
+//  public:
+//    int process(size_t index, int flag, int times, vector<int>& v)
+//    {
+//      if(index >= v.size())
+//        return 0;
+//      if(times < 0)
+//        return 0;
+//      if(index == v.size()-1)
+//      {
+//        if(flag)
+//        {
+//          // 有股票,直接买
+//          return v[index];
+//        }
+//        else 
+//        {
+//          return 0;
+//        }
+//      }
+//
+//      // 站在当前位置
+//      int p1 = 0;
+//      int p2 = 0;
+//      if(flag)
+//      {
+//        // 有股票
+//        p1 = v[index] + process(index+1, false, times, v);
+//        p2 = process(index+1, true, times, v);
+//      }
+//      else 
+//      {
+//        // 没有股票
+//        p1 = -v[index] + process(index+1, true, times-1, v);
+//        p2 = process(index+1, false, times, v);
+//      }
+//      return max(p1,p2);
+//    }
+//
+//    int process2(int k, vector<int>& v)
+//    {
+//      int n = v.size();
+//      struct Node
+//      {
+//        Node(int k)
+//          :_v(k+1,0)
+//        {
+//        }
+//        vector<int> _v;
+//      };
+//
+//      vector<vector<Node>> dp(n+1, vector<Node>(2, Node(k)));
+//      //这里是直接卖出
+//      // 2 -> 3 
+//      // k -> k+1
+//      for(int i = 0; i <= k-1; i++)
+//      {
+//        dp[n-1][1]._v[i] = v.back();
+//      }
+//
+//      for(int i = n-2; i>=0; i--)
+//      {
+//        // 有股票
+//        for(size_t j = 0; j<dp[i][1]._v.size(); j++)
+//        {
+//          dp[i][1]._v[j] = std::max(v[i]+dp[i+1][0]._v[j], dp[i+1][1]._v[j]);
+//        }
+//
+//        for(size_t j = 1; j<dp[i][1]._v.size(); j++)
+//        {
+//
+//          dp[i][0]._v[j] = max(-v[i]+dp[i+1][1]._v[j-1],dp[i+1][0]._v[j]);
+//        }
+//      }
+//      return dp[0][0]._v[k];
+//    }
+//
+//
+//
+//    int process3(int k, vector<int>& v)
+//    {
+//      const int INT = 0x3f3f3f3f;
+//      int n = v.size();
+//      vector<vector<int>> f(n, vector<int>(k+1, -INT));
+//      auto g = f;
+//      f[0][0] = -v[0];                                                                                                              
+//      g[0][0] = 0;
+//      for(int i = 1;i<n; i++)
+//      {
+//        for(int j = 0; j < k+1; j++)
+//        {
+//          f[i][j] = max(f[i-1][j], g[i-1][j]-v[i]);
+//          g[i][j] = g[i-1][j];
+//          if(j>=1)
+//            g[i][j] = max(g[i][j], f[i-1][j-1]+v[i]);
+//        }
+//      }
+//      int ret = 0;
+//      for(int j =0; j < k+1; j++)
+//      {
+//        ret =max(ret, g[n-1][j]);
+//      }
+//      return ret;
+//
+//    }
+//    int maxProfit(vector<int>& prices) {
+//      if(prices.empty())
+//        return 0;
+//      return process(0, false, 2, prices);
+//    }
+//};
 
 
 
@@ -744,4 +744,20 @@ class Solution {
 //      // return minCostVal;
 //      return process2(costs);
 //    }
+//};
+
+
+//class Solution {
+//public:
+//	int massage(vector<int>& nums) {
+//		int n = nums.size();
+//		vector<int> f(n + 1, 0);
+//		vector<int> g(n + 1, 0);
+//		for (int i = 1; i <= n; i++)
+//		{
+//			f[i] = g[i - 1] + nums[i - 1];
+//			g[i] = max(f[i - 1], g[i - 1]);
+//		}
+//		return max(f[n], g[n]);
+//	}
 //};

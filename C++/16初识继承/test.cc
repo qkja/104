@@ -37,37 +37,37 @@ using namespace std;
 //	return 0;
 //}
 
-class Person
-{
-public:
-	void func()
-	{
-		cout << _name <<" "<< _sex <<" "<< _age << endl;
-	}
-protected:
-	string _name; // ����
-	string _sex;  // �Ա�
-	int _age;     // ����
-};
-class Student : public Person
-{
-public:
-	Student()
-	{
-		_name = "����";
-		_sex = "��";
-		_age = 18;
-	}
-};
+//class Person
+//{
+//public:
+//	void func()
+//	{
+//		cout << _name <<" "<< _sex <<" "<< _age << endl;
+//	}
+//protected:
+//	string _name; // ����
+//	string _sex;  // �Ա�
+//	int _age;     // ����
+//};
+//class Student : public Person
+//{
+//public:
+//	Student()
+//	{
+//		_name = "����";
+//		_sex = "��";
+//		_age = 18;
+//	}
+//};
 
-int main()
-{
-	Person per;
-	Student stu;
-	per = stu;
-	per.func();
-	return 0;
-}
+//int main()
+//{
+//	Person per;
+//	Student stu;
+//	per = stu;
+//	per.func();
+//	return 0;
+//}
 //class Person
 //{
 //public:
@@ -383,3 +383,35 @@ int main()
 //
 //	return 0;
 //}
+class A
+{
+public:
+	int _a;
+};
+class B : virtual public A
+{
+public:
+	int _b;
+};
+class C : public A
+{
+public:
+	int _c;
+};
+
+class D
+{
+public:
+	int _d;
+};
+
+
+int main()
+{
+	cout << sizeof(B) << endl;
+	cout << sizeof(C) << endl;
+	cout << sizeof(D) << endl;
+	cout << sizeof(int*) << endl;
+
+	return 0;
+}

@@ -6,7 +6,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <mutex>
-
+#include "log.hpp"
 #include "util.hpp"
 
 // #include "log.hpp"
@@ -68,6 +68,7 @@ namespace ns_index
     {
       if (doc_id < 0 || doc_id >= forward_index.size())
       {
+
         std::cerr << "索引id " << doc_id << " 越界了" << std::endl;
         return nullptr;
       }
@@ -122,8 +123,8 @@ namespace ns_index
         if (count % 50 == 0)
         {
           // 后期加上一个进度条
-          // LOG(NORMAL, "当前已经处理了 " + std::to_string(count) + " 个文档");
-          std::cout << "当前已经处理了 索引文档 " << count << std::endl;
+          LOG(NORMAL, "当前已经处理了 " + std::to_string(count) + " 个文档");
+          // std::cout << "当前已经处理了 索引文档 " << count << std::endl;
         }
       }
 

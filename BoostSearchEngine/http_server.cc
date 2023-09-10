@@ -17,11 +17,13 @@
 #include "searcher.hpp"
 #include "cpp-httplib/httplib.h"
 #include "log.hpp"
+#include "daemonize.hpp"
 
 const std::string root_path = "./wwwroot";
 const std::string input = "data/raw_html/raw.txt";
 int main()
 {
+  // daemonize(); //守护进程化
   // 初始化sercher
   ns_searcher::Searcher search;
   search.InitSearcher(input);
@@ -39,8 +41,10 @@ int main()
 
             std::string word = req.get_param_value("word");
             LOG(NORMAL, "用户搜索的: " + word);
+
             std::string json_string;
             search.Search(word, &json_string);
+            LOG(NORMAL, json_string.c_str() + word);
             rsp.set_content(json_string, "application/json");
             // rsp.set_content("hello word!", "text/plain; charset=utf-8");
           });

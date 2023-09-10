@@ -30,9 +30,6 @@ static bool EnumFile(const std::string &src_path, std::vector<std::string> *file
 static bool ParseHtml(const std::vector<std::string> &file_list, std::vector<DocInfo_t> *results);
 static bool SaveHtml(const std::vector<DocInfo_t> &results, const std::string &output);
 
-
-
-
 int main(void)
 {
   // 保存所有的 html 的文件名
@@ -53,8 +50,6 @@ int main(void)
     return 2;
   }
 
-
-  
   // 第三步: 把解析文件的内容写入到output中,按照\3\n 作为每一个文档的分割符
   if (false == SaveHtml(results, output))
   {
@@ -93,7 +88,7 @@ static bool EnumFile(const std::string &src_path, std::vector<std::string> *file
     }
 
     // std::cout << "debug: " << iter->path().string() << std::endl;
-
+    // break;
     // 此时一定 是以 html 后缀结尾的普通文件
     file_list->push_back(iter->path().string());
   }
@@ -143,6 +138,8 @@ static bool ParseHtml(const std::vector<std::string> &file_list, std::vector<Doc
     // ShowDoc(doc);
     // break;
     // 到这里一定时完成了解析任务
+    // ShowDoc(doc);
+    // break;
     results->push_back(std::move(doc)); // 右值引用
   }
 
@@ -173,7 +170,6 @@ static bool ParseTitle(const std::string &file, std::string *title)
   *title = file.substr(begin, end - begin);
   return true;
 }
-
 
 static bool ParseContent(const std::string &file, std::string *content)
 {
@@ -224,15 +220,14 @@ static bool ParseContent(const std::string &file, std::string *content)
 
 static bool ParseUrl(const std::string &file_path, std::string *url)
 {
+
   assert(url);
-  std::string url_head = "https://www.boost.org/doc/libs/1_83_0/doc/html";
+  std::string url_head = "https://www.boost.org/doc/libs/1_78_0";
   std::string url_tail = file_path.substr(src_path.size());
   *url = url_head + url_tail;
 
   return true;
 }
-
-
 
 static bool SaveHtml(const std::vector<DocInfo_t> &results, const std::string &output)
 {

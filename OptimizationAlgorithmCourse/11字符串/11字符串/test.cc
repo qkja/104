@@ -3,13 +3,13 @@
 #include <string>
 #include <unordered_map>
 
-using std::vector;
 using std::string;
 using std::unordered_map;
+using std::vector;
 
-//class Solution
+// class Solution
 //{
-//public:
+// public:
 //	string addBinary(string a, string b)
 //	{
 //		if (a.empty())
@@ -43,7 +43,7 @@ using std::unordered_map;
 //			sum /= 2;
 //			end2--;
 //		}
-//		// ÅÐ¶Ï sum Öµ
+//		// ï¿½Ð¶ï¿½ sum Öµ
 //		if (sum != 0)
 //		{
 //			result += '1';
@@ -51,10 +51,10 @@ using std::unordered_map;
 //		std::reverse(result.begin(), result.end());
 //		return result;
 //	}
-//};
+// };
 
-//class Solution {
-//public:
+// class Solution {
+// public:
 //	string longestCommonPrefix(vector<string>& strs) {
 //		string result;
 //		if (strs.empty())
@@ -62,7 +62,7 @@ using std::unordered_map;
 //		vector<std::pair<char, int>> v;
 //		for (int i = 0; i < strs.size(); i++)
 //		{
-//			// ÄÃµ½Ò»¸ö×Ö·û
+//			// ï¿½Ãµï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½
 //			const auto& str = strs[i];
 //			for (int j = 0; j < str.size(); j++)
 //			{
@@ -79,7 +79,7 @@ using std::unordered_map;
 //				}
 //			}
 //		}
-//		// ÅÐ¶Ï
+//		// ï¿½Ð¶ï¿½
 //		for (int i = 0; i < v.size(); i++)
 //		{
 //			if (v[i].second == strs.size())
@@ -87,10 +87,10 @@ using std::unordered_map;
 //		}
 //		return result;
 //	}
-//};
+// };
 
-//class Solution {
-//public:
+// class Solution {
+// public:
 //	string longestPalindrome(string s)
 //	{
 //		if (s.empty())
@@ -121,83 +121,232 @@ using std::unordered_map;
 //		}
 //		return s.substr(index, maxLen);
 //	}
-//};
+// };
 
-class Solution
-{
-public:
-	string multiplyChild(const string &str, char ch)
-	{
-		int i = str.size() - 1;
-		int count = 0;
-		string result;
-		while (i >= 0)
-		{
-			int ret = (str[i] - '0') * (ch - '0');
-			result += std::to_string(((ret + count) % 10));
-			count = (count + ret) / 10;
-			i--;
-		}
-		if (count != 0)
-			result += std::to_string(count % 10);
-		reverse(result.begin(), result.end());
-		return result;
-	}
-	// Á½¸ö×Ö·û´®Ïà¼Ó
-	void addition(string &s1, const string &s2)
-	{
-		int i = s1.size() - 1;
-		int j = s2.size() - 1;
-		int count = 0;
-		string result;
-		while (i >= 0 && j >= 0)
-		{
-			int ret = (s1[i] - '0') + (s2[j] - '0') + count;
-			result += std::to_string(ret % 10);
-			count = ret / 10;
-			i--;
-			j--;
-		}
-		while (i >= 0)
-		{
-			// ´ËÊ±s1»¹ÊÇ´æÔÚÊ£Óà
-			int ret = s1[i] - '0' + count;
-			result += std::to_string(ret % 10);
-			count = ret / 10;
-			i--;
-		}
-		while (j >= 0)
-		{
-			// ´ËÊ±s1»¹ÊÇ´æÔÚÊ£Óà
-			int ret = s2[j] - '0' + count;
-			result += std::to_string(ret % 10);
-			count = ret / 10;
-			j--;
-		}
-		if (count != 0)
-			result += std::to_string(count);
-		reverse(result.begin(), result.end());
-		s1 = result;
-	}
-	string multiply(string num1, string num2)
-	{
-		if (num1[0] == '0' || num2[0] == '0')
-			return "0";
-		if (num1.empty())
-			return num2;
-		if (num2.empty())
-			return num1;
-		string result;
-		string s;
-		for (int i = num2.size() - 1; i >= 0; i--)
-		{
-			// ÕâÀïÅÐ¶ÏÒ»ÏÂ×Ö·ûÊÇ²»ÊÇo
-			if (num2[i] != '0')
-			{
-				addition(result, multiplyChild(num1, num2[i]) + s);
-			}
-			s += "0";
-		}
-		return result;
-	}
-};	
+// class Solution
+// {
+// public:
+// 	string multiplyChild(const string &str, char ch)
+// 	{
+// 		int i = str.size() - 1;
+// 		int count = 0;
+// 		string result;
+// 		while (i >= 0)
+// 		{
+// 			int ret = (str[i] - '0') * (ch - '0');
+// 			result += std::to_string(((ret + count) % 10));
+// 			count = (count + ret) / 10;
+// 			i--;
+// 		}
+// 		if (count != 0)
+// 			result += std::to_string(count % 10);
+// 		reverse(result.begin(), result.end());
+// 		return result;
+// 	}
+// 	// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// 	void addition(string &s1, const string &s2)
+// 	{
+// 		int i = s1.size() - 1;
+// 		int j = s2.size() - 1;
+// 		int count = 0;
+// 		string result;
+// 		while (i >= 0 && j >= 0)
+// 		{
+// 			int ret = (s1[i] - '0') + (s2[j] - '0') + count;
+// 			result += std::to_string(ret % 10);
+// 			count = ret / 10;
+// 			i--;
+// 			j--;
+// 		}
+// 		while (i >= 0)
+// 		{
+// 			// ï¿½ï¿½Ê±s1ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½Ê£ï¿½ï¿½
+// 			int ret = s1[i] - '0' + count;
+// 			result += std::to_string(ret % 10);
+// 			count = ret / 10;
+// 			i--;
+// 		}
+// 		while (j >= 0)
+// 		{
+// 			// ï¿½ï¿½Ê±s1ï¿½ï¿½ï¿½Ç´ï¿½ï¿½ï¿½Ê£ï¿½ï¿½
+// 			int ret = s2[j] - '0' + count;
+// 			result += std::to_string(ret % 10);
+// 			count = ret / 10;
+// 			j--;
+// 		}
+// 		if (count != 0)
+// 			result += std::to_string(count);
+// 		reverse(result.begin(), result.end());
+// 		s1 = result;
+// 	}
+// 	string multiply(string num1, string num2)
+// 	{
+// 		if (num1[0] == '0' || num2[0] == '0')
+// 			return "0";
+// 		if (num1.empty())
+// 			return num2;
+// 		if (num2.empty())
+// 			return num1;
+// 		string result;
+// 		string s;
+// 		for (int i = num2.size() - 1; i >= 0; i--)
+// 		{
+// 			// ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ç²ï¿½ï¿½ï¿½o
+// 			if (num2[i] != '0')
+// 			{
+// 				addition(result, multiplyChild(num1, num2[i]) + s);
+// 			}
+// 			s += "0";
+// 		}
+// 		return result;
+// 	}
+// };
+
+// class Solution {
+// public:
+//     void dfs(vector<int>& nums1, int index1, vector<int>& nums2, int index2, int index)
+//     {
+//         if(index < 0)
+//         return;
+//         if(index1 < 0)
+//         {
+//             // æ­¤æ—¶æˆ‘ä»¬v1å·²ç»èµ°å®Œäº†
+//             nums1[index] =  nums2[index2];
+//             dfs(nums1, index1, nums2, index2-1,index-1);
+//             return;
+//         }
+//         if(index2 < 0)
+//         {
+//             // æ­¤æ—¶v2å·²ç»èµ°å®Œäº†
+//             nums1[index] =  nums1[index1];
+//             dfs(nums1, index1-1, nums2, index2,index-1);
+//             return;
+//         }
+//         if(nums1[index1] <= nums2[index2])
+//         {
+//             nums1[index] =  nums2[index2];
+//             dfs(nums1, index1, nums2, index2-1,index-1);
+//         }
+//         else
+//         {
+//             nums1[index] =  nums1[index1];
+//             dfs(nums1, index1-1, nums2, index2,index-1);
+//         }
+//     }
+//     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+//         dfs(nums1, m-1, nums2, n-1, m+n-1);
+//     }
+// };
+
+// class Solution {
+// public:
+//     int removeElement(vector<int>& nums, int val) {
+//         if(nums.empty())
+//         return 0;
+//         auto iter = nums.begin();
+//         while(iter != nums.end())
+//         {
+//             if(val == *iter)
+//             {
+//                 iter = nums.erase(iter);
+//             }
+//             else
+//             {
+//                 ++iter;
+//             }
+//         }
+//         return nums.size();
+//     }
+// };
+// class Solution
+// {
+// public:
+// 	int removeDuplicates(vector<int> &nums)
+// 	{
+// 		set<int> s;
+// 		for (auto e : nums)
+// 			s.insert(e);
+// 		nums.clear();
+// 		auto iter = s.begin();
+// 		while (iter != s.end())
+// 			nums.push_back(*iter++);
+// 		return nums.size();
+// 	}
+// };
+
+// class Solution {
+// public:
+//     int removeDuplicates(vector<int>& nums) {
+//         map<int, int> m;
+//         for(auto e: nums)
+//         m[e]++;
+//         nums.clear();
+//         auto iter = m.begin();
+//         while(iter != m.end())
+//         {
+//             nums.push_back(iter->first);
+//             if(iter->second != 1)
+//             {
+//                 nums.push_back(iter->first);
+//             }
+//             ++iter;
+//         }
+//         return nums.size();
+//     }
+// };
+// class Solution {
+// public:
+//     int majorityElement(vector<int>& nums) {
+//         // è¿™é‡Œä¿®æ”¹äº†æ•°ç»„
+//         sort(nums.begin(), nums.end());
+//         return nums[nums.size()/2];
+//     }
+// };
+// class Solution {
+// public:
+//     void reverse(vector<int>& v, int left, int right)
+//     {
+//         while(left < right)
+//         swap(v[left++], v[right--]);
+//     }
+//     void rotate(vector<int>& nums, int k) {
+//         k %= nums.size();
+//         reverse(nums, 0, nums.size()-k-1);
+//         reverse(nums, nums.size()-k, nums.size()-1);
+//         reverse(nums, 0, nums.size()-1);
+//     }
+// };
+// class Solution {
+// public:
+//     bool canJump(vector<int>& nums) {
+//         int n = nums.size();
+//         vector<int> dp(n, 0);
+//         dp[n-1] = nums[n-1];
+//         for(int i = n-2; i >=0; i--)
+//         {
+//             for(int j = 0;  i +j < n &&  j <= nums[i]; j++)
+//             {
+//                 dp[i] = max(j+dp[i+j], dp[i]);
+//             }
+//         }
+
+//         return dp[0]>=n-1;
+//     }
+// };
+
+// class Solution
+// {
+// public:
+// 	bool canJump(vector<int> &nums)
+// 	{
+// 		int cover = 0;
+// 		for (size_t i = 0; i <= cover; i++)
+// 		{
+// 			int ret = i + nums[i];
+// 			cover = std::max(cover, ret);
+// 			if (cover >= nums.size() - 1)
+// 				return true;
+// 		}
+// 		return false;
+// 	}
+// };

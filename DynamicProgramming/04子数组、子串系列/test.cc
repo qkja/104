@@ -13,36 +13,36 @@
 using namespace std;
 
 // https://leetcode.cn/problems/unique-substrings-in-wraparound-string/
-class Solution
-{
-public:
-    int process(string &s)
-    {
-        int n = s.size();
-        vector<int> dp(n, 1);
-        vector<int> result(26, 0);
-        result[s[0] - 'a'] = 1;
-        for (int i = 1; i < n; i++)
-        {
-            if (s[i - 1] + 1 == s[i] ||
-                s[i - 1] == 'z' && s[i] == 'a')
-            {
-                dp[i] += dp[i - 1];
-            }
-            result[s[i] - 'a'] = max(result[s[i] - 'a'], dp[i]);
-        }
-        int sum = 0;
-        for (auto &e : result)
-            sum += e;
-        return sum;
-    }
-    int findSubstringInWraproundString(string s)
-    {
-        if (s.empty())
-            return 0;
-        return process(s);
-    }
-};
+//class Solution
+//{
+//public:
+//    int process(string &s)
+//    {
+//        int n = s.size();
+//        vector<int> dp(n, 1);
+//        vector<int> result(26, 0);
+//        result[s[0] - 'a'] = 1;
+//        for (int i = 1; i < n; i++)
+//        {
+//            if (s[i - 1] + 1 == s[i] ||
+//                s[i - 1] == 'z' && s[i] == 'a')
+//            {
+//                dp[i] += dp[i - 1];
+//            }
+//            result[s[i] - 'a'] = max(result[s[i] - 'a'], dp[i]);
+//        }
+//        int sum = 0;
+//        for (auto &e : result)
+//            sum += e;
+//        return sum;
+//    }
+//    int findSubstringInWraproundString(string s)
+//    {
+//        if (s.empty())
+//            return 0;
+//        return process(s);
+//    }
+//};
 
 // https://leetcode.cn/problems/word-break/
 // class Solution
@@ -367,3 +367,29 @@ public:
 //     return process3(nums);
 //   }
 // };
+
+//class Solution {
+//public:
+//	int maxSubarraySumCircular(vector<int>& nums) {
+//		if (nums.empty())
+//			return 0;
+//		int n = nums.size();
+//		vector<int> f(n + 1, 0);
+//		vector<int> g(n + 1, 0);
+//		int sum = 0;
+//		int maxNum = INT_MIN;
+//		int minNum = INT_MAX;
+//		for (int i = 1; i <= n; i++)
+//		{
+//			sum += nums[i - 1];
+//			f[i] = std::max(f[i - 1] + nums[i - 1], nums[i - 1]);
+//			maxNum = std::max(maxNum, f[i]);
+//			g[i] = std::min(g[i - 1] + nums[i - 1], nums[i - 1]);
+//			minNum = std::min(minNum, g[i]);
+//		}
+//		if ((sum - minNum) == 0)
+//			return maxNum;
+//
+//		return max(maxNum, sum - minNum);
+//	}
+//};

@@ -1,22 +1,66 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-
 #include <iostream>
-#include <functional>
-#include <string>
+#include <thread>
+#include <mutex>
+using namespace std;
 
-using std::cin; 
-using std::cout;
-using std::endl;
-using std::function;
+// mutex mtx; // è¿™é‡Œæœ€å¥½ä¸è¦ä½¿ç”¨å…¨å±€çš„å˜é‡
 
-//int main()
+// void Print(int n)
+// {
+//   // è¿™é‡Œä¸å¥½æ‰¾åˆ°id
+//   for (int i = 0; i < n; ++i)
+//   {
+//     mtx.lock();
+
+//     cout << this_thread::get_id() << " " << i << endl;
+//     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//     mtx.unlock();
+//   }
+// }
+void Print(int n, int &x)
+{
+  // è¿™é‡Œä¸å¥½æ‰¾åˆ°id
+  for (int i = 0; i < n; ++i)
+  {
+
+    cout << this_thread::get_id() << " " << x++ << endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+  }
+}
+
+int main()
+{
+  int x = 0;
+  // æ³¨æ„,è¿™é‡Œæˆ‘ä»¬å³ä½¿ä½¿ç”¨å¼•ç”¨ä¹Ÿæ˜¯ä¸€ä»½æ‹·è´,è¿™æ˜¯mutexç‹¬ç‰¹çš„é™åˆ¶,è®°ä½å°±è¡Œäº†
+  thread t1(Print, 100, x);
+  thread t2(Print, 100, x);
+  
+  t1.join();
+  t2.join();
+  cout << " " << x << endl;
+
+  return 0;
+}
+
+// #define _CRT_SECURE_NO_WARNINGS 1
+//
+// #include <iostream>
+// #include <functional>
+// #include <string>
+//
+// using std::cin;
+// using std::cout;
+// using std::endl;
+// using std::function;
+
+// int main()
 //{
 //	std::string str = "hello";
 //	std::move(str);
 //
 //	return 0;
-//}
-//int main()
+// }
+// int main()
 //{
 //	//int a = 1;
 //	//int b = 0;
@@ -24,110 +68,110 @@ using std::function;
 //	//fun1(10);
 //	//cout << b << endl;
 //	int x = 10;
-//	auto add_x = [&x] { x *= 2; return 10; };//È¡Ïû²ÎÊıÁĞ±íµÄ³£ÊıĞÔ
+//	auto add_x = [&x] { x *= 2; return 10; };//È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½
 //	cout << add_x() << endl;
 //	cout << x << endl;
 //	return 0;
-//}
-//template <class F, class T>
-//T useF(F f, T x)
+// }
+// template <class F, class T>
+// T useF(F f, T x)
 //{
 //	static int count = 0;
 //	cout << "count:" << ++count << endl;
 //	cout << "count:" << &count << endl;
 //	return f(x);
-//}
-//double f(double i)
+// }
+// double f(double i)
 //{
 //	return i / 2;
-//}
-//struct Functor
+// }
+// struct Functor
 //{
 //	double operator()(double d)
 //	{
 //		return d / 3;
 //	}
-//};
-//int main()
+// };
+// int main()
 //{
-//	// º¯ÊıÃû
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	cout << useF(f, 11.11) << endl; // count:1 count:0025C140  5.555
-//	// º¯Êı¶ÔÏó
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	cout << useF(Functor(), 11.11) << endl; // count:1 count: 0025C144 3.70333
-//	// lamber±í´ïÊ½
+//	// lamberï¿½ï¿½ï¿½ï¿½Ê½
 //	cout << useF([](double d) -> double
 //	{ return d / 4; },
 //	11.11)
 //	<< endl; // count : 1 count: 0025C148 2.7775
 //	return 0;
-//}
+// }
 
-//template<class F, class T>
-//T useF(F f, T x)
+// template<class F, class T>
+// T useF(F f, T x)
 //{
 //	static int count = 0;
 //	cout << "count:" << ++count << endl;
 //	cout << "count:" << &count << endl;
 //
 //	return (f(x));
-//}
-//double f(double i) {
+// }
+// double f(double i) {
 //	return i / 2;
-//}
-//struct Functor
+// }
+// struct Functor
 //{
 //	double operator()(double d)
 //	{
 //		return d / 3;
 //	}
-//};
+// };
 //
 //
-//int main()
+// int main()
 //{
-//	// º¯ÊıÃû
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	function<double(double)> fn1 = f;
-//	//function<double(double)> fn1 ( f); Ö§³Ö
+//	//function<double(double)> fn1 ( f); Ö§ï¿½ï¿½
 //	cout << useF(fn1, 11.11) << endl;
 //
-//	// º¯Êı¶ÔÏó
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //	function<double(double)> fn2 = Functor();
-//	//function<double(double)> fn2(Functor());   //²»Ö§³Ö£¬ÒòÎªfunction<double(double)>¡¢Functor()²»ÊÇÍ¬Ò»¸öÀàĞÍ£¨ÀàĞÍÆ¥ÅäÆ¥Åä²»ÉÏ£©
-//	//function<double(Functor,double)> fn2=&Functor::operator();  //Ö§³Ö
-//	//function<double(double)> fn2 = bind(&Functor::operator(), Functor(), placeholders::_1); //Ö§³Ö
+//	//function<double(double)> fn2(Functor());   //ï¿½ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½Îªfunction<double(double)>ï¿½ï¿½Functor()ï¿½ï¿½ï¿½ï¿½Í¬Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Æ¥ï¿½ä²»ï¿½Ï£ï¿½
+//	//function<double(Functor,double)> fn2=&Functor::operator();  //Ö§ï¿½ï¿½
+//	//function<double(double)> fn2 = bind(&Functor::operator(), Functor(), placeholders::_1); //Ö§ï¿½ï¿½
 //	cout << useF(fn2, 11.11) << endl;
 //
-//	// lamber±í´ïÊ½
+//	// lamberï¿½ï¿½ï¿½ï¿½Ê½
 //	function<double(double)> fn3([](double d)->double { return d / 4; });
 //	cout << useF(fn3, 11.11) << endl;
 //	return 0;
-//}
-template<class F, class T>
-T useF(F f, T x)
-{
-	static int count = 0;
-	cout << "count:" << ++count << endl;
-	cout << "count:" << &count << endl;
-	return f(x);
-}
-double f(double i)
-{
-	return i / 2;
-}
-struct Functor
-{
-	double operator()(double d)
-	{
-		return d / 3;
-	}
-};
-int main()
-{
-	// º¯ÊıÃû
-	cout << useF(f, 11.11) << endl;
-	// º¯Êı¶ÔÏó
-	cout << useF(Functor(), 11.11) << endl;
-	// lamber±í´ïÊ½
-	cout << useF([](double d)->double { return d / 4; }, 11.11) << endl;
-	return 0;
-}
+// }
+// template<class F, class T>
+// T useF(F f, T x)
+//{
+//	static int count = 0;
+//	cout << "count:" << ++count << endl;
+//	cout << "count:" << &count << endl;
+//	return f(x);
+// }
+// double f(double i)
+//{
+//	return i / 2;
+// }
+// struct Functor
+//{
+//	double operator()(double d)
+//	{
+//		return d / 3;
+//	}
+// };
+// int main()
+//{
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	cout << useF(f, 11.11) << endl;
+//	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//	cout << useF(Functor(), 11.11) << endl;
+//	// lamberï¿½ï¿½ï¿½ï¿½Ê½
+//	cout << useF([](double d)->double { return d / 4; }, 11.11) << endl;
+//	return 0;
+// }

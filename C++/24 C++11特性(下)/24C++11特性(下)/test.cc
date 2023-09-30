@@ -2,7 +2,38 @@
 #include <thread>
 #include <mutex>
 using namespace std;
+// void Print(int n, int &x)
+// {
+//   // 这里不好找到id
+//   for (int i = 0; i < n; ++i)
+//   {
+//     cout << this_thread::get_id() << " " << x++ << endl;
+//     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//   }
+// }
 
+// int main()
+// {
+//   int x = 0;
+//   // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
+//   thread t1([&x]()
+//             {
+//         cout << this_thread::get_id() << " " << x++ << endl;
+//     std::this_thread::sleep_for(std::chrono::milliseconds(10)); },
+//             100, ref(x));
+
+//   thread t2([&x]()
+//             {
+//     cout<< this_thread::get_id() << " " << x++ << endl;
+//     std::this_thread::sleep_for(std::chrono::milliseconds(10)); },
+//             100, ref(x));
+
+//   t1.join();
+//   t2.join();
+//   cout << " " << x << endl;
+
+//   return 0;
+// }
 // mutex mtx; // 这里最好不要使用全局的变量
 
 // void Print(int n)
@@ -17,30 +48,32 @@ using namespace std;
 //     mtx.unlock();
 //   }
 // }
-void Print(int n, int &x)
-{
-  // 这里不好找到id
-  for (int i = 0; i < n; ++i)
-  {
+// void Print(int n, int &x)
+// {
+//   // 这里不好找到id
+//   for (int i = 0; i < n; ++i)
+//   {
+//     mtx.lock();
 
-    cout << this_thread::get_id() << " " << x++ << endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  }
-}
+//     cout << this_thread::get_id() << " " << x++ << endl;
+//     std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//     mtx.unlock();
+//   }
+// }
 
-int main()
-{
-  int x = 0;
-  // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
-  thread t1(Print, 100, x);
-  thread t2(Print, 100, x);
-  
-  t1.join();
-  t2.join();
-  cout << " " << x << endl;
+// int main()
+// {
+//   int x = 0;
+//   // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
+//   thread t1(Print, 100, ref(x));
+//   thread t2(Print, 100, ref(x));
 
-  return 0;
-}
+//   t1.join();
+//   t2.join();
+//   cout << " " << x << endl;
+
+//   return 0;
+// }
 
 // #define _CRT_SECURE_NO_WARNINGS 1
 //
@@ -175,3 +208,58 @@ int main()
 //	cout << useF([](double d)->double { return d / 4; }, 11.11) << endl;
 //	return 0;
 // }
+
+// int main()
+// {
+//   int x = 0;
+//   // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
+//   int n = 10;
+//   thread t1([&]()
+//             {
+//               for (int i = 0; i < n; ++i)
+//               {
+//                 cout << this_thread::get_id() << " " << x++ << endl;
+//                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//               } });
+
+//   thread t2([&]()
+//             {
+//               for (int i = 0; i < n; ++i)
+//               {
+//                 cout << this_thread::get_id() << " " << x++ << endl;
+//                 std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//               } });
+
+//   t1.join();
+//   t2.join();
+//   cout << " " << x << endl;
+
+//   return 0;
+// }
+#include <vector>
+
+int main()
+{
+  int x = 0;
+  // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
+  int n = 10;
+  int m = 4;
+  vector<thread> v(m);
+  for (int i = 0; i < m; i++)
+  {
+    v[i] = thread([&]()
+                  {
+                for (int i = 0; i < n; ++i)
+                {
+                  cout << this_thread::get_id() << " " << x++ << endl;
+                  std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                } });
+  }
+  for (int i = 0; i < m; i++)
+  {
+    v[i].join();
+  }
+  cout << " " << x << endl;
+
+  return 0;
+}

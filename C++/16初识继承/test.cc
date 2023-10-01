@@ -383,35 +383,66 @@ using namespace std;
 //
 //	return 0;
 //}
+//class A
+//{
+//public:
+//	int _a;
+//};
+//class B : virtual public A
+//{
+//public:
+//	int _b;
+//};
+//class C : public A
+//{
+//public:
+//	int _c;
+//};
+//
+//class D
+//{
+//public:
+//	int _d;
+//};
+//
+//
+//int main()
+//{
+//	cout << sizeof(B) << endl;
+//	cout << sizeof(C) << endl;
+//	cout << sizeof(D) << endl;
+//	cout << sizeof(int*) << endl;
+//
+//	return 0;
+//}
 class A
 {
-public:
-	int _a;
-};
-class B : virtual public A
-{
-public:
-	int _b;
-};
-class C : public A
-{
-public:
-	int _c;
-};
+  public:
 
-class D
-{
-public:
-	int _d;
+  int f()
+  {
+    return a;
+  }
+  virtual void func()
+  {
+    cout << "A" << endl;
+  }
+  int a = 0;
 };
-
-
+class B: public A
+{
+  public:
+    void func() override{
+      cout << "B" << endl;
+    }
+  int a = 1;
+};
 int main()
 {
-	cout << sizeof(B) << endl;
-	cout << sizeof(C) << endl;
-	cout << sizeof(D) << endl;
-	cout << sizeof(int*) << endl;
-
-	return 0;
+  B b;
+  cout << b.f() << endl;
+  b.func();
+  b.A::func();
+  //B::A::func();
+  return 0;
 }

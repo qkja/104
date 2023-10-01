@@ -1,0 +1,42 @@
+syntax = "proto3";
+package contacts;
+// 联系人
+message PeopleInfo {
+string name = 1; // 姓名
+int32 age = 2; // 年龄
+message Phone {
+string number = 1; // 电话号码
+}
+repeated Phone phone = 3; // 电话
+}
+// 通讯录
+message Contacts {
+repeated PeopleInfo contacts = 1;
+}
+
+
+
+//syntax = "proto3";
+//package contacts;
+//import "phone.proto"; // 使用 import 将 phone.proto 文件导入进来 !!!
+//
+//message PeopleInfo {
+//string name = 1;
+//int32 age = 2;
+//// 引入的文件声明了package，使用消息时，需要用 ‘命名空间.消息类型’ 格式
+//repeated phone.Phone phone = 3;
+//}
+//message PeoPleInfo {
+//  string name =1;
+//  int32 age = 2;
+//  message Phone {
+//    string number = 1;
+//  }
+//}
+//message Phone {
+//string number = 1;
+//}
+//message PeopleInfo {
+//string name = 1;
+//int32 age = 2;
+//}

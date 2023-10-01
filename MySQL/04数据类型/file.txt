@@ -1,0 +1,12 @@
+1. 数据类型, int, char, double,decamli
+2. 注意varchar 和char varchar(n): 这里的n是字符数,对于不同的编码,字符的占据字节数不一样
+   2.1不过我们要知道varchar这里需要保存1-3个字节作为我们的记录字符的长度
+
+3. 日期类型
+   3.1 日期 date
+   3.2 日期时间 datetime
+   3.3 时间戳 这个我们不用插入,会自动的更新
+4. 枚举和set
+   4.1 枚举是单选
+   4.2 set是多选
+   4.3 set注意使用用find_ in_ set函数来查找

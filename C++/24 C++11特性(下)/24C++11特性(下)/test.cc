@@ -236,30 +236,166 @@ using namespace std;
 
 //   return 0;
 // }
-#include <vector>
+// #include <vector>
 
+// int main()
+// {
+//   int x = 0;
+//   // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
+//   int n = 10;
+//   int m = 4;
+//   vector<thread> v(m);
+//   for (int i = 0; i < m; i++)
+//   {
+//     v[i] = thread([&]()
+//                   {
+//                 for (int i = 0; i < n; ++i)
+//                 {
+//                   cout << this_thread::get_id() << " " << x++ << endl;
+//                   std::this_thread::sleep_for(std::chrono::milliseconds(10));
+//                 } });
+//   }
+//   for (int i = 0; i < m; i++)
+//   {
+//     v[i].join();
+//   }
+//   cout << " " << x << endl;
+
+//   return 0;
+// }
+
+// 写一个智能锁 RAII 资源获得即初始化
+// template <class Lock>
+// class LockGuard
+// {
+
+// public:
+//   // 这里不能支持拷贝,除非下面我们的是引用
+//   LockGuard(Lock &lx)
+//       : _lock(lx)
+//   {
+//     _lock.lock();
+//   }
+//   ~LockGuard()
+//   {
+//     std::cout << "解锁" << std::endl;
+//     _lock.unlock();
+//   }
+
+// private:
+//   Lock _lock;
+// };
+
+// int main()
+// {
+//   std::mutex mtx;
+//   int n = 100;
+//   for(int i = 0; i )
+//   return 0;
+// }
+
+// 两个线程交错打印1-100,一个计数, 一个偶数
+// int main()
+// {
+//   int i = 0;
+//   int n = 100;
+//   std::thread t1([&]() {
+//               while (i < n)
+//               {
+//                 while (i % 2 == 0)
+//                 {
+//                   std::this_thread::yield(); //让出去
+//                 }
+//                 std::cout << std::this_thread::get_id() <<"   " << i << std::endl;
+//                 i += 1;
+//               }
+
+//               });
+
+//   std::thread t2([&]() {
+//               while (i < n)
+//               {
+//                 while (i % 2 != 0)
+//                 {
+//                   std::this_thread::yield(); //让出去
+//                 }
+//                 std::cout << std::this_thread::get_id() <<"   " << i << std::endl;
+//                 i += 1;
+//               }
+//               });
+//   t1.join();
+//   t2.join();
+//   return 0;
+// }
+
+// int main()
+// {
+//   std::mutex mtx;
+//   int i = 0;
+//   int n = 100;
+//   std::thread t1([&]()
+//                  {
+//                    while (i < n)
+//                    {
+
+//                      mtx.lock();
+//                      std::cout << std::this_thread::get_id() << "   " << i << std::endl;
+//                      i += 1;
+//                      mtx.unlock();
+//                    } });
+
+//   std::thread t2([&]()
+//                  {
+//               while (i < n)
+//               {
+//                 mtx.lock();
+
+//                 std::cout << std::this_thread::get_id() <<"   " << i << std::endl;
+//                 i += 1;
+//                 mtx.unlock();
+
+//               } });
+//   t1.join();
+//   t2.join();
+//   return 0;
+// }
+#include <condition_variable>
 int main()
 {
-  int x = 0;
-  // 注意,这里我们即使使用引用也是一份拷贝,这是mutex独特的限制,记住就行了
-  int n = 10;
-  int m = 4;
-  vector<thread> v(m);
-  for (int i = 0; i < m; i++)
-  {
-    v[i] = thread([&]()
-                  {
-                for (int i = 0; i < n; ++i)
-                {
-                  cout << this_thread::get_id() << " " << x++ << endl;
-                  std::this_thread::sleep_for(std::chrono::milliseconds(10));
-                } });
-  }
-  for (int i = 0; i < m; i++)
-  {
-    v[i].join();
-  }
-  cout << " " << x << endl;
+  std::mutex mtx;
+  int i = 0;
+  int n = 100;
+  condition_variable cv;
+  // 打印基数
+  bool ready = true;
+  std::thread t1([&]()
+                 {
+                   while (i < n)
+                   {
+                    unique_lock<mutex> lock(mtx);
+                  cv.wait(lock, [&](){return !ready;});
 
+                     std::cout << std::this_thread::get_id() << "   " << i << std::endl;
+                     i += 1;
+                     ready = true;
+cv.notify_one();
+
+                   } });
+  // 打印偶数 先执行
+  std::thread t2([&]()
+                 {
+              while (i < n)
+              { 
+            unique_lock<mutex> lock(mtx);
+                  cv.wait(lock, [&](){return ready;});
+                std::cout << std::this_thread::get_id() <<"   " << i << std::endl;
+                i += 1;
+                     ready = false;
+
+cv.notify_one();
+
+              } });
+  t1.join();
+  t2.join();
   return 0;
 }

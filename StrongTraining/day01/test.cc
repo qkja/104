@@ -67,11 +67,11 @@
 //	printf("%s , %-5.3s\n", "computer", "computer");
 //	return 0;
 //}
-#include<stdio.h>
-int main(){
-	int arr[] = { 1, 2, 3 };
-	int*p = arr;
-	*p += 2;
-	printf("%p\n", arr);
-	printf("%p\n", p);
-}
+// #include<stdio.h>
+// int main(){
+// 	int arr[] = { 1, 2, 3 };
+// 	int*p = arr;
+// 	*p += 2;
+// 	printf("%p\n", arr);
+// 	printf("%p\n", p);
+// }

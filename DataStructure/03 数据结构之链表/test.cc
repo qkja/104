@@ -1,13 +1,13 @@
 #include <iostream>
-
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
+#include <unordered_map>
+// struct ListNode
+// {
+//     int val;
+//     ListNode *next;
+//     ListNode() : val(0), next(nullptr) {}
+//     ListNode(int x) : val(x), next(nullptr) {}
+//     ListNode(int x, ListNode *next) : val(x), next(next) {}
+// };
 
 // class Solution
 // {
@@ -307,5 +307,154 @@ struct ListNode {
 //             headA = headA->next;
 //         }
 //         return nullptr;
+//     }
+// };
+
+// class PalindromeList
+// {
+
+//     ListNode *reverseList(ListNode *head)
+//     {
+//         if (nullptr == head || head->next == nullptr)
+//             return head;
+//         ListNode *newHead = reverseList(head->next);
+//         head->next->next = head;
+//         head->next = nullptr;
+//         return newHead;
+//     }
+
+// public:
+//     bool chkPalindrome(ListNode *A)
+//     {
+//         if (A == nullptr)
+//             return true;
+//         ListNode *fast = A;
+//         ListNode *slow = fast;
+//         int count = 0;
+//         while (fast && fast->next)
+//         {
+//             ++count;
+//             fast = fast->next->next;
+//             slow = slow->next;
+//         }
+//         ListNode *B = reverseList(slow);
+
+//         while (count--)
+//         {
+//             if (A->val != B->val)
+//             {
+//                 return false;
+//             }
+//             A = A->next;
+//             B = B->next;
+//         }
+//         return true;
+//     }
+// };
+
+// class Solution
+// {
+// public:
+//     bool hasCycle(ListNode *head)
+//     {
+//         if (head == nullptr)
+//             return false;
+//         ListNode *fast = head;
+//         ListNode *slow = fast;
+//         while (fast && fast->next)
+//         {
+//             slow = slow->next;
+//             fast = fast->next->next;
+//             if (fast == slow)
+//                 return true;
+//         }
+//         return false;
+//     }
+// };
+
+// class Solution {
+// public:
+//     ListNode* detectCycle(ListNode* head)
+//     {
+//         if (head == nullptr)
+//             return nullptr;
+//         ListNode* fast = head;
+//         ListNode* low = head;
+
+//         ListNode* node = nullptr;
+//         while (fast && fast->next && low)
+//         {
+//             fast = fast->next->next;
+//             low = low->next;
+//             if (fast == low)
+//             {
+//                 node = fast;
+//                 break;
+//             }
+//         }
+//         if (node == nullptr)
+//             return nullptr;
+//         while (node != head)
+//         {
+//             node = node->next;
+//             head = head->next;
+//         }
+//         return head;
+//     }
+// };
+
+// class Node
+// {
+// public:
+//     int val;
+//     Node *next;
+//     Node *random;
+
+//     Node(int _val)
+//     {
+//         val = _val;
+//         next = NULL;
+//         random = NULL;
+//     }
+// };
+
+// class Solution
+// {
+// public:
+//     Node *copyRandomList(Node *head)
+//     {
+//         if (head == nullptr)
+//             return nullptr;
+//         std::unordered_map<Node *, Node *> m;
+//         Node *newHead = nullptr;
+//         Node *tail = nullptr;
+//         Node *node = head;
+//         while (node)
+//         {
+//             Node *cur = new Node(node->val);
+//             cur->random = node->random;
+//             if (tail == nullptr)
+//             {
+//                 newHead = cur;
+//             }
+//             else
+//             {
+//                 tail->next = cur;
+//             }
+//             tail = cur;
+//             m[node] = cur;
+//             node = node->next;
+//         }
+
+//         node = newHead;
+//         while (node)
+//         {
+//             if (node->random)
+//             {
+//                 node->random = m[node->random];
+//             }
+//             node = node->next;
+//         }
+//         return newHead;
 //     }
 // };

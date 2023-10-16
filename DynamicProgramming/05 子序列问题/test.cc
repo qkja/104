@@ -4,56 +4,56 @@
  * Date: 2023-06-02
  * Time: 15:23
  */
-#include <vector>
-#include <algorithm>
-#include <iostream>
-#include <unordered_map>
-using namespace std;
-// https://leetcode.cn/problems/arithmetic-slices-ii-subsequence/
-class Solution
-{
-public:
-  int process(vector<int> &v)
-  {
+// #include <vector>
+// #include <algorithm>
+// #include <iostream>
+// #include <unordered_map>
+// using namespace std;
+// // https://leetcode.cn/problems/arithmetic-slices-ii-subsequence/
+// class Solution
+// {
+// public:
+//   int process(vector<int> &v)
+//   {
 
-    int n = v.size();
-    unordered_map<long long, vector<int>> m;
-    for (int i = 0; i < n; i++)
-    {
-      m[v[i]].push_back(i);
-    }
+//     int n = v.size();
+//     unordered_map<long long, vector<int>> m;
+//     for (int i = 0; i < n; i++)
+//     {
+//       m[v[i]].push_back(i);
+//     }
 
-    vector<vector<int>> dp(n, vector<int>(n, 0));
-    int maxLen = 0;
-    for (int j = 1; j < n; j++)
-    {
+//     vector<vector<int>> dp(n, vector<int>(n, 0));
+//     int maxLen = 0;
+//     for (int j = 1; j < n; j++)
+//     {
 
-      for (int i = j - 1; i >= 0; i--)
-      {
+//       for (int i = j - 1; i >= 0; i--)
+//       {
    
-        long long ret = (long long)2*(long long)v[i] - v[j] ;
-        auto iter = m.find(ret);
-        if (iter == m.end())
-          continue;
-        for (int k = 0; k < iter->second.size(); k++)
-        {
-          int index = (iter->second)[k];
-          if (index >= i)
-            continue;
-          dp[i][j] += (dp[index][i] + 1);
-        }
-        maxLen += dp[i][j];
-      }
-    }
-    return maxLen;
-  }
-  int numberOfArithmeticSlices(vector<int> &nums)
-  {
-    if (nums.size() < 3)
-      return 0;
-    return process(nums);
-  }
-};
+//         long long ret = (long long)2*(long long)v[i] - v[j] ;
+//         auto iter = m.find(ret);
+//         if (iter == m.end())
+//           continue;
+//         for (int k = 0; k < iter->second.size(); k++)
+//         {
+//           int index = (iter->second)[k];
+//           if (index >= i)
+//             continue;
+//           dp[i][j] += (dp[index][i] + 1);
+//         }
+//         maxLen += dp[i][j];
+//       }
+//     }
+//     return maxLen;
+//   }
+//   int numberOfArithmeticSlices(vector<int> &nums)
+//   {
+//     if (nums.size() < 3)
+//       return 0;
+//     return process(nums);
+//   }
+// };
 // https://leetcode.cn/problems/longest-arithmetic-subsequence/<Paste>
 // class Solution
 // {
@@ -372,3 +372,59 @@ public:
 //     return process(nums);
 //   }
 // };
+
+// https://leetcode.cn/problems/longest-increasing-subsequence/submissions/
+// class Solution {
+// public:
+//     int lengthOfLIS(vector<int>& nums) {
+//         vector<int> dp(nums.size());
+//         int result = 0;
+//         for(int i = 0; i < nums.size(); i++)
+//         {
+//             dp[i] = 1;
+//             int maxdp = 0;
+//             for(int j = 0; j < i; j++)
+//             {
+//                 if(nums[j] < nums[i])
+//                 maxdp = max(maxdp, dp[j]);
+//             }
+//             dp[i] = max(dp[i], maxdp+1);
+//             result = max(result,   dp[i] );
+//         }
+//         return result;
+//     }
+// };
+// https://leetcode.cn/problems/wiggle-subsequence/submissions/
+// class Solution {
+// public:
+//     int wiggleMaxLength(vector<int>& nums) {
+        
+//         int n = nums.size();
+//         vector<int> f(n, 1);
+//         vector<int> g(n, 1);
+//         int result = 1;
+//         for(int i = 1; i < nums.size(); ++i)
+//         {
+//             int ret = nums[i] - nums[i-1];
+//             if(ret > 0)
+//             {
+//                 f[i] = g[i-1]+1;
+//                 g[i] = g[i-1];
+
+//             }   
+//             else if(ret < 0)
+//             {
+//                 g[i] = f[i-1]+1;
+//                 f[i] = f[i-1];
+//             }   
+//             else 
+//             {
+//                 f[i] = f[i-1];
+//                 g[i] = g[i-1];
+//             }  
+//             result = max(max(f[i], g[i]), result);
+//         }
+//         return result;
+//     }
+// };
+

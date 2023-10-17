@@ -167,3 +167,4 @@ $RECYCLE.BIN/
 # 这里 目录也不能
 Debug
 .vs
+.vscode

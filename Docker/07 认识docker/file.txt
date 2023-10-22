@@ -1,8 +1,0 @@
-docker: 本质不是容器,而是容器的方便工具
-和JVM和虚拟机比较
-这里看情况
-版本: 发展的版本
-lxc --> libcontainer --> moby --> docker-ce docker-ee
-官网: https://www.docker.com/
-架构: 买一个手机
-生态: 什么是生态, 

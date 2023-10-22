@@ -1,8 +1,0 @@
-tac 不支持 n
-more 批量查看
-find 指令
-grep 指令
-
-zip -r 这个需要 指令
-unzip 可以指定位置解压 -d
-打包和压缩

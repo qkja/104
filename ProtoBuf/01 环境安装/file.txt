@@ -1,0 +1,29 @@
+1. 先来解释一下我们的protobuf 是什么,他是谷歌下面的一个序列化和反序列化的工具,在之前,我们已经使用过json,他也是其中的一个工具.
+2. protobuf是基于编译生成的序列化与反序列化生成的头文件和源文件进行使用的
+   说人话就是他自己存在一套语言, 然后我们经过编译生成我们需要的文件
+3. 下载地址 win: https://github.com/protocolbuffers/protobuf/releases
+            centons: 3.1 sudo yum install autoconf automake libtool curl make gcc-c++ unzip
+                     3.2 https://github.com/protocolbuffers/protobuf/releases/download/v21.11/protobuf-all-21.11.zip
+                     3.3 解压,进入文件夹
+                     3.4 ./autogen.sh 如果安装的是莫一门具体的语言,不需要,这里我们是all
+                     3.5 ./configure --prefix=/usr/local/protobuf 修改安装目录
+                     3.6 make
+                     3.7 make check
+                     3.8 sudo make install
+                     3.9 修改配置文件 vim /etc/profile
+                          # 添加内容如下：
+                          #(动态库搜索路径) 程序加载运行期间查找动态链接库时指定除了系统默认路径之外的其他路径
+                          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/protobuf/lib/
+                          #(静态库搜索路径) 程序编译期间查找动态链接库时指定查找共享库的路径
+                          export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/protobuf/lib/
+                          #执行程序搜索路径
+                          export PATH=$PATH:/usr/local/protobuf/bin/
+                          #c程序头文件搜索路径
+                          export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/protobuf/include/
+                          #c++程序头文件搜索路径
+                          export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/protobuf/include/
+                          #pkg-config 路径
+                          export PKG_CONFIG_PATH=/usr/local/protobuf/lib/pkgconfig/
+                      3.10 source /etc/profile
+                      3.11 检测是否暗转成功 protoc --version
+                          

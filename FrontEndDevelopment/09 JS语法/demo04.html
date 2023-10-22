@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let a = {};
+    // let student = {
+    //   name:"qkj",
+    //   hegiht:"163",
+    //   sayHello:function() {
+    //     console.log("hello");
+    //   }
+    // }
+    // console.log(student.name);
+    // console.log(student['hegiht']);
+    // student.sayHello()
+    class People {
+      constructor(name, hegiht, weight) {
+        this.name = name;
+        this.hegiht = hegiht
+        this.weight = weight;
+      }
+      sayHello() {
+        console.log("hello");
+      }
+    }
+    let xiao = new People("雄安吗", 165, 178)
+    console.log(xiao);
+    xiao.sayHello()
+  </script>
+
+</body>
+
+</html>

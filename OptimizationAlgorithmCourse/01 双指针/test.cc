@@ -313,63 +313,346 @@ using namespace std;
 //   }
 // };
 // https://leetcode.cn/problems/4sum/
-class Solution
-{
-public:
-  vector<vector<int>> fourSum(vector<int> &nums, int target)
-  {
-    vector<vector<int>> v;
-    if (nums.empty())
-      return v;
-    sort(nums.begin(), nums.end());
-    int index = 0;
+// class Solution
+// {
+// public:
+//   vector<vector<int>> fourSum(vector<int> &nums, int target)
+//   {
+//     vector<vector<int>> v;
+//     if (nums.empty())
+//       return v;
+//     sort(nums.begin(), nums.end());
+//     int index = 0;
 
-    while (index < (int)(nums.size() - 3))
-    {
+//     while (index < (int)(nums.size() - 3))
+//     {
 
-      int begin = index + 1;
+//       int begin = index + 1;
 
-      while (begin < (nums.size() - 2))
-      {
+//       while (begin < (nums.size() - 2))
+//       {
 
-        // 这里等一下
-        int left = begin + 1;
-        int right = nums.size() - 1;
-        // 这里开始在[l,r] 中找到   和等于  nums[begin]的
-        while (left < right)
-        {
+//         // 这里等一下
+//         int left = begin + 1;
+//         int right = nums.size() - 1;
+//         // 这里开始在[l,r] 中找到   和等于  nums[begin]的
+//         while (left < right)
+//         {
 
-          long long sum = ((long long)nums[left] + nums[right] + nums[begin] + nums[index]);
-          if (sum == target)
-          {
-            v.push_back({nums[index], nums[begin], nums[left++], nums[right--]});
-            while (left < right && nums[left] == nums[left - 1])
-            {
-              left++;
-            }
-            while (left < right && nums[right] == nums[right + 1])
-            {
-              right--;
-            }
-          }
-          else if (sum > target)
-          {
-            right--;
-          }
-          else
-          {
-            left++;
-          }
-        }
-        begin++;
-        while (begin < (nums.size() - 2) && nums[begin - 1] == nums[begin])
-          begin++;
-      }
+//           long long sum = ((long long)nums[left] + nums[right] + nums[begin] + nums[index]);
+//           if (sum == target)
+//           {
+//             v.push_back({nums[index], nums[begin], nums[left++], nums[right--]});
+//             while (left < right && nums[left] == nums[left - 1])
+//             {
+//               left++;
+//             }
+//             while (left < right && nums[right] == nums[right + 1])
+//             {
+//               right--;
+//             }
+//           }
+//           else if (sum > target)
+//           {
+//             right--;
+//           }
+//           else
+//           {
+//             left++;
+//           }
+//         }
+//         begin++;
+//         while (begin < (nums.size() - 2) && nums[begin - 1] == nums[begin])
+//           begin++;
+//       }
 
-      index++;
-      while (index < (nums.size() - 3) && nums[index - 1] == nums[index])
-        index++;
-    }
-    return v;
-  }
-};
+//       index++;
+//       while (index < (nums.size() - 3) && nums[index - 1] == nums[index])
+//         index++;
+//     }
+//     return v;
+//   }
+// };
+
+// class Solution
+// {
+// public:
+//   void duplicateZeros(vector<int> &arr)
+//   {
+//     int src = 0;
+//     int dest = -1;
+//     int n = arr.size();
+//     while (src < n)
+//     {
+//       if (arr[src] != 0)
+//       {
+//         dest++;
+//       }
+//       else
+//       {
+//         dest += 2;
+//       }
+//       if (dest >= n - 1)
+//         break;
+//       src++;
+//     }
+//     if (dest == n)
+//     {
+//       arr[n - 1] = 0;
+//       src--;
+//       dest -= 2;
+//     }
+
+//     // 找到我们的数据并且可以将我们的src的元素赋值给我们的dest
+//     while (src >= 0)
+//     {
+//       if (arr[src] != 0)
+//       {
+//         arr[dest] = arr[src];
+//         dest--;
+//       }
+//       else
+//       {
+//         arr[dest] = arr[src];
+//         arr[dest - 1] = arr[src];
+//         dest -= 2;
+//       }
+//       src--;
+//     }
+//   }
+// };
+
+// class Solution {
+// public:
+//     void moveZeroes(vector<int>& nums) {
+//         int fast = 0;
+//         int slow = 0;
+//         while(fast < nums.size())
+//         {
+//             if(nums[fast] != 0)
+//             {
+//                 nums[slow++] = nums[fast];
+//             }
+//             fast++;
+//         }
+//         while(slow < nums.size())
+//         {
+//             nums[slow++] = 0;
+//         }
+//     }
+// };
+
+// class Solution
+// {
+// public:
+//   int bitSum(int val)
+//   {
+//     int sum = 0;
+//     while (val)
+//     {
+//       int ret = val % 10;
+//       sum += ret * ret;
+//       val /= 10;
+//     }
+//     return sum;
+//   }
+//   bool isHappy(int n)
+//   {
+//     int slow = n;
+//     int fast = n;
+//     while (true)
+//     {
+
+//       slow = bitSum(slow);
+//       fast = bitSum(bitSum(fast));
+//       if (slow == fast)
+//         break;
+//     }
+
+//     return slow == 1;
+//   }
+// };
+
+// class Solution {
+// public:
+//     int maxArea(vector<int>& height) {
+//         int left = 0;
+//         int right = height.size() -1;
+//         int result = 0;
+//         while(left < right)
+//         {
+//             result = max(result, (right-left)*min(height[left], height[right]));
+//             if(height[left] < height[right]) left++;
+//             else right--;
+//         }
+//         return result;
+//     }
+// };
+#include <algorithm>
+using namespace std;
+// class Solution
+// {
+// public:
+//   int triangleNumber(vector<int> &nums)
+//   {
+//     sort(nums.begin(), nums.end());
+//     int i = nums.size() - 1;
+//     int result = 0;
+//     for (; i >= 2; --i)
+//     {
+//       int left = 0;
+//       int right = i - 1;
+//       while (left < right)
+//       {
+//         if (nums[left] + nums[right] > nums[i])
+//         {
+//           result += (right - left);
+//           right--;
+//         }
+//         else
+//         {
+//           left++;
+//         }
+//       }
+//     }
+//     return result;
+//   }
+// };
+
+// class Solution
+// {
+// public:
+//   vector<int> twoSum(vector<int> &price, int target)
+//   {
+//     vector<int> result(2);
+//     sort(price.begin(), price.end());
+//     int left = 0;
+//     int right = price.size() - 1;
+//     while (left < right)
+//     {
+//       int sum = price[left] + price[right];
+//       if (target == sum)
+//       {
+//         result[0] = price[left];
+//         result[1] = price[right];
+//         return result;
+//       }
+//       else if (sum < target)
+//       {
+//         left++;
+//       }
+//       else
+//       {
+//         right--;
+//       }
+//     }
+//     return result;
+//   }
+// };
+
+// class Solution
+// {
+// public:
+
+//   vector<vector<int>> threeSum(vector<int> &nums)
+//   {
+//     vector<vector<int>> reuslt;
+//     sort(nums.begin(), nums.end());
+
+//     for (int i = nums.size() - 1; i >= 2;)
+//     {
+//       int val = nums[i];
+//       int left = 0;
+//       int right = i - 1;
+//       while (left < right)
+//       {
+//         int sum = nums[left] + nums[right];
+//         if (sum + val == 0)
+//         {
+//           // 收集
+//           reuslt.push_back({nums[left], nums[right], val});
+//           // 跟新
+//           left++;
+//           right--;
+//           while (left < right && nums[left] == nums[left - 1])
+//             left++;
+//           while (left < right && nums[right] == nums[right + 1])
+//             right--;
+//         }
+//         else if (sum > -val)
+//         {
+//           right--;
+//         }
+//         else
+//         {
+//           left++;
+//         }
+//       }
+
+//       while (i >= 2 && nums[i] == val)
+//       {
+//         i--;
+//       }
+//     }
+//     return reuslt;
+//   }
+// };
+
+// class Solution
+// {
+// public:
+//   vector<vector<int>> fourSum(vector<int> &nums, int target)
+//   {
+//     vector<vector<int>> reuslt;
+//     sort(nums.begin(), nums.end());
+//     int i = nums.size() - 1;
+//     while (i >= 3)
+//     {
+//       long long x = target - nums[i];
+//       int j = i - 1;
+//       while (j >= 2)
+//       {
+
+//         int left = 0;
+//         int right = j - 1;
+//         // 这里也是
+//         long long y = x - nums[j];
+//         while (left < right)
+//         {
+//           int sum = nums[left] + nums[right];
+//           if (sum == y)
+//           {
+//             reuslt.push_back({nums[left], nums[right], nums[j], nums[i]});
+//             left++;
+//             right--;
+//             while (left < right && nums[left] == nums[left - 1])
+//               left++;
+//             while (left < right && nums[right] == nums[right + 1])
+//               right--;
+//           }
+//           else if (sum > y)
+//           {
+//             right--;
+//           }
+//           else
+//           {
+//             left++;
+//           }
+//         }
+
+//         while (j >= 2 && (x - nums[j] == y))
+//         {
+//           --j;
+//         }
+//       }
+//       while (i >= 3 && (target - nums[i] == x))
+//       {
+//         --i;
+//       }
+//     }
+//     return reuslt;
+//   }
+// };
+
+
+

@@ -1,118 +1,217 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <limits.h>
 #include <iostream>
 
-// ¾ØÕóµÄ°æ±¾
 namespace matrix
 {
-	// V ÊÇ¶¥µã
-	// W weight È«Ö°
-	// Direction:ÊÇ·ñÊÇÓÖÏòµÄ false ÎÞÏòµÄ
-	template<class V, class W, W MAX_W = INT_MAX, bool Direction = false>
-	class Graph
-	{
-	public:
-		// 1. Í¼µÄ´´½¨ 
-		// 1.1  Ò»°ãÊÇIOÊäÈë, µ«ÊÇÎÒÃÇÎªÁËÒª²âÊÔ,
-		// 1.2  ¹ØÏµ½øÈëÎÄ¼þ
-		// 1.3  ÊÖ¶¯Ìí¼ÓºÍÐÞ¸Ä
-		Graph(const V* a, size_t n)
-		{
+  template <class V, class W, W MAX_W = INT_MAX, bool Direction = false>
+  class Graph
+  {
+  public:
+    Graph(const V *a, size_t n)
+    {
+      _vertexs.reserve(n);
+      for (size_t i = 0; i < n; ++i)
+      {
+        _vertexs.push_back(a[i]);
+        _indexMap[a[i]] = i;
+      }
+      _matrix.resize(n, std::vector<W>(n, MAX_W));
+    }
 
-			_vertexs.reserve(n);
-			for (size_t i = 0; i < n; i++)
-			{
-				_vertexs.push_back(a[i]);
-				_indexMap[a[i]] = i;
-			}
+  public:
+    size_t GetVertexIndex(const V &v)
+    {
+      auto iter = _indexMap.find(v);
+      if (iter == _indexMap.end())
+      {
+        throw std::invalid_argument("é¡¶ç‚¹ä¸å­˜åœ¨");
+        return -1;
+      }
+      return iter->second;
+    }
+    // æ·»åŠ è¾¹
+    void AddEdge(const V &src, const V &dst, const W &w)
+    {
+      size_t srci = GetVertexIndex(src);
+      size_t dsti = GetVertexIndex(dst);
+      _matrix[srci][dsti] = w;
+      if (Direction == false)
+        _matrix[dsti][srci] = w;
+    }
+    void Print()
+    {
+      size_t n = _vertexs.size();
+      for (size_t i = 0; i < n; ++i)
+      {
+        std::cout << i << " -> [ " << _vertexs[i] << " ]" << std::endl;
+      }
+      std::cout << std::endl;
+    
+        std::cout << "  "; 
+      for (size_t i = 0; i < n; ++i)
+      {
+        std::cout << i << " "; 
+      }
+      std::cout << std::endl;
+      for (size_t i = 0; i < n; ++i)
+      {
+       
+        std::cout << i << " "; 
+        for (size_t j = 0; j < n; ++j)
+        {
+          //std::cout << _matrix[i][j] << " ";
+          if(_matrix[i][j] == MAX_W)
+          {
+            printf("* ");
+          }
+          else 
+          {
+            printf("%d ", _matrix[i][j]);
+          }
+        }
+        std::cout << std::endl;
+      }
+      std::cout << std::endl;
+    }
 
-			_matrix.resize(n);
-			for (size_t i = 0; i < _matrix.size(); i++)
-			{
-				(_matrix[i]).resize(n, MAX_W);
-			}
-		}
-		~Graph()
-		{}
-	public:
-		// Ìí¼Ó±ß
-		void AddEdge(const V& src, const V& dst, const W& w)
-		{
-			size_t srci = GetVertexIndex(src);
-			size_t dsti = GetVertexIndex(dst);
-			_matrix[srci][dsti] = w;
-			if (Direction == false)
-			{
-				// ÎÞÏòÍ¼Ò²Ìí¼Ó
-				_matrix[dsti][srci] = w;
-			}
-		}
-
-		size_t GetVertexIndex(const V& v)	const
-		{
-			auto iter = _indexMap.find(v);
-			if (iter == _indexMap.end())
-			{
-				throw std::invalid_argument("¶¥µã²»´æÔÚ");
-				return -1;  // ·ÀÖ¹±àÒëÆ÷µÄ¼ì²â,³öÏÖ¸æ¾¯
-			}
-			return iter->second;
-		}
-		void BFS(const V& v)
-		{
-
-		}
-		void Print()const
-		{
-			// ´òÓ¡¶¥µã
-			for (size_t i = 0; i < _vertexs.size(); i++)
-			{
-				std::cout << "[" << i << "]->" << _vertexs[i] << std::endl;
-			}
-			std::cout <<std::endl;
-			std::cout << "  ";
-			for (size_t i = 0; i < _vertexs.size(); i++)
-			{
-				std::cout << i << " ";
-			}
-			std::cout << std::endl;
-			
-			for (size_t i = 0; i < _matrix.size(); i++)
-			{
-				std::cout << i << " ";
-				for (size_t j = 0; j < _matrix[i].size(); j++)
-				{
-					//std::cout << _matrix[i][j] << " ";
-					if (_matrix[i][j] == MAX_W)
-					{
-						std::cout << "*" << " ";
-					}
-					else
-					{
-						std::cout << _matrix[i][j] << " ";
-					}
-				}
-				std::cout << std::endl;
-			}
-		}
-	private:
-		std::vector<V> _vertexs; // ¶¥µã
-		std::map<V, int> _indexMap; // ¶¥µãºÍÏÂ±êµÄ¹ØÏµ
-		std::vector<std::vector<W>> _matrix; // ÁÚ½Ó¾ØÕó
-	};
-
-	void TestGraph()
-	{
-		Graph<char, int, INT_MAX, true> g("0123", 4);
-		g.AddEdge('0', '1', 1);
-		g.AddEdge('0', '3', 4);
-		g.AddEdge('1', '3', 2);
-		g.AddEdge('1', '2', 9);
-		g.AddEdge('2', '3', 8);
-		g.AddEdge('2', '1', 5);
-		g.AddEdge('2', '0', 3);
-		g.AddEdge('3', '2', 6);
-		g.Print();
-	}
+  private:
+    std::vector<V> _vertexs;
+    std::map<V, int> _indexMap;
+    std::vector<std::vector<W>> _matrix;
+  };
+  void TestGraph()
+  {
+    Graph<char, int, INT_MAX, true> g("0123", 4);
+    g.AddEdge('0', '1', 1);
+    g.AddEdge('0', '3', 4);
+    g.AddEdge('1', '3', 2);
+    g.AddEdge('1', '2', 9);
+    g.AddEdge('2', '3', 8);
+    g.AddEdge('2', '1', 5);
+    g.AddEdge('2', '0', 3);
+    g.AddEdge('3', '2', 6);
+    g.Print();
+  }
 }
+
+// #include <map>
+// #include <vector>
+// #include <limits.h>
+// #include <iostream>
+//
+//// ï¿½ï¿½ï¿½ï¿½Ä°æ±¾
+// namespace matrix
+//{
+//	// V ï¿½Ç¶ï¿½ï¿½ï¿½
+//	// W weight È«Ö°
+//	// Direction:ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ false ï¿½ï¿½ï¿½ï¿½ï¿½
+//	template<class V, class W, W MAX_W = INT_MAX, bool Direction = false>
+//	class Graph
+//	{
+//	public:
+//		// 1. Í¼ï¿½Ä´ï¿½ï¿½ï¿½
+//		// 1.1  Ò»ï¿½ï¿½ï¿½ï¿½IOï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½,
+//		// 1.2  ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+//		// 1.3  ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½Óºï¿½ï¿½Þ¸ï¿½
+//		Graph(const V* a, size_t n)
+//		{
+//
+//			_vertexs.reserve(n);
+//			for (size_t i = 0; i < n; i++)
+//			{
+//				_vertexs.push_back(a[i]);
+//				_indexMap[a[i]] = i;
+//			}
+//
+//			_matrix.resize(n);
+//			for (size_t i = 0; i < _matrix.size(); i++)
+//			{
+//				(_matrix[i]).resize(n, MAX_W);
+//			}
+//		}
+//		~Graph()
+//		{}
+//	public:
+//		// ï¿½ï¿½ï¿½Ó±ï¿½
+//		void AddEdge(const V& src, const V& dst, const W& w)
+//		{
+//			size_t srci = GetVertexIndex(src);
+//			size_t dsti = GetVertexIndex(dst);
+//			_matrix[srci][dsti] = w;
+//			if (Direction == false)
+//			{
+//				// ï¿½ï¿½ï¿½ï¿½Í¼Ò²ï¿½ï¿½ï¿½ï¿½
+//				_matrix[dsti][srci] = w;
+//			}
+//		}
+//
+//		size_t GetVertexIndex(const V& v)	const
+//		{
+//			auto iter = _indexMap.find(v);
+//			if (iter == _indexMap.end())
+//			{
+//				throw std::invalid_argument("ï¿½ï¿½ï¿½ã²»ï¿½ï¿½ï¿½ï¿½");
+//				return -1;  // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½,ï¿½ï¿½ï¿½Ö¸æ¾¯
+//			}
+//			return iter->second;
+//		}
+//		void BFS(const V& v)
+//		{
+//
+//		}
+//		void Print()const
+//		{
+//			// ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+//			for (size_t i = 0; i < _vertexs.size(); i++)
+//			{
+//				std::cout << "[" << i << "]->" << _vertexs[i] << std::endl;
+//			}
+//			std::cout <<std::endl;
+//			std::cout << "  ";
+//			for (size_t i = 0; i < _vertexs.size(); i++)
+//			{
+//				std::cout << i << " ";
+//			}
+//			std::cout << std::endl;
+//
+//			for (size_t i = 0; i < _matrix.size(); i++)
+//			{
+//				std::cout << i << " ";
+//				for (size_t j = 0; j < _matrix[i].size(); j++)
+//				{
+//					//std::cout << _matrix[i][j] << " ";
+//					if (_matrix[i][j] == MAX_W)
+//					{
+//						std::cout << "*" << " ";
+//					}
+//					else
+//					{
+//						std::cout << _matrix[i][j] << " ";
+//					}
+//				}
+//				std::cout << std::endl;
+//			}
+//		}
+//	private:
+//		std::vector<V> _vertexs; // ï¿½ï¿½ï¿½ï¿½
+//		std::map<V, int> _indexMap; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½Ä¹ï¿½Ïµ
+//		std::vector<std::vector<W>> _matrix; // ï¿½Ú½Ó¾ï¿½ï¿½ï¿½
+//	};
+//
+//	void TestGraph()
+//	{
+//		Graph<char, int, INT_MAX, true> g("0123", 4);
+//		g.AddEdge('0', '1', 1);
+//		g.AddEdge('0', '3', 4);
+//		g.AddEdge('1', '3', 2);
+//		g.AddEdge('1', '2', 9);
+//		g.AddEdge('2', '3', 8);
+//		g.AddEdge('2', '1', 5);
+//		g.AddEdge('2', '0', 3);
+//		g.AddEdge('3', '2', 6);
+//		g.Print();
+//	}
+// }

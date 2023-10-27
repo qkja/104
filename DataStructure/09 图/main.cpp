@@ -3,6 +3,6 @@
 int main()
 {
 	//std::cout << "main" << std::endl;
-	matrix::TestGraph();
+  matrix::TestGraph();
 	return 0;
 }

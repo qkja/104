@@ -10,7 +10,75 @@
 #include <algorithm>
 #include <unordered_map>
 using namespace std;
-// https://leetcode.cn/problems/minimum-size-subarray-sum/submissions/
+class Solution
+{
+public:
+  int lengthOfLongestSubstring(string s)
+  {
+    int left = 0;
+    int right = 0;
+    unordered_map<char, int> m;
+    int result = 0;
+    for (; right < s.size(); ++right)
+    {
+      m[s[right]]++;          // 入窗口
+      while (m[s[right]] > 1) // 判断
+      {
+        m[s[left++]]--; // 出窗口
+      }
+      result = max(result, right - left + 1); // 更新结果
+    }
+    return result;
+  }
+};
+
+// class Solution
+// {
+// public:
+//   int lengthOfLongestSubstring(string s)
+//   {
+//     int left = 0;
+//     int right = 0;
+//     unordered_set<char> s_char;
+//     int result = 0;
+//     for (; right < s.size(); ++right)
+//     {
+//       // 这里需要收集结果
+//       while (s_char.find(s[right]) != s_char.end())
+//       {
+//         result = max(result, right - left); // 更新结果
+//         s_char.erase(s[left++]);            // 出窗口
+//       }
+//       // 入窗口
+//       s_char.insert(s[right]);
+//     }
+//   }
+// };
+
+// class Solution
+// {
+// public:
+//   int minSubArrayLen(int target, vector<int> &nums)
+//   {
+//     int ret = INT_MAX; // 这是结果
+//     int left = 0, right = 0;
+//     int sum = 0; // 子数组的和
+//     int n = nums.size();
+//     while (right < n)
+//     {
+//       sum += nums[right];    // 进窗口
+//       while (sum >= target) // 这就是判断,为何是while,可能出现这样的情况  num = [1 1 1 1 1000] target = 10000
+//       {
+//         ret = min(ret, right - left + 1); // 更新结果
+//         sum -= nums[left++];               // 出窗口
+//       }
+//       right++;
+//     }
+//     return ret == INT_MAX ? 0 : ret;
+//   }
+// };
+
+//    https://leetcode.cn/problems/minimum-size-subarray-sum/submissions/
 //  class Solution
 //  {
 //  public:

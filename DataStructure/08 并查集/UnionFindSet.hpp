@@ -236,3 +236,14 @@ private:
 //     return ufs.SetSize();
 //   }
 // };
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+
+    }
+};
+

@@ -8,6 +8,7 @@ public:
       : _ufs(n, -1)
   {
   }
+
 public:
   // 1. 合并两个元素
   void Union(int x1, int x2)
@@ -21,8 +22,16 @@ public:
       return;
 
     // 两个几个加起来
-    _ufs[root1] += _ufs[root2];
+    // _ufs[root1] += _ufs[root2];
     // 更新父节点
+    // _ufs[root2] = root1;
+    // 合并两个元素的时候尽量缩短下路径
+    // 两个集合是是谁想谁合并
+    // 这里希望数据量小的往大的集合合并
+    if(std::abs(_ufs[root1])  < std::abs(_ufs[root2]))
+      std::swap(root1, root2);
+
+    _ufs[root1] += _ufs[root2];
     _ufs[root2] = root1;
   }
   // 3.判断两个元素是不是在一个集合
@@ -47,19 +56,24 @@ private:
   int FindRoot(int x)
   {
     // if(x < 0 || s >= _ufs.size())
-    int parent = x;
-    while (_ufs[parent] >= 0)
+    int root = x;
+    while (_ufs[root] >= 0)
     {
-      parent = _ufs[parent];
+      root = _ufs[root];
     }
-    return parent;
+    // 这里可以在在查找的时候缩短下路径
+    while(_ufs[x] >= 0)
+    {
+      int parent = _ufs[x];// 保存一下父亲节点
+      _ufs[x] = root;
+      x = parent;
+    }
+    return root;
   }
 
 private:
   std::vector<int> _ufs;
 };
-
-
 
 // template<class T>
 // class UnionFindSet
@@ -236,14 +250,50 @@ private:
 //     return ufs.SetSize();
 //   }
 // };
-#include <vector>
-#include <string>
-using namespace std;
-
-class Solution {
-public:
-    bool equationsPossible(vector<string>& equations) {
-
-    }
-};
-
+//#include <vector>
+//#include <string>
+//using namespace std;
+//
+//class Solution
+//{
+//public:
+//  bool equationsPossible(vector<string> &equations)
+//  {
+//    vector<int> ufs(26, -1);
+//    auto findRoot = [&ufs](int x)
+//    {
+//      while (ufs[x] >= 0)
+//      {
+//        x = ufs[x];
+//      }
+//      return x;
+//    };
+//    // 把相等的值放在一个集合中
+//    for (auto &str : equations)
+//    {
+//      if (str[1] == '=')
+//      {
+//        int root1 = findRoot(str[0] - 'a');
+//        int root2 = findRoot(str[3] - 'a');
+//        if (root1 != root2)
+//        {
+//          ufs[root1] += ufs[root2];
+//          ufs[root2] = root1;
+//        }
+//      }
+//    }
+//    for (auto &str : equations)
+//    {
+//      if (str[1] == '!')
+//      {
+//        int root1 = findRoot(str[0] - 'a');
+//        int root2 = findRoot(str[3] - 'a');
+//        if (root1 == root2)
+//        {
+//          return false;
+//        }
+//      }
+//    }
+//    return true;
+//  }
+//};

@@ -427,4 +427,50 @@
 //         return result;
 //     }
 // };
+//
+//int main()
+//{
+//
+//	return 0;
+//}
+
+class Solution {
+public:
+	int findNumberOfLIS(vector<int>& nums) {
+		int n = nums.size();
+		vector<int> len(n, 1);
+		vector<int> count(n, 0);
+
+		for (int i = 0; i < n; i++)
+		{
+			// 更新len[i]
+			for (int j = 0; j < i; j++)
+			{
+				if (nums[j] < nums[i])
+					len[i] = max(len[j] + 1, len[i]);
+			}
+			// 更新 count[i]
+			for (int j = 0; j < i; j++)
+			{
+				if (nums[j] < nums[i] && len[j] + 1 == len[i])
+				{
+					count[i] += count[j];
+				}
+			}
+			// 这里如果count[i] == 0
+			count[i] = count[i] == 0 ? 1 : count[i];
+		}
+		int maxLen = len[0];
+		int result = count[0];
+		for (int i = 1; i < n; i++)
+		{
+			if (len[i] > maxLen)
+			{
+				maxLen = len[i];
+				result = count[i];
+			}
+		}
+		return result;
+	}
+};
 

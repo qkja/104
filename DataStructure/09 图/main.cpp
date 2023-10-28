@@ -2,7 +2,7 @@
 #include "Graph.h"
 int main()
 {
-	//std::cout << "main" << std::endl;
-  matrix::TestGraph();
+    //matrix::TestGraph();
+	link_table::TestGraph();
 	return 0;
 }

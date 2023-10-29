@@ -96,6 +96,7 @@ namespace matrix
         return _w > e2._w;
       }
     };
+    // 最小生成树
     W Kruskal(Self& minTree)
     {
       // 最小生成树
@@ -123,7 +124,7 @@ namespace matrix
          minq.pop();
          if(ufs.InSet(min._srci, min._dsti) == false)
          {
-           std::cout << _vertexs[min._srci] << "->" <<_vertexs[min._dsti] << ":" << min._w << std::endl;
+           //std::cout << _vertexs[min._srci] << "->" <<_vertexs[min._dsti] << ":" << min._w << std::endl;
            minTree._AddEdge(min._srci, min._dsti, min._w);
            ufs.Union(min._srci, min._dsti);
            ++size;
@@ -131,7 +132,7 @@ namespace matrix
          }
          else 
          {
-           std::cout << _vertexs[min._srci] << "->" <<_vertexs[min._dsti] << ":" << min._w << std::endl;
+           //std::cout << _vertexs[min._srci] << "->" <<_vertexs[min._dsti] << ":" << min._w << std::endl;
            std::cout << "成环了"<< std::endl;
          }
       }
@@ -160,12 +161,6 @@ namespace matrix
       _AddEdge(srci, dsti, w);
     }
 
-    void _AddEdge(size_t srci, size_t dsti, const W &w)
-    {
-      _matrix[srci][dsti] = w;
-      if (Direction == false)
-        _matrix[dsti][srci] = w;
-    }
     void Print()
     {
       size_t n = _vertexs.size();
@@ -199,6 +194,12 @@ namespace matrix
     }
 
   private:
+    void _AddEdge(size_t srci, size_t dsti, const W &w)
+    {
+      _matrix[srci][dsti] = w;
+      if (Direction == false)
+        _matrix[dsti][srci] = w;
+    }
     void _DFS(size_t root, std::vector<bool>& visited)
     {
       std::cout << root << " : " << _vertexs[root] << std::endl;

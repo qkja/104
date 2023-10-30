@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+    .nav {
+      width: 800px;
+      height: 150px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav input {
+      width: 600px;
+      height: 100px;
+    }
+
+    .nav button {
+      width: 200px;
+      height: 100px;
+      background-color: orange;
+      color: white;
+      font-size: 20px;
+      border: orange;
+      border-radius: 5px;
+    }
+
+    .container {
+      width: 800px;
+      display: flex;
+      margin: 0 auto;
+    }
+
+    h3 {
+      background-color: gray;
+      color: white;
+      text-align: center;
+      width: 400px;
+      height: 60px;
+      padding-top: 15px;
+    }
+
+    .row {
+      height: 50px;
+      display: flex;
+      align-items: center;
+    }
+
+    .todo,
+    .done {
+      width: 50%;
+      height: 100%;
+    }
+
+    span {
+      width: 200px;
+      font-size: 20px;
+      margin-left: 5px;
+    }
+
+    .row button {
+      width: 90px;
+      height: 40px;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="nav">
+    <input type="text"><button onclick="newJob()">新建任务</button>
+  </div>
+  <div class="container">
+
+    <div class="todo">
+      <h3>未完成</h3>
+      <div class="row">
+        <input type="checkbox">
+        <span>吃饭</span>
+        <button>删除</button>
+      </div>
+      <div class="row">
+        <input type="checkbox">
+        <span>吃饭</span>
+        <button>删除</button>
+      </div>
+
+    </div>
+
+    <div class="done">
+      <h3>已完成</h3>
+    </div>
+  </div>
+</body>
+
+
+
+<script>
+
+
+
+  function newJob() {
+
+    let input = document.querySelector('.nav input')
+    let info = input.value
+    if (info == '') {
+      return
+    }
+    console.log(info)
+    let todo = document.querySelector('.todo')
+
+    let div = document.createElement('div')
+    let checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+
+    let span = document.createElement('span')
+    span.innerHTML = info
+    let button = document.createElement('button')
+    // let new_job_button = document.querySelector('.nav button')
+    button.innerHTML = "删除"
+
+    div.appendChild(checkbox)
+    div.appendChild(span)
+    div.appendChild(button)
+    div.className = 'row'
+
+    todo.appendChild(div)
+
+
+    let delete_buttons = document.querySelectorAll('.row button')
+
+    for (i = 0; i < delete_buttons.length; i++) {
+      delete_buttons[i].onclick = function () {
+        let parent = this.parentNode;
+        let grandparent = parent.parentNode;
+        grandparent.removeChild(parent)
+      }
+    }
+
+
+    let checkbox_buttons = document.querySelectorAll('.row input')
+    for (i = 0; i < checkbox_buttons.length; i++) {
+      checkbox_buttons[i].onclick = function () {
+        let row = this.parentNode
+        let target
+        if (this.checked) {
+          target = document.querySelector('.done')
+        }
+        else {
+          target = document.querySelector('.todo')
+        }
+        target.appendChild(row)
+      }
+    }
+  }
+</script>
+
+</html>

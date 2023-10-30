@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .fasle {
+      color: red;
+    }
+
+    .true {
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <input class="result_button" type="button" value="重新开始一局游戏" onclick="reSet()"> <br>
+  请输入要猜的数字: <input type="text" value="0" class="to_guess_num"> <input type="button" value="猜" onclick="Guess()"><br>
+  已经猜的次数: <span class="has_conut">0</span> <br>
+  结果: <span class="result"></span>
+</body>
+
+<script>
+  let to_guess_num_element = document.querySelector('.to_guess_num')
+  let has_conut_element = document.querySelector('.has_conut')
+  let result_element = document.querySelector('.result')
+
+  console.dir(to_guess_num_element)
+  console.dir(has_conut_element)
+  console.dir(result_element)
+  let num = Math.floor(Math.random() * 100) + 1
+  // let num = 10
+
+  function Guess() {
+    has_conut_element.innerHTML = parseInt(has_conut_element.innerHTML) + 1
+
+    if (parseInt(to_guess_num_element.value) > num) {
+      result_element.innerHTML = "猜大了"
+      result_element.className = 'fasle'
+    } else if (parseInt(to_guess_num_element.value) < num) {
+      result_element.innerHTML = "猜小了"
+      result_element.className = 'fasle'
+    }
+    else {
+      result_element.innerHTML = "猜对了"
+      result_element.className = 'true'
+
+    }
+
+  }
+  function reSet() {
+    to_guess_num_element.value = 0
+    has_conut_element.innerHTML = 0
+    result_element.innerHTML = ""
+  }
+</script>
+
+</html>

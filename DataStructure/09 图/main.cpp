@@ -1,10 +1,11 @@
 #include <iostream>
-#include "Graph.h"
+//#include "Graph.h"
 int main()
 {
-  //matrix::TestGraph();
+	//matrix::TestGraph();
 	//link_table::TestGraph();
-  //matrix::TestGraphDBFS();
-  matrix::TestGraphMinTree();
+	//matrix::TestGraphDBFS();
+	//matrix::TestGraphMinTree();
+	std::cout << "ÄãºÃ" << std::endl;
 	return 0;
 }

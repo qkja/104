@@ -143,6 +143,8 @@ namespace matrix
       }
       return totalW;
     }
+
+
     // 最小生成树Prim 算法
     W Prim(Self &minTree, const V &src)
     {
@@ -157,22 +159,36 @@ namespace matrix
       std::set<size_t> X;
       std::set<size_t> Y;
       X.insert(srci);
-      for (size_t i = 0; i < n; i++)
+      for (size_t i = 0; i < n; ++i)
       {
-        if (i != srci)
+          if (i == srci)
+              continue;
           Y.insert(i);
       }
 
-      // 开始选边
-      std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> minq;
-      for(size_t i = 0; i < n; i++)
-      {
-        if(_matrix[srci][i] != MAX_W)
-        {
-          minq.push(Edge(srci, i,_matrix[srci][i] ));
-        }
-      }
+      //  此时 X和Y已经是两个集合了
+      // 下面 是 X-> Y集合中链接的边中选择最小的边
+
+
+      //for (size_t i = 0; i < n; i++)
+      //{
+      //  if (i != srci)
+      //    Y.insert(i);
+      //}
+
+      //// 开始选边
+      //std::priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> minq;
+      //for(size_t i = 0; i < n; i++)
+      //{
+      //  if(_matrix[srci][i] != MAX_W)
+      //  {
+      //    minq.push(Edge(srci, i,_matrix[srci][i] ));
+      //  }
+      //}
     }
+
+
+
 
     size_t GetVertexIndex(const V &v)
     {

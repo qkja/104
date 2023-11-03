@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 #include <limits.h>
+
 #include <iostream>
 #include <functional>
 #include "UnionFindSet.hpp"
@@ -217,7 +218,7 @@ namespace matrix
 			auto iter = _indexMap.find(v);
 			if (iter == _indexMap.end())
 			{
-				//throw std::invalid_argument("顶点不存在");
+				throw std::invalid_argument("不存在的顶点");
 				return -1;
 			}
 			return iter->second;
@@ -229,7 +230,71 @@ namespace matrix
 			size_t dsti = GetVertexIndex(dst);
 			_AddEdge(srci, dsti, w);
 		}
+		void Dijkstra(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
+		{
+			size_t srci = GetVertexIndex(src);
+			size_t n = _vertexs.size();
+			dist.resize(n, MAX_W);
+			pPath.resize(n, -1);
+			dist[srci] = 0;
+			pPath[srci] = 0;
 
+			std::vector<bool> S(n, false); // 已经确定的最短路径的集合, 可以理解是和Q的合体
+			for (size_t i = 0; i < n; i++)
+			{
+				// 每一次从 Q中选取一个 到 srci最小的
+				size_t u = 0;
+				W min = MAX_W;
+				for (size_t j = 0; j < n; j++)
+				{
+					if (S[j] == false && dist[j] < min)
+					{
+						u = j;
+						min = dist[j];
+					}
+				}
+				// 将这个给  S
+				S[u] = true;
+				// 开始我们的松弛
+				for (size_t v = 0; v < n; v++)
+				{
+					// 我们已经规定了  进入S的不能选了
+					if ( S[v] == false 
+						&& _matrix[u][v] != MAX_W 
+						&& dist[u] + _matrix[u][v] < dist[v])
+					{
+						dist[v] = dist[u] + _matrix[u][v];
+						pPath[v] = u;
+					}
+				}
+			}
+		}
+		void PrintShotPath(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
+		{
+			size_t srci = GetVertexIndex(src);
+			size_t n = _vertexs.size();
+			for (size_t i = 0; i < n; ++i)
+			{
+
+				std::vector<int> path;
+				path.push_back(i);
+				int parent = pPath[i];
+				while (parent != srci)
+				{
+					path.push_back(parent);
+					parent = pPath[parent];
+				}
+				path.push_back(parent);
+				std::reverse(path.begin(), path.end());
+
+				// 打印
+				for (auto e : path)
+				{
+					std::cout << _vertexs[e] << "->";
+				}
+				std::cout << dist[i] << std::endl;
+			}
+		}
 		void Print()
 		{
 			size_t n = _vertexs.size();
@@ -287,6 +352,38 @@ namespace matrix
 		std::map<V, int> _indexMap;
 		std::vector<std::vector<W>> _matrix;
 	};
+	void TestGraphDijkstra()
+	{
+		/*const char* str = "syztx";
+		Graph<char, int, INT_MAX, true> g(str, strlen(str));
+		g.AddEdge('s', 't', 10);
+		g.AddEdge('s', 'y', 5);
+		g.AddEdge('y', 't', 3);
+		g.AddEdge('y', 'x', 9);
+		g.AddEdge('y', 'z', 2);
+		g.AddEdge('z', 's', 7);
+		g.AddEdge('z', 'x', 6);
+		g.AddEdge('t', 'y', 2);
+		g.AddEdge('t', 'x', 1);
+		g.AddEdge('x', 'z', 4);
+		std::vector<int> dist;
+		std::vector<int> parentPath;
+		g.Dijkstra('s', dist, parentPath);
+		g.PrintShotPath('s', dist, parentPath);*/
+		// 图中带有负权路径时，贪心策略则失效了。
+		// 测试结果可以看到s->t->y之间的最短路径没更新出来
+		const char* str = "sytx";
+		Graph<char, int, INT_MAX, true> g(str, strlen(str));
+		g.AddEdge('s', 't', 10);
+		g.AddEdge('s', 'y', 5);
+		g.AddEdge('t', 'y', -7);
+		g.AddEdge('y', 'x', 3);
+		std::vector<int> dist;
+		std::vector<int> parentPath;
+		g.Dijkstra('s', dist, parentPath);
+		g.PrintShotPath('s', dist, parentPath);
+	}
+
 
 	void TestGraphMinTree()
 	{
@@ -385,7 +482,7 @@ namespace link_table
 			auto iter = _indexMap.find(v);
 			if (iter == _indexMap.end())
 			{
-				//throw std::invalid_argument("顶点不存在");
+				throw std::invalid_argument("不存在的顶点");
 				return -1;
 			}
 			return iter->second;

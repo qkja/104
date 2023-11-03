@@ -7,6 +7,7 @@ int main()
 	//matrix::TestGraphDBFS();
 	//matrix::TestGraphMinTree();
 	//std::cout << "ÄãºÃ" << std::endl;
-	matrix::TestGraphMinTree();
+	//matrix::TestGraphMinTree();
+	matrix::TestGraphDijkstra();
 	return 0;
 }

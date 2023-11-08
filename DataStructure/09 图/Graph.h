@@ -13,6 +13,8 @@
 
 namespace matrix
 {
+	using namespace std;
+
 	template <class V, class W, W MAX_W = INT_MAX, bool Direction = false>
 	class Graph
 	{
@@ -230,6 +232,16 @@ namespace matrix
 			size_t dsti = GetVertexIndex(dst);
 			_AddEdge(srci, dsti, w);
 		}
+
+		bool BellmanFord(const V& src, std::vector<W>& dist, std::vector<int>& parentPath)
+		{
+			size_t srci = GetVertexIndex(src);
+			size_t n = _vertexs.size();
+			dist.resize(N, MAX_W);
+			parentPath.resize(N, -1);
+			// 先更新srci->srci为最小值
+			dist[srci] = W();
+		}
 		void Dijkstra(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
 		{
 			size_t srci = GetVertexIndex(src);
@@ -253,9 +265,11 @@ namespace matrix
 						min = dist[j];
 					}
 				}
+
 				// 将这个给  S
 				S[u] = true;
 				// 开始我们的松弛
+
 				for (size_t v = 0; v < n; v++)
 				{
 					// 我们已经规定了  进入S的不能选了

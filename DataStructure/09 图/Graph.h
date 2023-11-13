@@ -12,6 +12,8 @@
 
 namespace matrix
 {
+	using namespace std;
+
 	template <class V, class W, W MAX_W = INT_MAX, bool Direction = false>
 	class Graph
 	{
@@ -204,6 +206,53 @@ namespace matrix
 			size_t dsti = GetVertexIndex(dst);
 			_AddEdge(srci, dsti, w);
 		}
+
+		bool BellmanFord(const V& src, std::vector<W>& dist, std::vector<int>& parentPath)
+		{
+			size_t srci = GetVertexIndex(src);
+			size_t n = _vertexs.size();
+			dist.resize(n, MAX_W);
+			parentPath.resize(n, -1);
+			// 先更新srci->srci为最小值
+			dist[srci] = W();
+			parentPath[srci] = 0;
+
+			for (size_t k = 0; k < n; ++k)
+			{ 
+				bool upDate = false;
+				std::cout<<"更新第 "  << k << std::endl;
+				//std::cout << << k << "21" << std::endl;
+				for (size_t i = 0; i < n; ++i)
+				{
+					for (size_t j = 0; j < n; ++j)
+					{
+						if (_matrix[i][j] != MAX_W && dist[i] + _matrix[i][j] < dist[j])
+						{
+							std::cout << _vertexs[i] << " -> " << _vertexs[j] << ":" << _matrix[i][j] << std::endl;
+							upDate = true;
+							dist[j] = dist[i] + _matrix[i][j];
+							parentPath[j] = i;
+						}
+					}
+				}
+
+				if (false == upDate)
+				{
+					break;
+				}
+			}
+			for (size_t i = 0; i < n; ++i)
+			{
+				for (size_t j = 0; j < n; ++j)
+				{
+					if (_matrix[i][j] != MAX_W && dist[i] + _matrix[i][j] < dist[j])
+						return false;
+				}
+			}
+
+			return true;
+		}
+
 		void Dijkstra(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
 		{
 			size_t srci = GetVertexIndex(src);
@@ -227,9 +276,11 @@ namespace matrix
 						min = dist[j];
 					}
 				}
+
 				// 将这个给  S
 				S[u] = true;
 				// 开始我们的松弛
+
 				for (size_t v = 0; v < n; v++)
 				{
 					// 我们已经规定了  进入S的不能选了
@@ -296,8 +347,39 @@ namespace matrix
 			}
 		}
 
-
-
+		void FloydWarShall(vector<vector<W>>& vvDist, vector<vector<int>>&
+			vvParentPath)
+		{
+			size_t N = _vertexs.size();
+			vvDist.resize(N);
+			vvParentPath.resize(N);
+			// 初始化权值和路径矩阵
+			for (size_t i = 0; i < N; ++i)
+			{
+				vvDist[i].resize(N, MAX_W);
+				vvParentPath[i].resize(N, -1);
+			}
+			for (size_t i = 0; i < N; ++i)
+			{
+				for (size_t j = 0; j < N; ++j)
+				{
+					if (_matrix[i][j] != MAX_W)
+					{
+						vvDist[i][j] = _matrix[i][j];
+						vvParentPath[i][j] = i;
+					}
+					else
+					{
+						vvParentPath[i][j] = -1;
+					}
+					if (i == j)
+					{
+						vvDist[i][j] = 0;
+						vvParentPath[i][j] = -1;
+					}
+				}
+			}
+		}
 		void Print()
 		{
 			size_t n = _vertexs.size();
@@ -355,6 +437,46 @@ namespace matrix
 		std::map<V, int> _indexMap;
 		std::vector<std::vector<W>> _matrix;
 	};
+
+	void TestGraphBellmanFord()
+	{
+		/*const char* str = "syztx";
+		Graph<char, int, INT_MAX, true> g(str, strlen(str));
+		g.AddEdge('s', 't', 6);
+		g.AddEdge('s', 'y', 7);
+		g.AddEdge('y', 'z', 9);
+		g.AddEdge('y', 'x', -3);
+		g.AddEdge('z', 's', 2);
+		g.AddEdge('z', 'x', 7);
+		g.AddEdge('t', 'x', 5);
+		g.AddEdge('t', 'y', 8);
+		g.AddEdge('t', 'z', -4);
+		g.AddEdge('x', 't', -2);
+		vector<int> dist;
+		vector<int> parentPath;
+		g.BellmanFord('s', dist, parentPath);
+		g.PrintShotPath('s', dist, parentPath);*/
+
+		// 微调图结构，带有负权回路的测试
+		const char* str = "syztx";
+		Graph<char, int, INT_MAX, true> g(str, strlen(str));
+		g.AddEdge('s', 't', 6);
+		g.AddEdge('s', 'y', 7);
+		g.AddEdge('y', 'x', -3);
+		g.AddEdge('y', 'z', 9);
+		g.AddEdge('y', 'x', -3);
+		g.AddEdge('y', 's', 1); // 新增
+		g.AddEdge('z', 's', 2);
+		g.AddEdge('z', 'x', 7);
+		g.AddEdge('t', 'x', 5);
+		g.AddEdge('t', 'y', -8); // 更改
+		g.AddEdge('t', 'z', -4);
+		g.AddEdge('x', 't', -2);
+		vector<int> dist;
+		vector<int> parentPath;
+		g.BellmanFord('s', dist, parentPath);
+		g.PrintShotPath('s', dist, parentPath);
+	}
 	void TestGraphDijkstra()
 	{
 		const char* str = "sytx";

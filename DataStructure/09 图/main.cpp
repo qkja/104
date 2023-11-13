@@ -8,6 +8,7 @@ int main()
 	//matrix::TestGraphMinTree();
 	//std::cout << "ÄãºÃ" << std::endl;
 	//matrix::TestGraphMinTree();
-	matrix::TestGraphDijkstra();
+	//matrix::TestGraphDijkstra();
+	matrix::TestGraphBellmanFord();
 	return 0;
 }

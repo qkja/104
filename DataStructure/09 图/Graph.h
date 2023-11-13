@@ -6,7 +6,6 @@
 #include <string>
 #include <string.h>
 #include <limits.h>
-
 #include <iostream>
 #include <functional>
 #include "UnionFindSet.hpp"
@@ -47,23 +46,6 @@ namespace matrix
 			std::queue<size_t> q;
 			q.push(srci);
 			visited[srci] = true;
-			// while(!q.empty())
-			//{
-			//   size_t front = q.front();
-			//   q.pop();
-			//   std::cout << front << " : " << _vertexs[front] << std::endl;
-			//   // 把他的临界顶点入队列
-			//   for(size_t i = 0; i < _matrix[front].size(); ++i)
-			//   {
-			//     if(_matrix[front][i] != MAX_W && visited[i] == false)
-			//     {
-			//       q.push(i);
-			//       visited[i] = true;
-			//     }
-			//   }
-			// }
-
-			// 这里顺便添加一层的遍历
 			while (!q.empty())
 			{
 				int len = q.size();
@@ -98,6 +80,8 @@ namespace matrix
 				return _w > e2._w;
 			}
 		};
+
+
 		// 最小生成树Kruskal算法
 		W Kruskal(Self &minTree)
 		{
@@ -156,16 +140,6 @@ namespace matrix
 			minTree._matrix.resize(n, std::vector<W>(n, MAX_W));
 
 			size_t srci = GetVertexIndex(src);
-
-			//std::set<size_t> X;
-			//std::set<size_t> Y;
-			//X.insert(srci);
-			//for (size_t i = 0; i < n; ++i)
-			//{
-			//	if (i == srci)
-			//		continue;
-			//	Y.insert(i);
-			//}
 
 			std::vector<bool> X(n, false);
 			std::vector<bool> Y(n, true);
@@ -269,6 +243,32 @@ namespace matrix
 				}
 			}
 		}
+		// 下面说一下我们可以解决带负权的算法
+		// 下面是暴力更新
+		// 他是找中止边，
+		bool BellmanFord(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
+		{
+			size_t srci = GetVertexIndex(src);
+			size_t n = _vertexs.size();
+			dist.resize(n, MAX_W);
+			pPath.resize(n, -1);
+			// 这里是自己到自己
+			dist[srci] = W();
+			for (size_t i = 0; i < n; i++)
+			{
+				for (size_t j = 0; j < n; j++)
+				{
+					if (_matrix[i][j] != MAX_W && dist[i] + _matrix[i][j] < dist[j])
+					{
+
+					}
+				}
+			}
+
+		}
+
+
+
 		void PrintShotPath(const V& src, std::vector<W>& dist, std::vector<int>& pPath)
 		{
 			size_t srci = GetVertexIndex(src);
@@ -295,6 +295,9 @@ namespace matrix
 				std::cout << dist[i] << std::endl;
 			}
 		}
+
+
+
 		void Print()
 		{
 			size_t n = _vertexs.size();
@@ -354,24 +357,6 @@ namespace matrix
 	};
 	void TestGraphDijkstra()
 	{
-		/*const char* str = "syztx";
-		Graph<char, int, INT_MAX, true> g(str, strlen(str));
-		g.AddEdge('s', 't', 10);
-		g.AddEdge('s', 'y', 5);
-		g.AddEdge('y', 't', 3);
-		g.AddEdge('y', 'x', 9);
-		g.AddEdge('y', 'z', 2);
-		g.AddEdge('z', 's', 7);
-		g.AddEdge('z', 'x', 6);
-		g.AddEdge('t', 'y', 2);
-		g.AddEdge('t', 'x', 1);
-		g.AddEdge('x', 'z', 4);
-		std::vector<int> dist;
-		std::vector<int> parentPath;
-		g.Dijkstra('s', dist, parentPath);
-		g.PrintShotPath('s', dist, parentPath);*/
-		// 图中带有负权路径时，贪心策略则失效了。
-		// 测试结果可以看到s->t->y之间的最短路径没更新出来
 		const char* str = "sytx";
 		Graph<char, int, INT_MAX, true> g(str, strlen(str));
 		g.AddEdge('s', 't', 10);

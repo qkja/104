@@ -9,5 +9,6 @@ int main()
 	//std::cout << "ÄãºÃ" << std::endl;
 	//matrix::TestGraphMinTree();
 	//matrix::TestGraphDijkstra();
+	matrix::TestGraphBellmanFord();
 	return 0;
 }

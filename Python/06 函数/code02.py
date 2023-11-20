@@ -10,10 +10,13 @@
 # test()
 
 
-def calcSum(begin, end):
-    theSum = 0
-    for i in range(begin, end + 1):
-        theSum += i
-    return theSum
+# def calcSum(begin, end):
+#     theSum = 0
+#     for i in range(begin, end + 1):
+#         theSum += i
+#     return theSum
+#
+# print(calcSum(1, 100))
+# print(calcSum(1, 100))
 
-print(calcSum(1, 100))
+

@@ -1,10 +1,42 @@
 """
 学生管理系统
 """
+import os
 import sys
 
 # 这里管理所有的信息
 students = []
+def save():
+    # 存档
+    with open('record.txt', 'w', encoding='utf8') as f:
+        for s in students:
+            studentInfo = s['studentId'] + '\t' + s['studentName'] + '\t' + s['gender'] + '\t' + s['className'] + '\n'
+            f.write(studentInfo)
+    print(f'[存档成功], 共{len(students)}条数据')
+
+def load():
+    # 读档
+    if not os.path.exists('record.txt'):
+        return
+    global students
+    students = []
+    with open('record.txt', 'r', encoding='utf8') as f:
+        for student in f:
+            # 针对这一行数据进行切分, 需要注意,我们的末尾的 \n
+            student = student.strip() # strip 去掉首行和末尾的空白字符
+            tokens = student.split('\t')
+            if len(tokens) != 4:
+                print(f"格式存在问题 student : {student}")
+                continue
+            studentInfo = {
+                'studentId': tokens[0],
+                'studentName': tokens[1],
+                'gender': tokens[2],
+                'className': tokens[3]
+            }
+            # global students
+            students.append(studentInfo)
+    print(f'[读档成功], 共{len(students)}条数据')
 
 
 def menu():
@@ -77,6 +109,7 @@ def main():
     print('--------------------------')
     print('         欢迎来到系统        ')
     print('--------------------------')
+    load()
     while True:
         choice = menu()
         if choice == '1':
@@ -89,6 +122,7 @@ def main():
             delete()
         elif choice == '0':
             print('goodbye')
+            save()
             sys.exit(0)
         else:
             print('输入不合法')

@@ -5,8 +5,45 @@
  * Time: 23:27
  */
 #include <vector>
-#include <string>
-using namespace std;
+//
+//class Solution {
+//public:
+//	int waysToStep(int n) {
+//		if (n < 3)
+//			return n;
+//		const int N = 1e9 + 7;
+//		std::vector<int> dp(n + 1, 1);
+//		dp[2] = 2;
+//		for (size_t i = 3; i <= n; i++)
+//		{
+//			dp[i] = ((dp[i - 1] + dp[i - 2]) % N + dp[i - 3]) % N;
+//		}
+//		return dp[n];
+//	}
+//};
+//class Solution {
+//public:
+//	int tribonacci(int n) {
+//		if (n == 0)
+//			return 0;
+//		if (n == 1 || n == 2)
+//			return 1;
+//		std::vector<int> dp(n + 1);
+//		dp[0] = 0;
+//		dp[1] = 1;
+//		dp[2] = 1;
+//		for (size_t i = 3; i <= n; i++)
+//		{
+//			dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+//		}
+//		return dp[n];
+//	}
+//};
+
+
+//#include <vector>
+//#include <string>
+//using namespace std;
 
 // class Solution
 // {
@@ -1001,3 +1038,11 @@ using namespace std;
 
 
 
+//#include <iostream>
+//
+//int main()
+//{
+//	std::cout << "hello" << std::endl;
+//	std::cout << "测试" << std::endl;
+//	return 0;
+//}

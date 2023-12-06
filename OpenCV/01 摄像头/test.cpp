@@ -395,15 +395,15 @@
 //    return 0;
 //}
 
-#include <torch/script.h>
-#include <iostream>
-
-int main() {
-    // 创建一个张量
-    torch::Tensor tensor = torch::randn({ 3, 3 });
-
-    // 打印张量
-    std::cout << "Tensor: " << tensor << std::endl;
-
-    return 0;
-}
+//#include <torch/script.h>
+//#include <iostream>
+//
+//int main() {
+//    // 创建一个张量
+//    torch::Tensor tensor = torch::randn({ 3, 3 });
+//
+//    // 打印张量
+//    std::cout << "Tensor: " << tensor << std::endl;
+//
+//    return 0;
+//}

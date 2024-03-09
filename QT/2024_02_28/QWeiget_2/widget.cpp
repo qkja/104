@@ -22,5 +22,16 @@ void Widget::on_pushButton_clicked()
 
 void Widget::on_pushButton_enable_clicked()
 {
-
+    // 1. 获取状态
+    bool enable = ui->pushButton->isEnabled();
+    if(enable)
+    {
+        qDebug()<<"设置禁用";
+        ui->pushButton->setEnabled(false);
+    }
+    else
+    {
+        qDebug()<<"设置可用";
+        ui->pushButton->setEnabled(true);
+    }
 }

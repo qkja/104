@@ -8,7 +8,7 @@ class DataProcessing : public QObject
     Q_OBJECT
 public:
     explicit DataProcessing(QObject *parent = nullptr);
-
+    ~DataProcessing();
 signals:
 
 };

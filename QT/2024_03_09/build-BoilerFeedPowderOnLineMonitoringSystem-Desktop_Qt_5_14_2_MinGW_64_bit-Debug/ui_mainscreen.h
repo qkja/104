@@ -29,6 +29,8 @@ public:
     QAction *word_of_command;
     QAction *mytime;
     QAction *quit;
+    QAction *backrest_canal;
+    QAction *rod_type_wind_powder_diagram;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *system_setting_menu_1;
@@ -54,6 +56,10 @@ public:
         mytime->setObjectName(QString::fromUtf8("mytime"));
         quit = new QAction(MainScreen);
         quit->setObjectName(QString::fromUtf8("quit"));
+        backrest_canal = new QAction(MainScreen);
+        backrest_canal->setObjectName(QString::fromUtf8("backrest_canal"));
+        rod_type_wind_powder_diagram = new QAction(MainScreen);
+        rod_type_wind_powder_diagram->setObjectName(QString::fromUtf8("rod_type_wind_powder_diagram"));
         centralwidget = new QWidget(MainScreen);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         MainScreen->setCentralWidget(centralwidget);
@@ -84,6 +90,8 @@ public:
         system_setting_menu_1->addAction(spout);
         system_setting_menu_1->addSeparator();
         system_setting_menu_1->addSeparator();
+        system_setting_menu_1->addAction(backrest_canal);
+        status_view_menu_2->addAction(rod_type_wind_powder_diagram);
 
         retranslateUi(MainScreen);
 
@@ -99,6 +107,8 @@ public:
         word_of_command->setText(QCoreApplication::translate("MainScreen", "\344\277\256\346\224\271\345\217\243\344\273\244", nullptr));
         mytime->setText(QCoreApplication::translate("MainScreen", "\344\277\256\345\256\232\346\227\266\351\227\264", nullptr));
         quit->setText(QCoreApplication::translate("MainScreen", "\351\200\200\345\207\272", nullptr));
+        backrest_canal->setText(QCoreApplication::translate("MainScreen", "\350\203\214\351\235\240\347\256\241\347\263\273\346\225\260\344\277\256\346\255\243", nullptr));
+        rod_type_wind_powder_diagram->setText(QCoreApplication::translate("MainScreen", "\346\243\222\345\236\213\351\243\216\347\262\211\345\233\276", nullptr));
         system_setting_menu_1->setTitle(QCoreApplication::translate("MainScreen", "\347\263\273\347\273\237\350\256\276\347\275\256", nullptr));
         status_view_menu_2->setTitle(QCoreApplication::translate("MainScreen", "\347\212\266\346\200\201\346\237\245\347\234\213", nullptr));
         data_processing_menu_3->setTitle(QCoreApplication::translate("MainScreen", "\346\225\260\346\215\256\345\244\204\347\220\206", nullptr));

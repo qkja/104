@@ -14,6 +14,12 @@ class MyTime : public QWidget
 public:
     explicit MyTime(QWidget *parent = nullptr);
     ~MyTime();
+signals:
+    void fromMyTimeToMianScreenSignals();
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::MyTime *ui;

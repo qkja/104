@@ -8,7 +8,7 @@ class Assist : public QWidget
     Q_OBJECT
 public:
     explicit Assist(QWidget *parent = nullptr);
-
+    ~Assist();
 signals:
 
 };

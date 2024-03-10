@@ -17,10 +17,10 @@ GiveAnAlarm::~GiveAnAlarm()
 
 void GiveAnAlarm::on_pushButton_determine_clicked()
 {
-    emit back();
+    emit fromGiveAnAlarmToMainScreenSignals();
 }
 
 void GiveAnAlarm::on_pushButton_cancel_clicked()
 {
- emit back();
+ emit fromGiveAnAlarmToMainScreenSignals();
 }

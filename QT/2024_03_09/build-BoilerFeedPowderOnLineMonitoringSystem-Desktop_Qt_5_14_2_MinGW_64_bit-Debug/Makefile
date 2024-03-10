@@ -248,6 +248,7 @@ Makefile: ../BoilerFeedPowderOnLineMonitoringSystem/BoilerFeedPowderOnLineMonito
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/qt_config.prf \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/toolchain.prf \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -272,11 +273,11 @@ Makefile: ../BoilerFeedPowderOnLineMonitoringSystem/BoilerFeedPowderOnLineMonito
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/yacc.prf \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/lex.prf \
 		../BoilerFeedPowderOnLineMonitoringSystem/BoilerFeedPowderOnLineMonitoringSystem.pro \
+		D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Charts.prl \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/qtmain.prl \
-		.qmake.stash \
 		D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf
 	$(QMAKE) -o Makefile ..\BoilerFeedPowderOnLineMonitoringSystem\BoilerFeedPowderOnLineMonitoringSystem.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/spec_pre.prf:
@@ -457,6 +458,7 @@ D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/qt_functions.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/qt_config.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/toolchain.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/default_pre.prf:
@@ -481,11 +483,11 @@ D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/exceptions.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/yacc.prf:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/lex.prf:
 ../BoilerFeedPowderOnLineMonitoringSystem/BoilerFeedPowderOnLineMonitoringSystem.pro:
+D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Charts.prl:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Widgets.prl:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Gui.prl:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/Qt5Core.prl:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/lib/qtmain.prl:
-.qmake.stash:
 D:/QT/QT5.14.2/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\BoilerFeedPowderOnLineMonitoringSystem\BoilerFeedPowderOnLineMonitoringSystem.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"

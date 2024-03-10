@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GiveAnAlarm_t {
     QByteArrayData data[5];
-    char stringdata0[79];
+    char stringdata0[109];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,13 +33,14 @@ struct qt_meta_stringdata_GiveAnAlarm_t {
 static const qt_meta_stringdata_GiveAnAlarm_t qt_meta_stringdata_GiveAnAlarm = {
     {
 QT_MOC_LITERAL(0, 0, 11), // "GiveAnAlarm"
-QT_MOC_LITERAL(1, 12, 4), // "back"
-QT_MOC_LITERAL(2, 17, 0), // ""
-QT_MOC_LITERAL(3, 18, 31), // "on_pushButton_determine_clicked"
-QT_MOC_LITERAL(4, 50, 28) // "on_pushButton_cancel_clicked"
+QT_MOC_LITERAL(1, 12, 34), // "fromGiveAnAlarmToMainScreenSi..."
+QT_MOC_LITERAL(2, 47, 0), // ""
+QT_MOC_LITERAL(3, 48, 31), // "on_pushButton_determine_clicked"
+QT_MOC_LITERAL(4, 80, 28) // "on_pushButton_cancel_clicked"
 
     },
-    "GiveAnAlarm\0back\0\0on_pushButton_determine_clicked\0"
+    "GiveAnAlarm\0fromGiveAnAlarmToMainScreenSignals\0"
+    "\0on_pushButton_determine_clicked\0"
     "on_pushButton_cancel_clicked"
 };
 #undef QT_MOC_LITERAL
@@ -80,7 +81,7 @@ void GiveAnAlarm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         auto *_t = static_cast<GiveAnAlarm *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->back(); break;
+        case 0: _t->fromGiveAnAlarmToMainScreenSignals(); break;
         case 1: _t->on_pushButton_determine_clicked(); break;
         case 2: _t->on_pushButton_cancel_clicked(); break;
         default: ;
@@ -89,7 +90,7 @@ void GiveAnAlarm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         int *result = reinterpret_cast<int *>(_a[0]);
         {
             using _t = void (GiveAnAlarm::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&GiveAnAlarm::back)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&GiveAnAlarm::fromGiveAnAlarmToMainScreenSignals)) {
                 *result = 0;
                 return;
             }
@@ -139,7 +140,7 @@ int GiveAnAlarm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void GiveAnAlarm::back()
+void GiveAnAlarm::fromGiveAnAlarmToMainScreenSignals()
 {
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }

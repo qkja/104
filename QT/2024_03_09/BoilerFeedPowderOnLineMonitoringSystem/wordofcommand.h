@@ -14,6 +14,12 @@ class WordOfCommand : public QWidget
 public:
     explicit WordOfCommand(QWidget *parent = nullptr);
     ~WordOfCommand();
+signals:
+    void fromWordOfCommandToMainScreenSignals();
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     Ui::WordOfCommand *ui;

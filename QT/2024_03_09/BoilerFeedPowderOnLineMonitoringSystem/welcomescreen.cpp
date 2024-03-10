@@ -13,7 +13,10 @@ WelcomeScreen::WelcomeScreen(QWidget *parent)
         this->hide();
         main_screen->show();
     });
-
+    connect(this->main_screen, &MainScreen::quitSignals,[=](){
+        main_screen->hide();
+        this->close();
+    });
 }
 
 WelcomeScreen::~WelcomeScreen()

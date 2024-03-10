@@ -17,7 +17,7 @@ public:
 
 
 signals:
-    void back();
+    void fromGiveAnAlarmToMainScreenSignals();
 private slots:
     void on_pushButton_determine_clicked();
 

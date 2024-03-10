@@ -7,32 +7,27 @@
 MainScreen::MainScreen(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainScreen),
-    cipher(new Cipher(this)),
+    verify_password(new VerifyPassword(nullptr)),
     system_setting(new SystemSetting(this)),
     status_view(new StatusView(this)),
-    data_processing(new DataProcessing),
+    data_processing(new DataProcessing(this)),
     assist(new Assist(this)),
     configuration_file("D:\\Code\\104\\QT\\2024_03_09\\BoilerFeedPowderOnLineMonitoringSystem\\configuration.txt")
 {
     ui->setupUi(this);
     qDebug()<<"MainScreen()";
     init();
-
-
-//    status_view = new StatusView;// 状态查看
-//    data_processing = new DataProcessing;// 数据处理
-//    assist = new Assist;// 帮助
-
+    verify_password->set(info_map["password"]);
 
     SystemSettingConnect();
     StatusViewConnect();
     DataProcessingConnect();
     AssistConnect();
-
 }
 
 MainScreen::~MainScreen()
 {
+    delete  verify_password;
     qDebug()<<"~MainScreen()";
     delete ui;
 }
@@ -41,11 +36,7 @@ MainScreen::~MainScreen()
 void MainScreen::init()
 {
     // 解析配置文件
-    parseConfigurationFile();
-}
-
-void MainScreen::parseConfigurationFile()
-{
+    //    parseConfigurationFile();
     std::ifstream ifs;
     ifs.open (configuration_file.c_str(), std::ifstream::in);
     if(ifs.is_open() == false)
@@ -57,19 +48,15 @@ void MainScreen::parseConfigurationFile()
     }
 
     std::string str;
-    std::getline(ifs, str);
+    while(std::getline(ifs, str)) { info_map[str.substr(0,str.find(':'))] = str.substr(str.find(':')+strlen(":"));}
     ifs.close();
-    //qDebug() << QString(str.c_str());
-
-    cipher->set(str.substr(str.find(':')+strlen(":")));
-    //        qDebug() <<  QString(cipher->get().c_str());
 }
-//SystemSetting* system_setting; //系统设置
-/*BackrestCanal*  backrest_canal; // 靠背管系数修正
-Spout* spout;                   //   设定喷口面积
-GiveAnAlarm* give_an_alarm;      //   设定报警限
-WordOfCommand* word_of_command; //   修改口令
-MyTime* mytime ;    */            //修定时间
+
+void MainScreen::parseConfigurationFile()
+{
+
+    //qDebug() << QString(str.c_str());
+}
 
 // 有关于系统设置的链接
 void MainScreen::SystemSettingConnect()
@@ -79,23 +66,104 @@ void MainScreen::SystemSettingConnect()
         this->hide();
         this->system_setting->give_an_alarm->show();
     });
-
-    connect(this->system_setting->give_an_alarm, &GiveAnAlarm::back,[=](){
+    connect(this->system_setting->give_an_alarm, &GiveAnAlarm::fromGiveAnAlarmToMainScreenSignals,[=](){
         // 这里少一个如果控件被关闭,我们是否需要做一些动作
         qDebug()<< "报警界面已经取消";
-        this->system_setting->give_an_alarm->close();
+        this->system_setting->give_an_alarm->hide();
+        this->show();
+    });
+
+    //靠背管系数修正
+    connect(ui->backrest_canal,&QAction::triggered,[=](){
+        this->verify_password->show();
+        connect(this->verify_password, &VerifyPassword::fromVerifyPasswordSignalsIsTrue,[=](){
+            qDebug()<<"验证界面已经可以了";
+            this->hide();
+            this->verify_password->hide();
+            this->system_setting->backrest_canal->show();
+        });
+        connect(this->verify_password, &VerifyPassword::fromVerifyPasswordSignalsIsFalse,[=](){
+            qDebug()<<"验证界面已经取消了";
+            this->verify_password->hide();
+        });
+    });
+    connect(this->system_setting->backrest_canal, &BackrestCanal::fromBackrestCanalToMainScreenSignals,[=](){
+        qDebug()<< "设定系数修正的界面已经取消";
+        this->system_setting->backrest_canal->hide();
         this->show();
     });
 
 
+//    设定喷口面积
+    connect(ui->spout, &QAction::triggered,[=](){
+        this->verify_password->show();
+        connect(this->verify_password, &VerifyPassword::fromVerifyPasswordSignalsIsTrue,[=](){
+            qDebug()<<"验证界面已经可以了";
+            this->hide();
+            this->verify_password->hide();
+            this->system_setting->spout->show();
+        });
+        connect(this->verify_password, &VerifyPassword::fromVerifyPasswordSignalsIsFalse,[=](){
+            qDebug()<<"验证界面已经取消了";
+            this->verify_password->hide();
+        });
+    });
+    connect(this->system_setting->spout, &Spout::fromSpoutToMianScreenSignals,[=](){
+        qDebug()<< "设定喷口面积界面已经取消";
+        this->system_setting->spout->hide();
+        this->show();
+    });
+
+    //修改口令
+    connect(ui->word_of_command, &QAction::triggered,[=](){
+        this->hide();
+        this->system_setting->word_of_command->show();
+    });
+
+    connect(this->system_setting->word_of_command, &WordOfCommand::fromWordOfCommandToMainScreenSignals,[=](){
+        this->system_setting->word_of_command->hide();
+        this->show();
+    });
+
+
+    // 修改时间
+
+
+    connect(ui->mytime, &QAction::triggered,[=](){
+        this->hide();
+        this->system_setting->mytime->show();
+    });
+
+    connect(this->system_setting->mytime, &MyTime::fromMyTimeToMianScreenSignals,[=](){
+        this->show();
+         this->system_setting->mytime->hide();
+    });
+
+
+    connect(ui->quit,&QAction::triggered,[=](){
+        emit quitSignals();
+    } );
 }
 
 //StatusView* status_view;// 状态查看
+void MainScreen::StatusViewConnect()
+{
+
+    connect(ui->rod_type_wind_powder_diagram, &QAction::triggered,[=](){
+        this->hide();
+        this->status_view->rod_type_wind_powder_diagram->show();
+    });
+
+}
+
+
+
+
 //DataProcessing* data_processing;// 数据处理
 //Assist* assist;// 帮助
 
 
 
-void MainScreen::StatusViewConnect(){}
+
 void MainScreen::DataProcessingConnect(){}
 void MainScreen::AssistConnect(){}

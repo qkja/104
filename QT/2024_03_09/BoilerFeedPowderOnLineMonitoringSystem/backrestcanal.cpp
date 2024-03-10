@@ -12,3 +12,13 @@ BackrestCanal::~BackrestCanal()
 {
     delete ui;
 }
+
+void BackrestCanal::on_pushButton_clicked()
+{
+    emit fromBackrestCanalToMainScreenSignals();
+}
+
+void BackrestCanal::on_pushButton_2_clicked()
+{
+    emit fromBackrestCanalToMainScreenSignals();
+}

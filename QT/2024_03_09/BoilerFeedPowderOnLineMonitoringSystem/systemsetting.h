@@ -14,9 +14,9 @@ class SystemSetting : public QWidget
 public:
     friend class MainScreen; // 声明MainScreen是我们的友元类
     explicit SystemSetting(QWidget *parent = nullptr);
-   ~SystemSetting();
-signals:
-public:
+    ~SystemSetting();
+
+private:
     BackrestCanal* backrest_canal; // 靠背管系数修正
     Spout* spout;                   //   设定喷口面积
     GiveAnAlarm* give_an_alarm;      //   设定报警限

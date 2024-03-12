@@ -2,7 +2,7 @@
 #define TRENDCHART_H
 
 #include <QWidget>
-
+#include "util.hpp"
 namespace Ui {
 class TrendChart;
 }

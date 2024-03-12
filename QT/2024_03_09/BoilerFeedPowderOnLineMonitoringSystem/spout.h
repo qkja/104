@@ -2,9 +2,10 @@
 #define SPOUT_H
 
 #include <QWidget>
-
-namespace Ui {
-class Spout;
+#include "util.hpp"
+namespace Ui
+{
+    class Spout;
 }
 
 class Spout : public QWidget

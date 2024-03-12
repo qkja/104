@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     w.show();
 
     a.exec();
-    qDebug()<<"进程已经结束";
+    qDebug() << "进程已经结束";
 
     return 0;
 }

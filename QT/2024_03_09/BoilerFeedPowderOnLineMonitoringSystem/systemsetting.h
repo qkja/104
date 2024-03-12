@@ -7,13 +7,13 @@
 #include "giveanalarm.h"
 #include "wordofcommand.h"
 #include "mytime.h"
-
+#include "util.hpp"
 class SystemSetting : public QWidget
 {
     Q_OBJECT
 public:
     friend class MainScreen; // 声明MainScreen是我们的友元类
-    explicit SystemSetting(QWidget *parent = nullptr);
+    explicit SystemSetting(QWidget *parent = nullptr,std::unordered_map<std::string, std::string>* info_map = nullptr);
     ~SystemSetting();
 
 private:
@@ -22,7 +22,7 @@ private:
     GiveAnAlarm* give_an_alarm;      //   设定报警限
     WordOfCommand* word_of_command; //   修改口令
     MyTime* mytime ;                //修定时间
-    //Quit                          //退出系统
+    std::unordered_map<std::string, std::string>* info;
 };
 
 #endif // SYSTEMSETTING_H

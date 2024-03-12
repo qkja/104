@@ -10,7 +10,6 @@ QT_CHARTS_USE_NAMESPACE
 LineChart::LineChart(QWidget *parent) : QWidget(parent)
 {
 
-
     QLineSeries *series = new QLineSeries();
     series->setName("Trend Data");
 
@@ -18,9 +17,10 @@ LineChart::LineChart(QWidget *parent) : QWidget(parent)
     QDateTime timestamp;
     timestamp.setDate(QDate(2022, 1, 1));
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 100; ++i)
+    {
         series->append(timestamp.toMSecsSinceEpoch(), qrand() % 100);
-        timestamp = timestamp.addDays(1);  // 假设数据每天增加一条
+        timestamp = timestamp.addDays(1); // 假设数据每天增加一条
     }
 
     // 创建一个趋势图
@@ -45,7 +45,6 @@ LineChart::LineChart(QWidget *parent) : QWidget(parent)
     // 创建图表视图并显示
     chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-
 
     // 将QChartView设置为自定义控件的中央部件
     setLayout(new QVBoxLayout());

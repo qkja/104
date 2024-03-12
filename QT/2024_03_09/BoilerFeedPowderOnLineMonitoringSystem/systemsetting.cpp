@@ -1,13 +1,17 @@
 #include "systemsetting.h"
 #include <qdebug.h>
-SystemSetting::SystemSetting(QWidget *parent):
-    QWidget(parent),
+SystemSetting::SystemSetting(QWidget *parent, std::unordered_map<std::string, std::string>* info_map)
+    :QWidget(parent),
     backrest_canal(new BackrestCanal(this)),
     spout(new Spout(this)),
-    give_an_alarm(new GiveAnAlarm(this)),
+//    give_an_alarm(new GiveAnAlarm(this)),
+    give_an_alarm(nullptr),
     word_of_command(new WordOfCommand(this)),
     mytime(new MyTime(this))
 {
+    info = info_map;
+
+    give_an_alarm= new GiveAnAlarm(nullptr, info);
     qDebug()<<"SystemSetting";
     give_an_alarm->setParent(nullptr);
     backrest_canal->setParent(nullptr);

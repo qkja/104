@@ -1,9 +1,8 @@
 #include "square.h"
 #include "ui_square.h"
 
-Square::Square(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Square)
+Square::Square(QWidget *parent) : QWidget(parent),
+                                  ui(new Ui::Square)
 {
     ui->setupUi(this);
     // 创建场景和正方形项

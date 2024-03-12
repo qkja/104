@@ -2,7 +2,7 @@
 #define VERIFYPASSWORD_H
 #include <string>
 #include <QWidget>
-
+#include "util.hpp"
 namespace Ui {
 class VerifyPassword;
 }

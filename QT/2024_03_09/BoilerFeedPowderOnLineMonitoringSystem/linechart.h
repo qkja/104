@@ -2,7 +2,7 @@
 #define LINECHART_H
 #include <QtCharts/QChartView>
 #include <QWidget>
-
+#include "util.hpp"
 class LineChart : public QWidget
 {
     Q_OBJECT

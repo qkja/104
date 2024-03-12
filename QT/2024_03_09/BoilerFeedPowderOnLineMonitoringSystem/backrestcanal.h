@@ -2,9 +2,10 @@
 #define BACKRESTCANAL_H
 
 #include <QWidget>
-
-namespace Ui {
-class BackrestCanal;
+#include "util.hpp"
+namespace Ui
+{
+    class BackrestCanal;
 }
 
 class BackrestCanal : public QWidget

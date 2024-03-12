@@ -2,17 +2,16 @@
 #include "ui_mytime.h"
 #include "qdebug.h"
 
-MyTime::MyTime(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::MyTime)
+MyTime::MyTime(QWidget *parent) : QWidget(parent),
+                                  ui(new Ui::MyTime)
 {
-    qDebug()<<"MyTime()";
+    qDebug() << "MyTime()";
     ui->setupUi(this);
 }
 
 MyTime::~MyTime()
 {
-     qDebug()<<"~MyTime()";
+    qDebug() << "~MyTime()";
     delete ui;
 }
 
@@ -23,5 +22,5 @@ void MyTime::on_pushButton_clicked()
 
 void MyTime::on_pushButton_2_clicked()
 {
-     emit fromMyTimeToMianScreenSignals();
+    emit fromMyTimeToMianScreenSignals();
 }

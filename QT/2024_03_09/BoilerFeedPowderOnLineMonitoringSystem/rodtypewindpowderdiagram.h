@@ -2,9 +2,10 @@
 #define RODTYPEWINDPOWDERDIAGRAM_H
 
 #include <QWidget>
-
-namespace Ui {
-class RodTypeWindPowderDiagram;
+#include "util.hpp"
+namespace Ui
+{
+    class RodTypeWindPowderDiagram;
 }
 
 class RodTypeWindPowderDiagram : public QWidget

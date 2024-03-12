@@ -3,9 +3,9 @@
 
 BarChart::BarChart(QWidget *parent) : QWidget(parent)
 {
-       qBarSet = new QBarSet("Category 1");
-       addData(0);
-       doOther();
+    qBarSet = new QBarSet("Category 1");
+    addData(0);
+    doOther();
 }
 
 void BarChart::doOther()
@@ -31,8 +31,8 @@ void BarChart::doOther()
     layout->addWidget(chartView);
 }
 
-template<class T>
-void BarChart::addData(const T & val)
+template <class T>
+void BarChart::addData(const T &val)
 {
     qBarSet->append(1);
     qBarSet->append(2);

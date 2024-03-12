@@ -5,9 +5,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QPen>
-
-namespace Ui {
-class Square;
+#include "util.hpp"
+namespace Ui
+{
+    class Square;
 }
 
 class Square : public QWidget

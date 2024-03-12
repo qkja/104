@@ -1,10 +1,11 @@
 #ifndef WORDOFCOMMAND_H
 #define WORDOFCOMMAND_H
-
+#include "util.hpp"
 #include <QWidget>
 
-namespace Ui {
-class WordOfCommand;
+namespace Ui
+{
+    class WordOfCommand;
 }
 
 class WordOfCommand : public QWidget

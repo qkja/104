@@ -2,9 +2,10 @@
 #define GRAPH_H
 
 #include <QWidget>
-
-namespace Ui {
-class Graph;
+#include "util.hpp"
+namespace Ui
+{
+    class Graph;
 }
 
 class Graph : public QWidget

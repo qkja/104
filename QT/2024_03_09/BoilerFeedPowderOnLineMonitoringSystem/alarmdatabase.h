@@ -2,9 +2,10 @@
 #define ALARMDATABASE_H
 
 #include <QWidget>
-
-namespace Ui {
-class AlarmDatabase;
+#include "util.hpp"
+namespace Ui
+{
+    class AlarmDatabase;
 }
 
 class AlarmDatabase : public QWidget

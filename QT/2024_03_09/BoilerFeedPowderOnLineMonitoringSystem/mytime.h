@@ -1,10 +1,11 @@
 #ifndef MYTIME_H
 #define MYTIME_H
-
+#include "util.hpp"
 #include <QWidget>
 
-namespace Ui {
-class MyTime;
+namespace Ui
+{
+    class MyTime;
 }
 
 class MyTime : public QWidget

@@ -2,9 +2,10 @@
 #define CHANNELDATABASE_H
 
 #include <QWidget>
-
-namespace Ui {
-class ChannelDatabase;
+#include "util.hpp"
+namespace Ui
+{
+    class ChannelDatabase;
 }
 
 class ChannelDatabase : public QWidget

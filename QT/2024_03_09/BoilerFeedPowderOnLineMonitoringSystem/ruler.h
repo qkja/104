@@ -6,7 +6,7 @@
 #include <QtCharts/QBarSet>
 #include <QtCharts/QChart>
 #include <QtCharts/QValueAxis>
-
+#include "util.hpp"
 QT_CHARTS_USE_NAMESPACE
 #include <QWidget>
 
@@ -18,8 +18,7 @@ public:
 
 signals:
 public:
-      QChartView *chartView;
-
+    QChartView *chartView;
 };
 
 #endif // RULER_H

@@ -1,6 +1,6 @@
 #ifndef TANGENTIALCIRCLEDIAGRAMOFPRIMARYWIND_H
 #define TANGENTIALCIRCLEDIAGRAMOFPRIMARYWIND_H
-
+#include "util.hpp"
 #include <QWidget>
 
 namespace Ui {

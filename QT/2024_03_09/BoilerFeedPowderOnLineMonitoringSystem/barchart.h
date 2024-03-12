@@ -8,8 +8,7 @@
 #include <QtCharts/QBarSet>
 #include <QtCharts/QBarCategoryAxis>
 #include <QValueAxis>
-
-
+#include "util.hpp"
 QT_CHARTS_USE_NAMESPACE
 class BarChart : public QWidget
 {
@@ -18,7 +17,7 @@ public:
     explicit BarChart(QWidget *parent = nullptr);
 
     template <class T>
-    void addData(const T&);
+    void addData(const T &);
 
     void doOther();
 signals:

@@ -2,9 +2,10 @@
 #define HISTORICALTRENDCHART_H
 
 #include <QWidget>
-
-namespace Ui {
-class HistoricalTrendChart;
+#include "util.hpp"
+namespace Ui
+{
+    class HistoricalTrendChart;
 }
 
 class HistoricalTrendChart : public QWidget

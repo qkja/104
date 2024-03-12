@@ -153,7 +153,22 @@ void MainScreen::StatusViewConnect()
         this->hide();
         this->status_view->rod_type_wind_powder_diagram->show();
     });
+    connect(ui->tangential_circle_diagram_of_primary_wind,&QAction::triggered,[=](){
+        this->hide();
+        this->status_view->tangential_circle_diagram_of_primary_wind->show();
+    });
+    // 趋势图
+    connect(ui->trend_chart,&QAction::triggered,[=](){
+        this->hide();
+        this->status_view->trend_chart->show();
+    });
 
+    // 历史趋势图
+
+    connect(ui->historical_trend_chart, &QAction::triggered,[=](){
+        this->hide();
+        this->status_view->historical_trend_chart->show();
+    });
 }
 
 
@@ -165,5 +180,15 @@ void MainScreen::StatusViewConnect()
 
 
 
-void MainScreen::DataProcessingConnect(){}
+void MainScreen::DataProcessingConnect(){
+    connect(ui->alarm_database,&QAction::triggered,[=](){
+        this->hide();
+        this->data_processing->alarm_database->show();
+    });
+
+    connect(ui->channel_database,&QAction::triggered,[=](){
+        this->hide();
+        this->data_processing->channel_database->show();
+    });
+}
 void MainScreen::AssistConnect(){}

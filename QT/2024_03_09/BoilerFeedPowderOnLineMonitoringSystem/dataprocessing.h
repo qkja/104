@@ -1,16 +1,20 @@
 #ifndef DATAPROCESSING_H
 #define DATAPROCESSING_H
+#include "channeldatabase.h"
+#include "alarmdatabase.h"
 
-#include <QObject>
+#include <QWidget>
 
-class DataProcessing : public QObject
+class DataProcessing : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DataProcessing(QObject *parent = nullptr);
+    explicit DataProcessing(QWidget *parent = nullptr);
     ~DataProcessing();
 signals:
-
+public:
+    AlarmDatabase* alarm_database;//报警数据库:
+    ChannelDatabase* channel_database;//通道数据库:
 };
 
 #endif // DATAPROCESSING_H

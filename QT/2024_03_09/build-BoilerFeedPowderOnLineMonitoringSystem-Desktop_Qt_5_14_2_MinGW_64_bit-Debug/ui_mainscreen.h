@@ -31,6 +31,11 @@ public:
     QAction *quit;
     QAction *backrest_canal;
     QAction *rod_type_wind_powder_diagram;
+    QAction *tangential_circle_diagram_of_primary_wind;
+    QAction *trend_chart;
+    QAction *historical_trend_chart;
+    QAction *alarm_database;
+    QAction *channel_database;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *system_setting_menu_1;
@@ -60,6 +65,16 @@ public:
         backrest_canal->setObjectName(QString::fromUtf8("backrest_canal"));
         rod_type_wind_powder_diagram = new QAction(MainScreen);
         rod_type_wind_powder_diagram->setObjectName(QString::fromUtf8("rod_type_wind_powder_diagram"));
+        tangential_circle_diagram_of_primary_wind = new QAction(MainScreen);
+        tangential_circle_diagram_of_primary_wind->setObjectName(QString::fromUtf8("tangential_circle_diagram_of_primary_wind"));
+        trend_chart = new QAction(MainScreen);
+        trend_chart->setObjectName(QString::fromUtf8("trend_chart"));
+        historical_trend_chart = new QAction(MainScreen);
+        historical_trend_chart->setObjectName(QString::fromUtf8("historical_trend_chart"));
+        alarm_database = new QAction(MainScreen);
+        alarm_database->setObjectName(QString::fromUtf8("alarm_database"));
+        channel_database = new QAction(MainScreen);
+        channel_database->setObjectName(QString::fromUtf8("channel_database"));
         centralwidget = new QWidget(MainScreen);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         MainScreen->setCentralWidget(centralwidget);
@@ -92,6 +107,11 @@ public:
         system_setting_menu_1->addSeparator();
         system_setting_menu_1->addAction(backrest_canal);
         status_view_menu_2->addAction(rod_type_wind_powder_diagram);
+        status_view_menu_2->addAction(tangential_circle_diagram_of_primary_wind);
+        status_view_menu_2->addAction(trend_chart);
+        status_view_menu_2->addAction(historical_trend_chart);
+        data_processing_menu_3->addAction(alarm_database);
+        data_processing_menu_3->addAction(channel_database);
 
         retranslateUi(MainScreen);
 
@@ -109,6 +129,11 @@ public:
         quit->setText(QCoreApplication::translate("MainScreen", "\351\200\200\345\207\272", nullptr));
         backrest_canal->setText(QCoreApplication::translate("MainScreen", "\350\203\214\351\235\240\347\256\241\347\263\273\346\225\260\344\277\256\346\255\243", nullptr));
         rod_type_wind_powder_diagram->setText(QCoreApplication::translate("MainScreen", "\346\243\222\345\236\213\351\243\216\347\262\211\345\233\276", nullptr));
+        tangential_circle_diagram_of_primary_wind->setText(QCoreApplication::translate("MainScreen", "\344\270\200\346\254\241\351\243\216\345\210\207\345\234\206\345\233\276", nullptr));
+        trend_chart->setText(QCoreApplication::translate("MainScreen", "\350\266\213\345\212\277\345\233\276", nullptr));
+        historical_trend_chart->setText(QCoreApplication::translate("MainScreen", "\345\216\206\345\217\262\350\266\213\345\212\277\345\233\276", nullptr));
+        alarm_database->setText(QCoreApplication::translate("MainScreen", "\346\212\245\350\255\246\346\225\260\346\215\256", nullptr));
+        channel_database->setText(QCoreApplication::translate("MainScreen", "\351\200\232\351\201\223\346\225\260\346\215\256", nullptr));
         system_setting_menu_1->setTitle(QCoreApplication::translate("MainScreen", "\347\263\273\347\273\237\350\256\276\347\275\256", nullptr));
         status_view_menu_2->setTitle(QCoreApplication::translate("MainScreen", "\347\212\266\346\200\201\346\237\245\347\234\213", nullptr));
         data_processing_menu_3->setTitle(QCoreApplication::translate("MainScreen", "\346\225\260\346\215\256\345\244\204\347\220\206", nullptr));

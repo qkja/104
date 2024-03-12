@@ -9,8 +9,12 @@ AlarmDatabase::AlarmDatabase(QWidget *parent) :
     ui->setupUi(this);
 }
 
+
+
 AlarmDatabase::~AlarmDatabase()
 {
      qDebug()<<"~AlarmDatabase()";
     delete ui;
 }
+
+

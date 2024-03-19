@@ -22,7 +22,7 @@ public:
              int ret = _blockqQueue->pop();
              std::string str;
              str += std::to_string(ret);
-             str += " : Work done!";
+//             str += " : Work done!";
              emit workFinished(str.c_str());
         }
     }

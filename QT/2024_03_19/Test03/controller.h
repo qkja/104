@@ -12,12 +12,18 @@ public:
     explicit Controller(QObject *parent = nullptr) : QObject(parent) {
 
     }
-
+signals:
+    void mySignals(std::pair<int,int>&);
 public slots:
     void handleResult(const QString &result)
     {
 
         qDebug() << "Result received:" << result;
+        std::pair<int,int> p;
+        int ret = result.toInt();
+        p.first = ret;
+        p.second = ret + ret;
+        emit mySignals(p);
     }
 private:
 
